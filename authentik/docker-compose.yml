@@ -19,9 +19,9 @@ services:
     env_file:
       - .env
     networks:
+      - authentik
       - database
       - proxy
-      - authentik
 
   authentik-worker:
     container_name: authentik-worker
@@ -43,8 +43,8 @@ services:
     env_file:
       - .env
     networks:
-      - database
       - authentik
+      - database
 
   authentik-redis:
     container_name: authentik-redis

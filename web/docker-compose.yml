@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  wikijs:
+    container_name: wikijs
+    image: requarks/wiki
+    restart: unless-stopped
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: wikijs
+      DB_USER: wikijs
+      DB_PASS: ${POSTGRES_WIKIJS_PASS}
+    networks:
+      - proxy
+      - database
+
+  homepage:
+    container_name: homepage
+    image: ghcr.io/benphelps/homepage
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./homepage/config:/app/config
+    networks:
+      - proxy
+
+  homepage_code-server:
+    container_name: homepage_code-server
+    image: linuxserver/code-server
+    restart: unless-stopped
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/Vienna
+      PROXY_DOMAIN: editdash.zech.co
+    volumes:
+      - ./homepage_code-server/config:/config
+      - ./homepage/config:/app/config
+    networks:
+      - proxy
+
+  hugo:
+    container_name: hugo
+    image: klakegg/hugo
+    restart: unless-stopped
+    command: server
+    volumes:
+      - ./hugo/src:/src
+    networks:
+      - proxy
+
+  changedetection:
+    container_name: changedetection
+    image: dgtlmoon/changedetection.io
+    restart: unless-stopped
+    volumes:
+      - ./changedetection/datastore:/datastore
+    networks:
+      - proxy
+
+networks:
+  proxy: 
+    external: true
+  database: 
+    external: true
+
