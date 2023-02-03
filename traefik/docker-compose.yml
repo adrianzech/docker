@@ -41,9 +41,5 @@ services:
       - proxy
 
 networks:
-  database: 
-    external: true
   proxy:
-    external: true
-  authentik: 
     external: true
