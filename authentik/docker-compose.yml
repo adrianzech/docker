@@ -1,0 +1,64 @@
+version: "3"
+
+services:
+  authentik-server:
+    container_name: authentik-server
+    image: beryju/authentik
+    restart: unless-stopped
+    command: server
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_AUTHENTIK_PASS}
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_REDIS__HOST: authentik-redis
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET}
+    volumes:
+      - ./authentik/media:/media
+      - ./authentik/templates:/templates
+    env_file:
+      - .env
+    networks:
+      - database
+      - proxy
+      - authentik
+
+  authentik-worker:
+    container_name: authentik-worker
+    image: beryju/authentik
+    restart: unless-stopped
+    command: worker
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${POSTGRES_AUTHENTIK_PASS}
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_REDIS__HOST: authentik-redis
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./authentik/media:/media
+      - ./authentik/templates:/templates
+      - ./authentik/certs:/certs
+    env_file:
+      - .env
+    networks:
+      - database
+      - authentik
+
+  authentik-redis:
+    container_name: authentik-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - ./authentik/redis:/data
+    networks:
+      - authentik
+
+networks:
+  database: 
+    external: true
+  proxy:
+    external: true
+  authentik: 
+    external: true

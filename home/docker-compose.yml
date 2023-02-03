@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  unifi-controller:
+    container_name: unifi-controller
+    image: linuxserver/unifi-controller
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 8443:8443
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/Vienna
+    volumes:
+      - ./unifi-controller/config:/config
+    networks:
+      - proxy
+
+networks:
+  proxy: 
+    external: true

@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  nextcloud:
+    container_name: nextcloud
+    image: linuxserver/nextcloud
+    restart: unless-stopped
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/Vienna
+    volumes:
+      - ./nextcloud/config:/config
+      - ./nextcloud/data:/data
+    networks:
+      - proxy
+      - office
+      - datavase
+
+  nextcloud-redis:
+    container_name: nextcloud-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - ./nextcloud/redis:/data
+    networks:
+      - office
+
+  nextcloud-office:
+    container_name: nextcloud-office
+    image: alehoho/oo-ce-docker-license
+    restart: unless-stopped
+    networks:
+      - office
+
+  paperless:
+    container_name: paperless
+    image: paperless-ngx/paperless-ngx
+    restart: unless-stopped
+    environment:
+      PAPERLESS_DBHOST: postgresql
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBPASS: ${POSTGRES_PAPERLESS_PASS}
+      PAPERLESS_DBUSER: paperless
+      PAPERLESS_ENABLE_HTTP_REMOTE_USER: TRUE
+      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
+      PAPERLESS_OCR_LANGUAGE: deu
+      PAPERLESS_REDIS: paperless-redis
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET}
+      PAPERLESS_TIME_ZONE: Europe/Vienna
+      PAPERLESS_URL: ${PAPERLESS_BASE_URL}
+      PAPERLESS_ALLOWED_HOSTS: ${PAPERLESS_ALLOWED_HOSTS}
+    volumes:
+      - ./paperless/config:/config
+      - ./paperless/data:/data
+    networks:
+      - proxy
+      - office
+      - database
+
+  paperless-redis:
+    container_name: paperless-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - ./paperless/redis:/data
+    networks:
+      - office
+
+networks:
+  proxy: 
+    external: true
+  office: 
+    external: true
