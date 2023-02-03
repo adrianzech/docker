@@ -12,7 +12,7 @@ services:
       - 443:443
     environment:
       CF_API_EMAIL: ${ADMIN_MAIL}
-      CF_DNS_API_TOKEN: ${CLOUDFLARE_TOKEN}
+      CLOUDFLARE_API_KEY: ${CLOUDFLARE_API_KEY}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
