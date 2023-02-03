@@ -39,7 +39,7 @@ http:
     jellyfin:
       entryPoints:
         - "https"
-      rule: "Host(`jellyfin.local.zech.co`)"
+      rule: "Host(`jellyfin.zech.co`)"
       middlewares:
         - default-headers
         - https-redirectscheme
