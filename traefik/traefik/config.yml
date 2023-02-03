@@ -1,5 +1,14 @@
 http:
   routers:
+    firewall:
+      entryPoints:
+        - "https"
+      rule: "Host(`fw.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: firewall
     proxmox:
       entryPoints:
         - "https"
@@ -9,6 +18,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: proxmox
+    ilo:
+      entryPoints:
+        - "https"
+      rule: "Host(`ilo.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: ilo
     nas:
       entryPoints:
         - "https"
@@ -20,10 +38,20 @@ http:
       service: nas
 
   services:
+    firewall:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.1:4444"
+        passHostHeader: true
     proxmox:
       loadBalancer:
         servers:
           - url: "https://10.0.1.10:8006"
+        passHostHeader: true
+    ilo:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.20"
         passHostHeader: true
     nas:
       loadBalancer:
