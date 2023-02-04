@@ -3,7 +3,7 @@ version: "3"
 services:
   paperless:
     container_name: paperless
-    image: paperless-ngx/paperless-ngx
+    image: ghcr.io/paperless-ngx/paperless-ngx
     restart: unless-stopped
     environment:
       USERMAP_UID: 1000
@@ -15,7 +15,7 @@ services:
       PAPERLESS_ENABLE_HTTP_REMOTE_USER: TRUE
       PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
       PAPERLESS_OCR_LANGUAGE: deu
-      PAPERLESS_REDIS: paperless-redis
+      PAPERLESS_REDIS: redis://#paperless-redis
       PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET}
       PAPERLESS_TIME_ZONE: Europe/Vienna
       PAPERLESS_URL: https://${PAPERLESS_BASE_URL}
@@ -23,13 +23,13 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.paperless.entrypoints: http
-      traefik.http.routers.paperless.rule: Host(`hpaperless.${DOMAIN_NAME}`)
+      traefik.http.routers.paperless.rule: Host(`paperless.${DOMAIN_NAME}`)
       traefik.http.middlewares.paperless-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.paperless.middlewares: hpaperless-https-redirect
+      traefik.http.routers.paperless.middlewares: paperless-https-redirect
       traefik.http.routers.paperless-secure.entrypoints: https
-      traefik.http.routers.paperless-secure.rule: Host(`hpaperless.${DOMAIN_NAME}`)
+      traefik.http.routers.paperless-secure.rule: Host(`paperless.${DOMAIN_NAME}`)
       traefik.http.routers.paperless-secure.tls: true
-      traefik.http.routers.paperless-secure.service: hpaperless
+      traefik.http.routers.paperless-secure.service: paperless
       traefik.http.routers.paperless-secure.middlewares: default-headers@file
       traefik.http.services.paperless.loadbalancer.server.port: 8000
       traefik.docker.network: proxy

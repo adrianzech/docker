@@ -9,7 +9,8 @@ services:
       PGID: 1000
       PUID: 1000
       TZ: Europe/Vienna
-      PROXY_DOMAIN: ytdl.zech.co
+      PROXY_DOMAIN: ytdl.${DOMAIN_NAME}
+      DOCKER_MODS: linuxserver/mods:code-server-python3
     labels:
       traefik.enable: true
       traefik.http.routers.youtube-dl.entrypoints: http
@@ -21,7 +22,7 @@ services:
       traefik.http.routers.youtube-dl-secure.tls: true
       traefik.http.routers.youtube-dl-secure.service: youtube-dl
       traefik.http.routers.youtube-dl-secure.middlewares: secured@file
-      traefik.http.services.youtube-dl.loadbalancer.server.port: 3000
+      traefik.http.services.youtube-dl.loadbalancer.server.port: 8443
       traefik.docker.network: proxy
     volumes:
       - ./youtube-dl/ytdl:/ytdl
