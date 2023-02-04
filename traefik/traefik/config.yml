@@ -104,11 +104,11 @@ http:
           stsPreload: true
           stsSeconds: 15552000
           customFrameOptionsValue: SAMEORIGIN
-          customRequestHeaders:
-          X-Forwarded-Proto: https
           contentSecurityPolicy: "upgrade-insecure-requests"
           referrerPolicy: "no-referrer-when-downgrade"
           permissionsPolicy: "interest-cohort=()"
+          customRequestHeaders:
+            X-Forwarded-Proto: https
           
     default-headers:
       headers:
@@ -120,12 +120,12 @@ http:
         stsPreload: true
         stsSeconds: 15552000
         customFrameOptionsValue: SAMEORIGIN
-        customRequestHeaders:
-        X-Forwarded-Proto: https
         contentSecurityPolicy: "upgrade-insecure-requests"
         referrerPolicy: "no-referrer-when-downgrade"
         permissionsPolicy: "interest-cohort=()"
-
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+        
     default-whitelist:
       ipWhiteList:
         sourceRange:
