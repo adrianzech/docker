@@ -19,6 +19,8 @@ services:
       traefik.http.routers.nextcloud-secure.rule: Host(`cloud.${DOMAIN_NAME}`)
       traefik.http.routers.nextcloud-secure.tls: true
       traefik.http.routers.nextcloud-secure.service: nextcloud
+      traefik.http.routers.nextcloud-secure.middlewares: default-headers@file
+      traefik.http.services.nextcloud.loadbalancer.server.scheme: https
       traefik.http.services.nextcloud.loadbalancer.server.port: 443
       traefik.docker.network: proxy
     volumes:
