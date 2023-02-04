@@ -7,17 +7,18 @@ services:
     restart: unless-stopped
     command: server
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.hugo.entrypoints=http"
-      - "traefik.http.routers.hugo.rule=Host(`www.${DOMAIN_NAME}`, `${DOMAIN_NAME}`)"
-      - "traefik.http.middlewares.hugo-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.hugo.middlewares=hugo-https-redirect"
-      - "traefik.http.routers.hugo-secure.entrypoints=https"
-      - "traefik.http.routers.hugo-secure.rule=Host(`www.${DOMAIN_NAME}`, `${DOMAIN_NAME}`)"
-      - "traefik.http.routers.hugo-secure.tls=true"
-      - "traefik.http.routers.hugo-secure.service=hugo"
-      - "traefik.http.services.hugo.loadbalancer.server.port=1313"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.hugo.entrypoints: http
+      traefik.http.routers.hugo.rule: Host(`www.${DOMAIN_NAME}`, `${DOMAIN_NAME}`)
+      traefik.http.middlewares.hugo-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.hugo.middlewares: hugo-https-redirect
+      traefik.http.routers.hugo-secure.entrypoints: https
+      traefik.http.routers.hugo-secure.rule: Host(`www.${DOMAIN_NAME}`, `${DOMAIN_NAME}`)
+      traefik.http.routers.hugo-secure.tls: true
+      traefik.http.routers.hugo-secure.service: hugo
+      traefik.http.routers.hugo-secure.middlewares: authentik@file
+      traefik.http.services.hugo.loadbalancer.server.port: 1313
+      traefik.docker.network: proxy
     volumes:
       - ./hugo/src:/src
     networks:

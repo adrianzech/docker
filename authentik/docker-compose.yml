@@ -14,17 +14,17 @@ services:
       AUTHENTIK_REDIS__HOST: authentik-redis
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET}
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.authentik.entrypoints=http"
-      - "traefik.http.routers.authentik.rule=Host(`${AUTHENTIK_BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)"
-      - "traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.authentik.middlewares=authentik-https-redirect"
-      - "traefik.http.routers.authentik-secure.entrypoints=https"
-      - "traefik.http.routers.authentik-secure.rule=Host(`${AUTHENTIK_BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)"
-      - "traefik.http.routers.authentik-secure.tls=true"
-      - "traefik.http.routers.authentik-secure.service=authentik"
-      - "traefik.http.services.authentik.loadbalancer.server.port=9000"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.authentik.entrypoints: http
+      traefik.http.routers.authentik.rule: Host(`${AUTHENTIK_BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.authentik.middlewares: authentik-https-redirect
+      traefik.http.routers.authentik-secure.entrypoints: https
+      traefik.http.routers.authentik-secure.rule: Host(`${AUTHENTIK_BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.authentik-secure.tls: true
+      traefik.http.routers.authentik-secure.service: authentik
+      traefik.http.services.authentik.loadbalancer.server.port: 9000
+      traefik.docker.network: proxy
     volumes:
       - ./authentik/media:/media
       - ./authentik/templates:/templates

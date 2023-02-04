@@ -21,17 +21,17 @@ services:
       GF_INSTALL_PLUGINS: https://github.com/tribe29/grafana-checkmk-datasource/releases/download/v3.0.0-beta.1/tribe-29-checkmk-datasource-3.0.0-beta.1.zip;tribe-29-checkmk-datasource
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: tribe-29-checkmk-datasource
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.entrypoints=http"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN_NAME}`)"
-      - "traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.grafana.middlewares=grafana-https-redirect"
-      - "traefik.http.routers.grafana-secure.entrypoints=https"
-      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.grafana-secure.tls=true"
-      - "traefik.http.routers.grafana-secure.service=grafana"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.grafana.entrypoints: http
+      traefik.http.routers.grafana.rule: Host(`grafana.${DOMAIN_NAME}`)
+      traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.grafana.middlewares: grafana-https-redirect
+      traefik.http.routers.grafana-secure.entrypoints: https
+      traefik.http.routers.grafana-secure.rule: Host(`grafana.${DOMAIN_NAME}`)
+      traefik.http.routers.grafana-secure.tls: true
+      traefik.http.routers.grafana-secure.service: grafana
+      traefik.http.services.grafana.loadbalancer.server.port: 3000
+      traefik.docker.network: proxy
     volumes:
       - ./grafana/data:/var/lib/grafana
     networks:

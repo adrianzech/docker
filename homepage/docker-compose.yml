@@ -6,17 +6,18 @@ services:
     image: ghcr.io/benphelps/homepage
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routershomepage.entrypoints=http"
-      - "traefik.http.routershomepage.rule=Host(`home.${DOMAIN_NAME}`)"
-      - "traefik.http.middlewareshomepage-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routershomepage.middlewares=home-https-redirect"
-      - "traefik.http.routershomepage-secure.entrypoints=https"
-      - "traefik.http.routershomepage-secure.rule=Host(`home.${DOMAIN_NAME}`)"
-      - "traefik.http.routershomepage-secure.tls=true"
-      - "traefik.http.routershomepage-secure.service=home"
-      - "traefik.http.serviceshomepage.loadbalancer.server.port=3000"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.homepage.entrypoints: http
+      traefik.http.routers.homepage.rule: Host(`home.${DOMAIN_NAME}`)
+      traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.homepage.middlewares: home-https-redirect
+      traefik.http.routers.homepage-secure.entrypoints: https
+      traefik.http.routers.homepage-secure.rule: Host(`home.${DOMAIN_NAME}`)
+      traefik.http.routers.homepage-secure.tls: true
+      traefik.http.routers.homepage-secure.service: home
+      traefik.http.routers.homepage-secure.middlewares: authentik@file
+      traefik.http.services.homepage.loadbalancer.server.port: 3000
+      traefik.docker.network: proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./homepage/config:/app/config
@@ -33,17 +34,18 @@ services:
       TZ: Europe/Vienna
       PROXY_DOMAIN: home.${DOMAIN_NAME}
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routershomepage.entrypoints=http"
-      - "traefik.http.routershomepage.rule=Host(`home.${DOMAIN_NAME}` && Path(`/traefik`))"
-      - "traefik.http.middlewareshomepage-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routershomepage.middlewares=home-https-redirect"
-      - "traefik.http.routershomepage-secure.entrypoints=https"
-      - "traefik.http.routershomepage-secure.rule=Host(`home.${DOMAIN_NAME}` && Path(`/traefik`))"
-      - "traefik.http.routershomepage-secure.tls=true"
-      - "traefik.http.routershomepage-secure.service=home"
-      - "traefik.http.serviceshomepage.loadbalancer.server.port=8443"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.homepage.entrypoints: http
+      traefik.http.routers.homepage.rule: Host(`home.${DOMAIN_NAME}` && Path(`/edit`))
+      traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.homepage.middlewares: home-https-redirect
+      traefik.http.routers.homepage-secure.entrypoints: https
+      traefik.http.routers.homepage-secure.rule: Host(`home.${DOMAIN_NAME}` && Path(`/edit`))
+      traefik.http.routers.homepage-secure.tls: true
+      traefik.http.routers.homepage-secure.service: home
+      traefik.http.routers.homepage-secure.middlewares: authentik@file
+      traefik.http.services.homepage.loadbalancer.server.port: 8443
+      traefik.docker.network: proxy
     volumes:
       - ./homepage_code-server/config:/config
       - ./homepage/config:/app/config

@@ -6,17 +6,18 @@ services:
     image: dgtlmoon/changedetection.io
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.changedetection.entrypoints=http"
-      - "traefik.http.routers.changedetection.rule=Host(`change.${DOMAIN_NAME}`)"
-      - "traefik.http.middlewares.changedetection-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.changedetection.middlewares=changedetection-https-redirect"
-      - "traefik.http.routers.changedetection-secure.entrypoints=https"
-      - "traefik.http.routers.changedetection-secure.rule=Host(`change.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.changedetection-secure.tls=true"
-      - "traefik.http.routers.changedetection-secure.service=changedetection"
-      - "traefik.http.services.changedetection.loadbalancer.server.port=5000"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.changedetection.entrypoints: http
+      traefik.http.routers.changedetection.rule: Host(`change.${DOMAIN_NAME}`)
+      traefik.http.middlewares.changedetection-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.changedetection.middlewares: changedetection-https-redirect
+      traefik.http.routers.changedetection-secure.entrypoints: https
+      traefik.http.routers.changedetection-secure.rule: Host(`change.${DOMAIN_NAME}`)
+      traefik.http.routers.changedetection-secure.tls: true
+      traefik.http.routers.changedetection-secure.service: changedetection
+      traefik.http.routers.changedetection-secure.middlewares: authentik@file
+      traefik.http.services.changedetection.loadbalancer.server.port: 5000
+      traefik.docker.network: proxy
     volumes:
       - ./changedetection/datastore:/datastore
     networks:

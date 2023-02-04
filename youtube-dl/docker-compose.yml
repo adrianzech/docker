@@ -11,17 +11,18 @@ services:
       TZ: Europe/Vienna
       PROXY_DOMAIN: ytdl.zech.co
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.youtube-dl.entrypoints=http"
-      - "traefik.http.routers.youtube-dl.rule=Host(`ytdl.${DOMAIN_NAME}`)"
-      - "traefik.http.middlewares.youtube-dl-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.youtube-dl.middlewares=youtube-dl-https-redirect"
-      - "traefik.http.routers.youtube-dl-secure.entrypoints=https"
-      - "traefik.http.routers.youtube-dl-secure.rule=Host(`ytdl.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.youtube-dl-secure.tls=true"
-      - "traefik.http.routers.youtube-dl-secure.service=youtube-dl"
-      - "traefik.http.services.youtube-dl.loadbalancer.server.port=3000"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.youtube-dl.entrypoints: http
+      traefik.http.routers.youtube-dl.rule: Host(`ytdl.${DOMAIN_NAME}`)
+      traefik.http.middlewares.youtube-dl-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.youtube-dl.middlewares: youtube-dl-https-redirect
+      traefik.http.routers.youtube-dl-secure.entrypoints: https
+      traefik.http.routers.youtube-dl-secure.rule: Host(`ytdl.${DOMAIN_NAME}`)
+      traefik.http.routers.youtube-dl-secure.tls: true
+      traefik.http.routers.youtube-dl-secure.service: youtube-dl
+      traefik.http.routers.youtube-dl-secure.middlewares: authentik@file
+      traefik.http.services.youtube-dl.loadbalancer.server.port: 3000
+      traefik.docker.network: proxy
     volumes:
       - ./youtube-dl/ytdl:/ytdl
       - ./youtube-dl/config:/config

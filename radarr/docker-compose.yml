@@ -10,17 +10,18 @@ services:
       PUID: 1000
       TZ: Europe/Vienna
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radarr.entrypoints=http"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN_NAME}`)"
-      - "traefik.http.middlewares.radarr-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.radarr.middlewares=radarr-https-redirect"
-      - "traefik.http.routers.radarr-secure.entrypoints=https"
-      - "traefik.http.routers.radarr-secure.rule=Host(`radarr.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.radarr-secure.tls=true"
-      - "traefik.http.routers.radarr-secure.service=radarr"
-      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.radarr.entrypoints: http
+      traefik.http.routers.radarr.rule: Host(`radarr.${DOMAIN_NAME}`)
+      traefik.http.middlewares.radarr-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.radarr.middlewares: radarr-https-redirect
+      traefik.http.routers.radarr-secure.entrypoints: https
+      traefik.http.routers.radarr-secure.rule: Host(`radarr.${DOMAIN_NAME}`)
+      traefik.http.routers.radarr-secure.tls: true
+      traefik.http.routers.radarr-secure.service: radarr
+      traefik.http.routers.radarr-secure.middlewares: authentik@file
+      traefik.http.services.radarr.loadbalancer.server.port: 7878
+      traefik.docker.network: proxy
     volumes:
       - ./radarr/config:/config
       - /mnt/movies:/movies

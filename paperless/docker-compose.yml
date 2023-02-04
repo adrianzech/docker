@@ -21,17 +21,18 @@ services:
       PAPERLESS_URL: https://${PAPERLESS_BASE_URL}
       PAPERLESS_ALLOWED_HOSTS: ${PAPERLESS_ALLOWED_HOSTS}
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.hpaperless.entrypoints=http"
-      - "traefik.http.routers.hpaperless.rule=Host(`hpaperless.${DOMAIN_NAME}`)"
-      - "traefik.http.middlewares.hpaperless-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.hpaperless.middlewares=hpaperless-https-redirect"
-      - "traefik.http.routers.hpaperless-secure.entrypoints=https"
-      - "traefik.http.routers.hpaperless-secure.rule=Host(`hpaperless.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.hpaperless-secure.tls=true"
-      - "traefik.http.routers.hpaperless-secure.service=hpaperless"
-      - "traefik.http.services.hpaperless.loadbalancer.server.port=8000"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.paperless.entrypoints: http
+      traefik.http.routers.paperless.rule: Host(`hpaperless.${DOMAIN_NAME}`)
+      traefik.http.middlewares.paperless-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.paperless.middlewares: hpaperless-https-redirect
+      traefik.http.routers.paperless-secure.entrypoints: https
+      traefik.http.routers.paperless-secure.rule: Host(`hpaperless.${DOMAIN_NAME}`)
+      traefik.http.routers.paperless-secure.tls: true
+      traefik.http.routers.paperless-secure.service: hpaperless
+      traefik.http.routers.paperless-secure.middlewares: authentik@file
+      traefik.http.services.paperless.loadbalancer.server.port: 8000
+      traefik.docker.network: proxy
     volumes:
       - ./paperless/config:/config
       - ./paperless/data:/data

@@ -10,17 +10,18 @@ services:
       PUID: 1000
       TZ: Europe/Vienna
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sabnzbd.entrypoints=http"
-      - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.${DOMAIN_NAME}`)"
-      - "traefik.http.middlewares.sabnzbd-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.sabnzbd.middlewares=sabnzbd-https-redirect"
-      - "traefik.http.routers.sabnzbd-secure.entrypoints=https"
-      - "traefik.http.routers.sabnzbd-secure.rule=Host(`sabnzbd.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.sabnzbd-secure.tls=true"
-      - "traefik.http.routers.sabnzbd-secure.service=sabnzbd"
-      - "traefik.http.services.sabnzbd.loadbalancer.server.port=8080"
-      - "traefik.docker.network=proxy"
+      traefik.enable: true
+      traefik.http.routers.sabnzbd.entrypoints: http
+      traefik.http.routers.sabnzbd.rule: Host(`sabnzbd.${DOMAIN_NAME}`)
+      traefik.http.middlewares.sabnzbd-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.sabnzbd.middlewares: sabnzbd-https-redirect
+      traefik.http.routers.sabnzbd-secure.entrypoints: https
+      traefik.http.routers.sabnzbd-secure.rule: Host(`sabnzbd.${DOMAIN_NAME}`)
+      traefik.http.routers.sabnzbd-secure.tls: true
+      traefik.http.routers.sabnzbd-secure.service: sabnzbd
+      traefik.http.routers.sabnzbd-secure.middlewares: authentik@file
+      traefik.http.services.sabnzbd.loadbalancer.server.port: 8080
+      traefik.docker.network: proxy
     volumes:
       - ./sabnzbd/config:/config
       - /mnt/downloads:/downloads
