@@ -3,7 +3,7 @@ version: "3"
 services:
   tandoor:
     container_name: tandoor
-    image: mtlynch/recipes
+    image: vabene1111/recipes
     restart: unless-stopped
     environment:
       TIMEZONE: Europe/Vienna
@@ -25,7 +25,7 @@ services:
       traefik.http.routers.tandoor-secure.tls: true
       traefik.http.routers.tandoor-secure.service: tandoor
       traefik.http.routers.tandoor-secure.middlewares: default-headers@file
-      traefik.http.services.tandoor.loadbalancer.server.port: 4001
+      traefik.http.services.tandoor.loadbalancer.server.port: 8080
       traefik.docker.network: proxy
     volumes:
       - ./tandoor/staticfiles:/opt/recipes/staticfiles
