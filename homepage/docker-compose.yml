@@ -8,11 +8,11 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.homepage.entrypoints: http
-      traefik.http.routers.homepage.rule: Host(`home.${DOMAIN_NAME}`)
+      traefik.http.routers.homepage.rule: Host(`dash.${DOMAIN_NAME}`)
       traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.homepage.middlewares: home-https-redirect
+      traefik.http.routers.homepage.middlewares: homepage-https-redirect
       traefik.http.routers.homepage-secure.entrypoints: https
-      traefik.http.routers.homepage-secure.rule: Host(`home.${DOMAIN_NAME}`)
+      traefik.http.routers.homepage-secure.rule: Host(`dash.${DOMAIN_NAME}`)
       traefik.http.routers.homepage-secure.tls: true
       traefik.http.routers.homepage-secure.service: homepage
       traefik.http.routers.homepage-secure.middlewares: secured@file
@@ -32,13 +32,13 @@ services:
       PGID: 1000
       PUID: 1000
       TZ: Europe/Vienna
-      PROXY_DOMAIN: home.${DOMAIN_NAME}
+      PROXY_DOMAIN: edit.${DOMAIN_NAME}
     labels:
       traefik.enable: true
       traefik.http.routers.homepage_code-server.entrypoints: http
       traefik.http.routers.homepage_code-server.rule: Host(`edit.${DOMAIN_NAME}`)
       traefik.http.middlewares.homepage_code-server-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.homepage_code-server.middlewares: home-https-redirect
+      traefik.http.routers.homepage_code-server.middlewares: homepage_code-server-https-redirect
       traefik.http.routers.homepage_code-server-secure.entrypoints: https
       traefik.http.routers.homepage_code-server-secure.rule: Host(`edit.${DOMAIN_NAME}`)
       traefik.http.routers.homepage_code-server-secure.tls: true
