@@ -14,7 +14,7 @@ services:
       traefik.http.routers.homepage-secure.entrypoints: https
       traefik.http.routers.homepage-secure.rule: Host(`home.${DOMAIN_NAME}`)
       traefik.http.routers.homepage-secure.tls: true
-      traefik.http.routers.homepage-secure.service: home
+      traefik.http.routers.homepage-secure.service: homepage
       traefik.http.routers.homepage-secure.middlewares: secured@file
       traefik.http.services.homepage.loadbalancer.server.port: 3000
       traefik.docker.network: proxy
@@ -35,16 +35,16 @@ services:
       PROXY_DOMAIN: home.${DOMAIN_NAME}
     labels:
       traefik.enable: true
-      traefik.http.routers.homepage.entrypoints: http
-      traefik.http.routers.homepage.rule: Host(`home.${DOMAIN_NAME}` && Path(`/edit`))
-      traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.homepage.middlewares: home-https-redirect
-      traefik.http.routers.homepage-secure.entrypoints: https
-      traefik.http.routers.homepage-secure.rule: Host(`home.${DOMAIN_NAME}` && Path(`/edit`))
-      traefik.http.routers.homepage-secure.tls: true
-      traefik.http.routers.homepage-secure.service: home
-      traefik.http.routers.homepage-secure.middlewares: secured@file
-      traefik.http.services.homepage.loadbalancer.server.port: 8443
+      traefik.http.routers.homepage_code-server.entrypoints: http
+      traefik.http.routers.homepage_code-server.rule: Host(`edit.${DOMAIN_NAME}`)
+      traefik.http.middlewares.homepage_code-server-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.homepage_code-server.middlewares: home-https-redirect
+      traefik.http.routers.homepage_code-server-secure.entrypoints: https
+      traefik.http.routers.homepage_code-server-secure.rule: Host(`edit.${DOMAIN_NAME}`)
+      traefik.http.routers.homepage_code-server-secure.tls: true
+      traefik.http.routers.homepage_code-server-secure.service: homepage_code-server
+      traefik.http.routers.homepage_code-server-secure.middlewares: secured@file
+      traefik.http.services.homepage_code-server.loadbalancer.server.port: 8443
       traefik.docker.network: proxy
     volumes:
       - ./homepage_code-server/config:/config
