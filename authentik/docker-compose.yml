@@ -23,6 +23,7 @@ services:
       traefik.http.routers.authentik-secure.rule: Host(`${AUTHENTIK_BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
       traefik.http.routers.authentik-secure.tls: true
       traefik.http.routers.authentik-secure.service: authentik
+      traefik.http.routers.authentik-secure.middlewares: default-headers@file
       traefik.http.services.authentik.loadbalancer.server.port: 9000
       traefik.docker.network: proxy
     volumes:

@@ -1,3 +1,16 @@
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: true
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+
 http:
   routers:
     firewall:
@@ -78,7 +91,6 @@ http:
       redirectScheme:
         scheme: https
         permanent: true
-
     authentik:
       forwardauth:
         address: http://authentik-server:9000/outpost.goauthentik.io/auth/traefik
@@ -94,8 +106,7 @@ http:
           - X-authentik-meta-outpost
           - X-authentik-meta-provider
           - X-authentik-meta-app
-          - X-authentik-meta-version
-          
+          - X-authentik-meta-version      
     default-headers:
       headers:
         frameDeny: true
@@ -111,7 +122,6 @@ http:
         permissionsPolicy: interest-cohort=()
         customRequestHeaders:
           X-Forwarded-Proto: https
-        
     secured:
       chain:
         middlewares:
