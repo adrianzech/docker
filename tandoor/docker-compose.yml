@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  tandoor:
+    container_name: tandoor
+    image: mtlynch/tandoor
+    restart: unless-stopped
+    environment:
+      TIMEZONE: Europe/Vienna
+      SECRET_KEY: ${TANDOOR_SECRET}
+      DB_ENGINE: django.db.backends.postgresql
+      POSTGRES_HOST: postgresql
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: tandoor
+      POSTGRES_PASSWORD: ${POSTGRES_TANDOOR_PASS}
+      POSTGRES_DB: tandoor
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tandoor.entrypoints: http
+      traefik.http.routers.tandoor.rule: Host(`tandoor.${DOMAIN_NAME}`)
+      traefik.http.middlewares.tandoor-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.tandoor.middlewares: tandoor-https-redirect
+      traefik.http.routers.tandoor-secure.entrypoints: https
+      traefik.http.routers.tandoor-secure.rule: Host(`tandoor.${DOMAIN_NAME}`)
+      traefik.http.routers.tandoor-secure.tls: true
+      traefik.http.routers.tandoor-secure.service: tandoor
+      traefik.http.routers.tandoor-secure.middlewares: default-headers@file
+      traefik.http.services.tandoor.loadbalancer.server.port: 4001
+      traefik.docker.network: proxy
+    volumes:
+      - ./tandoor/staticfiles:/opt/recipes/staticfiles
+      - ./tandoor/mediafiles:/opt/recipes/mediafiles
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - database
+    
+networks:
+  proxy: 
+    external: true
+  database:
+    external: true

@@ -6,7 +6,7 @@ services:
     image: mtlynch/picoshare
     restart: unless-stopped
     environment:
-      PS_SHARED_SECRET: ${PS_SHARED_SECRET}
+      PS_SHARED_SECRET: ${PICOSHARE_SECRET}
     labels:
       traefik.enable: true
       traefik.http.routers.picoshare.entrypoints: http
