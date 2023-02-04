@@ -18,7 +18,7 @@ services:
       traefik.http.routers.jellyseerr-secure.tls: true
       traefik.http.routers.jellyseerr-secure.service: jellyseerr
       traefik.http.routers.jellyseerr-secure.middlewares: secured@file
-      traefik.http.services.jellyseerr.loadbalancer.server.port: 3000
+      traefik.http.services.jellyseerr.loadbalancer.server.port: 5055
       traefik.docker.network: proxy
     volumes:
       - ./jellyseerr/config:/config
