@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  postgresql:
+    container_name: postgresql
+    image: postgres:14
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    networks:
+      - database
+
+networks:
+  database: 
+    external: true

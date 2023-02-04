@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  nextcloud:
+    container_name: nextcloud
+    image: linuxserver/nextcloud
+    restart: unless-stopped
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/Vienna
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=http"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloud.${DOMAIN_NAME}`)"
+      - "traefik.http.middlewares.nextcloud-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud-https-redirect"
+      - "traefik.http.routers.nextcloud-secure.entrypoints=https"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`cloud.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.nextcloud-secure.tls=true"
+      - "traefik.http.routers.nextcloud-secure.service=nextcloud"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - ./nextcloud/config:/config
+      - ./nextcloud/data:/data
+    networks:
+      - proxy
+      - nextcloud
+      - database
+
+  nextcloud-redis:
+    container_name: nextcloud-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - ./nextcloud/redis:/data
+    networks:
+      - nextcloud
+
+  nextcloud-office:
+    container_name: nextcloud-office
+    image: alehoho/oo-ce-docker-license
+    restart: unless-stopped
+    networks:
+      - nextcloud
+
+networks:
+  proxy: 
+    external: true
+  nextcloud: 
+    external: true
+  database:
+    external: true

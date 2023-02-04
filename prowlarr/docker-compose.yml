@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  prowlarr:
+    container_name: prowlarr
+    image: linuxserver/prowlarr
+    restart: unless-stopped
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/Vienna
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr.entrypoints=http"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${DOMAIN_NAME}`)"
+      - "traefik.http.middlewares.prowlarr-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.prowlarr.middlewares=prowlarr-https-redirect"
+      - "traefik.http.routers.prowlarr-secure.entrypoints=https"
+      - "traefik.http.routers.prowlarr-secure.rule=Host(`prowlarr.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.prowlarr-secure.tls=true"
+      - "traefik.http.routers.prowlarr-secure.service=prowlarr"
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - ./prowlarr/config:/config
+    networks:
+      - proxy
+      - media
+
+networks:
+  proxy: 
+    external: true
+  media:
+    external: true

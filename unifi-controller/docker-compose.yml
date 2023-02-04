@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  unifi-controller:
+    container_name: unifi-controller
+    image: linuxserver/unifi-controller
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/Vienna
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.unifi-controller.entrypoints=http"
+      - "traefik.http.routers.unifi-controller.rule=Host(`unifi.${DOMAIN_NAME}`)"
+      - "traefik.http.middlewares.unifi-controller-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.unifi-controller.middlewares=unifi-controller-https-redirect"
+      - "traefik.http.routers.unifi-controller-secure.entrypoints=https"
+      - "traefik.http.routers.unifi-controller-secure.rule=Host(`unifi.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.unifi-controller-secure.tls=true"
+      - "traefik.http.routers.unifi-controller-secure.service=unifi-controller"
+      - "traefik.http.services.unifi-controller.loadbalancer.server.port=8443"
+      - "traefik.docker.network=proxy"
+    volumes:
+      - ./unifi-controller/config:/config
+    networks:
+      - proxy
+
+networks:
+  proxy: 
+    external: true

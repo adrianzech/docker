@@ -16,11 +16,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.authentik.entrypoints=http"
-      - "traefik.http.routers.authentik.rule=Host(`sso.zech.co`)"
+      - "traefik.http.routers.authentik.rule=Host(`sso.${DOMAIN_NAME}`)"
       - "traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.authentik.middlewares=authentik-https-redirect"
       - "traefik.http.routers.authentik-secure.entrypoints=https"
-      - "traefik.http.routers.authentik-secure.rule=Host(`sso.zech.co`)"
+      - "traefik.http.routers.authentik-secure.rule=Host(`sso.${DOMAIN_NAME}`)"
       - "traefik.http.routers.authentik-secure.tls=true"
       - "traefik.http.routers.authentik-secure.service=authentik"
       - "traefik.http.services.authentik.loadbalancer.server.port=9443"
