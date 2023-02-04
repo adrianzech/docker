@@ -3,7 +3,7 @@ version: "3"
 services:
   tandoor:
     container_name: tandoor
-    image: mtlynch/tandoor
+    image: mtlynch/recipes
     restart: unless-stopped
     environment:
       TIMEZONE: Europe/Vienna
