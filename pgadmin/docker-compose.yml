@@ -8,21 +8,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${ADMIN_MAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
-      PGADMIN_DISABLE_POSTFIX: True
       PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
       PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: True
-      PGADMIN_CONFIG_AUTHENTICATION_SOURCES: "['oauth2', 'internal']"
-      PGADMIN_CONFIG_OAUTH2_AUTO_CREATE_USER: True
-      PGADMIN_CONFIG_OAUTH2_NAME: authentik
-      PGADMIN_CONFIG_OAUTH2_DISPLAY_NAME: Authentik
-      PGADMIN_CONFIG_OAUTH2_CLIENT_ID: ${PGADMIN_CLIENT_ID}
-      PGADMIN_CONFIG_OAUTH2_CLIENT_SECRET: ${PGADMIN_CLIENT_SECRET}
-      PGADMIN_CONFIG_OAUTH2_TOKEN_URL: https://${AUTHENTIK_BASE_URL}/application/o/token/
-      PGADMIN_CONFIG_OAUTH2_AUTHORIZATION_URL: https://${AUTHENTIK_BASE_URL}/application/authorize/token/
-      PGADMIN_CONFIG_OAUTH2_API_BASE_URL: https://${AUTHENTIK_BASE_URL}/
-      PGADMIN_CONFIG_OAUTH2_USERINFO_ENDPOINT: https://${AUTHENTIK_BASE_URL}/application/o/userinfo/
-      PGADMIN_CONFIG_OAUTH2_SERVER_METADATA_URL: https://${AUTHENTIK_BASE_URL}/application/o/pgadmin/.well-known/openid-configuration/
-      PGADMIN_CONFIG_OAUTH2_SCOPE: openid email profile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pgadmin.entrypoints=http"
@@ -37,6 +24,7 @@ services:
       - "traefik.docker.network=proxy"
     volumes:
       - ./pgadmin/data:/var/lib/pgadmin
+      - ./pgadmin/config_local.py:/pgadmin4/config_local.py
     networks:
       - database
       - proxy
