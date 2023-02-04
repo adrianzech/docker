@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  wallabag:
+    container_name: wallabag
+    image: wallabag/wallabag
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      SYMFONY__ENV__SECRET: ${WALLBAG_SECRET}
+      SYMFONY__ENV__DOMAIN_NAME: https://${WALLABAG_BASE_URL}
+      SYMFONY__ENV__DATABASE_DRIVER: pdo_pgsql
+      SYMFONY__ENV__DATABASE_HOST: postgresql
+      SYMFONY__ENV__DATABASE_PORT: 5432
+      SYMFONY__ENV__DATABASE_NAME: wallabag
+      SYMFONY__ENV__DATABASE_USER: wallabag
+      SYMFONY__ENV__DATABASE_PASSWORD: ${POSTGRES_WALLABAG_PASS}
+      SYMFONY__ENV__REDIS_HOST: wallabag-redis
+      SYMFONY__ENV__SERVER_NAME: Wallabag
+    labels:
+      traefik.enable: true
+      traefik.http.routers.wallabag.entrypoints: http
+      traefik.http.routers.wallabag.rule: Host(`wallabag.${DOMAIN_NAME}`)
+      traefik.http.middlewares.wallabag-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.wallabag.middlewares: wallabag-https-redirect
+      traefik.http.routers.wallabag-secure.entrypoints: https
+      traefik.http.routers.wallabag-secure.rule: Host(`wallabag.${DOMAIN_NAME}`)
+      traefik.http.routers.wallabag-secure.tls: true
+      traefik.http.routers.wallabag-secure.service: wallabag
+      traefik.http.routers.wallabag-secure.middlewares: default-headers@file
+      traefik.http.services.wallabag.loadbalancer.server.port: 80
+      traefik.docker.network: proxy
+    volumes:
+      - ./wallabag/data:/data
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - wallabag
+    
+  wallabag-redis:
+    container_name: wallabag-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - ./wallabag/redis:/data
+    networks:
+      - wallabag
+
+networks:
+  proxy: 
+    external: true
+  wallabag:
+    external: true
