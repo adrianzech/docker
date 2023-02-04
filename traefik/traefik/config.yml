@@ -49,6 +49,16 @@ http:
         - https-redirectscheme
       tls: {}
       service: nas
+    checkmk:
+      entryPoints:
+        - "https"
+      rule: "Host(`monitoring.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+        - checkmk-addprefix
+      tls: {}
+      service: checkmk
     jellyfin:
       entryPoints:
         - "https"
@@ -79,6 +89,11 @@ http:
       loadBalancer:
         servers:
           - url: "https://10.0.1.30"
+        passHostHeader: true
+    checkmk:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.10.110"
         passHostHeader: true
     jellyfin:
       loadBalancer:
@@ -122,6 +137,9 @@ http:
         permissionsPolicy: interest-cohort=()
         customRequestHeaders:
           X-Forwarded-Proto: https
+    checkmk-addprefix:
+      addPrefix:
+        prefix: "/homelab"
     secured:
       chain:
         middlewares:

@@ -30,7 +30,7 @@ services:
       traefik.http.routers.paperless-secure.rule: Host(`hpaperless.${DOMAIN_NAME}`)
       traefik.http.routers.paperless-secure.tls: true
       traefik.http.routers.paperless-secure.service: hpaperless
-      traefik.http.routers.paperless-secure.middlewares: secured@file
+      traefik.http.routers.paperless-secure.middlewares: default-headers@file
       traefik.http.services.paperless.loadbalancer.server.port: 8000
       traefik.docker.network: proxy
     volumes:

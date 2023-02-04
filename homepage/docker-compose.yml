@@ -48,7 +48,7 @@ services:
       traefik.docker.network: proxy
     volumes:
       - ./homepage_code-server/config:/config
-      - ./homepage/config:/app/config
+      - ./homepage/config:/homepage
     networks:
       - proxy
 
