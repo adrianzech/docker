@@ -38,6 +38,7 @@ services:
     networks:
       - proxy
       - wallabag
+      - database
     
   wallabag-redis:
     container_name: wallabag-redis
@@ -52,4 +53,6 @@ networks:
   proxy: 
     external: true
   wallabag:
+    external: true
+  database:
     external: true
