@@ -19,7 +19,7 @@ services:
       traefik.http.routers.sabnzbd-secure.rule: Host(`sabnzbd.${DOMAIN_NAME}`)
       traefik.http.routers.sabnzbd-secure.tls: true
       traefik.http.routers.sabnzbd-secure.service: sabnzbd
-      traefik.http.routers.sabnzbd-secure.middlewares: authentik@file
+      traefik.http.routers.sabnzbd-secure.middlewares: secured@file
       traefik.http.services.sabnzbd.loadbalancer.server.port: 8080
       traefik.docker.network: proxy
     volumes:

@@ -19,7 +19,7 @@ services:
       traefik.http.routers.bazarr-secure.rule: Host(`bazarr.${DOMAIN_NAME}`)
       traefik.http.routers.bazarr-secure.tls: true
       traefik.http.routers.bazarr-secure.service: bazarr
-      traefik.http.routers.bazarr-secure.middlewares: authentik@file
+      traefik.http.routers.bazarr-secure.middlewares: secured@file
       traefik.http.services.bazarr.loadbalancer.server.port: 6767
       traefik.docker.network: proxy
     volumes:

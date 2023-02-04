@@ -15,7 +15,7 @@ services:
       traefik.http.routers.changedetection-secure.rule: Host(`change.${DOMAIN_NAME}`)
       traefik.http.routers.changedetection-secure.tls: true
       traefik.http.routers.changedetection-secure.service: changedetection
-      traefik.http.routers.changedetection-secure.middlewares: authentik@file
+      traefik.http.routers.changedetection-secure.middlewares: secured@file
       traefik.http.services.changedetection.loadbalancer.server.port: 5000
       traefik.docker.network: proxy
     volumes:

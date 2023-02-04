@@ -19,7 +19,7 @@ services:
       traefik.http.routers.radarr-secure.rule: Host(`radarr.${DOMAIN_NAME}`)
       traefik.http.routers.radarr-secure.tls: true
       traefik.http.routers.radarr-secure.service: radarr
-      traefik.http.routers.radarr-secure.middlewares: authentik@file
+      traefik.http.routers.radarr-secure.middlewares: secured@file
       traefik.http.services.radarr.loadbalancer.server.port: 7878
       traefik.docker.network: proxy
     volumes:

@@ -19,7 +19,7 @@ services:
       traefik.http.routers.prowlarr-secure.rule: Host(`prowlarr.${DOMAIN_NAME}`)
       traefik.http.routers.prowlarr-secure.tls: true
       traefik.http.routers.prowlarr-secure.service: prowlarr
-      traefik.http.routers.prowlarr-secure.middlewares: authentik@file
+      traefik.http.routers.prowlarr-secure.middlewares: secured@file
       traefik.http.services.prowlarr.loadbalancer.server.port: 9696
       traefik.docker.network: proxy
     volumes:

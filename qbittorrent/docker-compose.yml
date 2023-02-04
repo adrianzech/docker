@@ -19,7 +19,7 @@ services:
       traefik.http.routers.qbittorrent-secure.rule: Host(`torrent.${DOMAIN_NAME}`)
       traefik.http.routers.qbittorrent-secure.tls: true
       traefik.http.routers.qbittorrent-secure.service: qbittorrent
-      traefik.http.routers.qbittorrent-secure.middlewares: authentik@file
+      traefik.http.routers.qbittorrent-secure.middlewares: secured@file
       traefik.http.services.qbittorrent.loadbalancer.server.port: 8080
       traefik.docker.network: proxy
     volumes:

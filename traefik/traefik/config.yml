@@ -95,20 +95,6 @@ http:
           - X-authentik-meta-provider
           - X-authentik-meta-app
           - X-authentik-meta-version
-      headers:
-        frameDeny: true
-        browserXssFilter: true
-        contentTypeNosniff: true
-        forceSTSHeader: true
-        stsIncludeSubdomains: true
-        stsPreload: true
-        stsSeconds: 15552000
-        customFrameOptionsValue: SAMEORIGIN
-        contentSecurityPolicy: upgrade-insecure-requests
-        referrerPolicy: no-referrer-when-downgrade
-        permissionsPolicy: interest-cohort=()
-        customRequestHeaders:
-          X-Forwarded-Proto: https
           
     default-headers:
       headers:
@@ -126,15 +112,8 @@ http:
         customRequestHeaders:
           X-Forwarded-Proto: https
         
-    default-whitelist:
-      ipWhiteList:
-        sourceRange:
-        - "10.0.0.0/8"
-        - "192.168.0.0/16"
-        - "172.16.0.0/12"
-
     secured:
       chain:
         middlewares:
-        - default-whitelist
         - default-headers
+        - authentik

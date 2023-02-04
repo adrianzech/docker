@@ -16,7 +16,7 @@ services:
       traefik.http.routers.hugo-secure.rule: Host(`www.${DOMAIN_NAME}`, `${DOMAIN_NAME}`)
       traefik.http.routers.hugo-secure.tls: true
       traefik.http.routers.hugo-secure.service: hugo
-      traefik.http.routers.hugo-secure.middlewares: authentik@file
+      traefik.http.routers.hugo-secure.middlewares: secured@file
       traefik.http.services.hugo.loadbalancer.server.port: 1313
       traefik.docker.network: proxy
     volumes:
