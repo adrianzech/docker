@@ -68,6 +68,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: jellyfin
+    home-assistant:
+      entryPoints:
+        - "https"
+      rule: "Host(`home.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: home-assistant
 
   services:
     firewall:
@@ -99,6 +108,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://10.0.1.30:8096"
+        passHostHeader: true
+    home-assistant:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.10.120:8123"
         passHostHeader: true
 
   middlewares:
