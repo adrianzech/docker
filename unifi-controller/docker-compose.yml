@@ -22,7 +22,7 @@ services:
       traefik.http.routers.unifi-controller-secure.tls: true
       traefik.http.routers.unifi-controller-secure.middlewares: default-headers@file
       traefik.http.routers.unifi-controller-secure.service: unifi-controller
-      traefik.http.services.nextcloud.loadbalancer.server.scheme: https
+      traefik.http.services.unifi-controller.loadbalancer.server.scheme: https
       traefik.http.services.unifi-controller.loadbalancer.server.port: 8443
       traefik.docker.network: proxy
     volumes:
