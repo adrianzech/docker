@@ -9,7 +9,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${ADMIN_MAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
       PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
-      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: True
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "True"
     labels:
       traefik.enable: true
       traefik.http.routers.pgadmin.entrypoints: http
