@@ -56,7 +56,6 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-        - checkmk-addprefix
       tls: {}
       service: checkmk
     jellyfin:
@@ -151,9 +150,6 @@ http:
         permissionsPolicy: interest-cohort=()
         customRequestHeaders:
           X-Forwarded-Proto: https
-    checkmk-addprefix:
-      addPrefix:
-        prefix: "/homelab"
     secured:
       chain:
         middlewares:
