@@ -7,7 +7,6 @@ services:
     restart: unless-stopped
     environment:
       WATCHTOWER_CLEANUP: true
-      WATCHTOWER_POLL_INTERVAL: 300
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
