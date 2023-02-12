@@ -76,6 +76,15 @@ http:
         - https-redirectscheme
       tls: {}
       service: home-assistant
+    adguard:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: adguard
 
   services:
     firewall:
@@ -112,6 +121,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://10.0.10.120:8123"
+        passHostHeader: true
+    adguard:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.1:3000"
         passHostHeader: true
 
   middlewares:
