@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   postgresql:
     container_name: postgresql
@@ -13,5 +11,5 @@ services:
       - database
 
 networks:
-  database: 
+  database:
     external: true

@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   prowlarr:
     container_name: prowlarr
@@ -29,7 +27,7 @@ services:
       - media
 
 networks:
-  proxy: 
+  proxy:
     external: true
   media:
     external: true

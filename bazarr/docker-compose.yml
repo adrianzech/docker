@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   bazarr:
     container_name: bazarr
@@ -31,7 +29,7 @@ services:
       - media
 
 networks:
-  proxy: 
+  proxy:
     external: true
   media:
     external: true

@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   pgadmin:
     container_name: pgadmin
@@ -30,7 +28,7 @@ services:
       - proxy
 
 networks:
-  database: 
+  database:
     external: true
-  proxy: 
+  proxy:
     external: true

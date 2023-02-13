@@ -20,7 +20,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: firewall
     proxmox:
       entryPoints:
@@ -29,7 +29,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: proxmox
     ilo:
       entryPoints:
@@ -38,7 +38,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: ilo
     nas:
       entryPoints:
@@ -47,7 +47,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: nas
     checkmk:
       entryPoints:
@@ -56,7 +56,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: checkmk
     jellyfin:
       entryPoints:
@@ -65,7 +65,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: jellyfin
     home-assistant:
       entryPoints:
@@ -74,7 +74,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: home-assistant
     adguard:
       entryPoints:
@@ -83,7 +83,7 @@ http:
       middlewares:
         - default-headers
         - https-redirectscheme
-      tls: {}
+      tls: { }
       service: adguard
 
   services:
@@ -148,7 +148,7 @@ http:
           - X-authentik-meta-outpost
           - X-authentik-meta-provider
           - X-authentik-meta-app
-          - X-authentik-meta-version      
+          - X-authentik-meta-version
     default-headers:
       headers:
         frameDeny: true
@@ -167,5 +167,5 @@ http:
     secured:
       chain:
         middlewares:
-        - default-headers
-        - authentik
+          - default-headers
+          - authentik

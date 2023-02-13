@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   tdarr:
     container_name: tdarr
@@ -38,5 +36,5 @@ services:
       - proxy
 
 networks:
-  proxy: 
+  proxy:
     external: true

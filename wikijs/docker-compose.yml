@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   wikijs:
     container_name: wikijs
@@ -29,8 +27,8 @@ services:
       - database
 
 networks:
-  proxy: 
+  proxy:
     external: true
-  database: 
+  database:
     external: true
 

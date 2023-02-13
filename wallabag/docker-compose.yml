@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   wallabag:
     container_name: wallabag
@@ -40,7 +38,7 @@ services:
       - proxy
       - wallabag
       - database
-    
+
   wallabag-redis:
     container_name: wallabag-redis
     image: redis:alpine
@@ -51,7 +49,7 @@ services:
       - wallabag
 
 networks:
-  proxy: 
+  proxy:
     external: true
   wallabag:
     external: true

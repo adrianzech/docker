@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   unifi-controller:
     container_name: unifi-controller
@@ -31,5 +29,5 @@ services:
       - proxy
 
 networks:
-  proxy: 
+  proxy:
     external: true

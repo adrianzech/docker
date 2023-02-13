@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   watchtower:
     container_name: watchtower
@@ -17,6 +15,6 @@ services:
       - proxy
 
 networks:
-  proxy: 
+  proxy:
     external: true
     

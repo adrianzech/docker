@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   portainer:
     container_name: portainer
@@ -24,7 +22,7 @@ services:
       - ./portainer/data:/data
     networks:
       - proxy
-    
+
 networks:
-  proxy: 
+  proxy:
     external: true

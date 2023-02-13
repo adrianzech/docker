@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   paperless:
     container_name: paperless
@@ -51,9 +49,9 @@ services:
       - paperless
 
 networks:
-  proxy: 
+  proxy:
     external: true
-  paperless: 
+  paperless:
     external: true
   database:
     external: true

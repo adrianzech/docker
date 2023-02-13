@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   changedetection:
     container_name: changedetection
@@ -24,6 +22,6 @@ services:
       - proxy
 
 networks:
-  proxy: 
+  proxy:
     external: true
 

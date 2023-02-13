@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   nextcloud:
     container_name: nextcloud
@@ -41,9 +39,9 @@ services:
       - nextcloud
 
 networks:
-  proxy: 
+  proxy:
     external: true
-  nextcloud: 
+  nextcloud:
     external: true
   database:
     external: true
