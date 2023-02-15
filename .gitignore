@@ -1,6 +1,7 @@
 .DS_Store
 ._.DS_Store
 .env
+.idea
 config_local.py
 authentik/authentik/
 bazarr/bazarr/
@@ -23,3 +24,7 @@ tdarr/tdarr/
 traefik/traefik/acme.json
 unifi-controller/unifi-controller/
 youtube-dl/youtube-dl/
+freshrss/freshrss
+portainer/portainer
+paperless/paperless
+wallabag/wallabag

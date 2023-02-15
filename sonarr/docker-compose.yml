@@ -1,7 +1,7 @@
 services:
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr
+    image: linuxserver/sonarr:develop
     restart: unless-stopped
     environment:
       PGID: 1000
