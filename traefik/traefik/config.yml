@@ -169,3 +169,25 @@ http:
         middlewares:
           - default-headers
           - authentik
+
+tcp:
+  routers:
+    spice:
+      rule: HostSNI(`*`)
+      entrypoints: spice
+      tls: false
+      service: spice
+    checkmk:
+      rule: HostSNI(`*`)
+      entrypoints: checkmk
+      tls: true
+      service: checkmk
+  services:
+    spice:
+      loadbalancer:
+        servers:
+          - address: "pve.local.zech.co:3128"
+    checkmk:
+      loadbalancer:
+        servers:
+          - address: "monitoring.zech.co:8000"
