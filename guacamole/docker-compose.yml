@@ -1,0 +1,47 @@
+services:
+  guacd:
+    container_name: guacd
+    image: guacamole/guacd
+    restart: unless-stopped
+    networks:
+      - proxy
+
+  guacamole:
+    container_name: guacamole
+    image: guacamole/guacamole
+    restart: unless-stopped
+    environment:
+      GUACD_HOSTNAME: guacd
+      GUACD_PORT: 4822
+      WEBAPP_CONTEXT: ROOT
+      POSTGRES_HOSTNAME: postgresql
+      POSTGRES_DATABASE: guacamole
+      POSTGRES_USER: guacamole
+      POSTGRES_PASSWORD: ${POSTGRES_GUACAMOLE_PASS}
+      OPENID_AUTHORIZATION_ENDPOINT: https://${AUTHENTIK_BASE_URL}/application/o/authorize/
+      OPENID_CLIENT_ID: ${GUACAMOLE_CLIENT_ID}
+      OPENID_ISSUER: https://${AUTHENTIK_BASE_URL}/application/o/guacamole/
+      OPENID_JWKS_ENDPOINT: https://${AUTHENTIK_BASE_URL}/application/o/guacamole/jwks/
+      OPENID_REDIRECT_URI: https://${GUACAMOLE_BASE_URL}/
+    labels:
+      traefik.enable: true
+      traefik.http.routers.guacamole.entrypoints: http
+      traefik.http.routers.guacamole.rule: Host(`remote.${DOMAIN_NAME}`)
+      traefik.http.middlewares.guacamole-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.guacamole.middlewares: guacamole-https-redirect
+      traefik.http.routers.guacamole-secure.entrypoints: https
+      traefik.http.routers.guacamole-secure.rule: Host(`remote.${DOMAIN_NAME}`)
+      traefik.http.routers.guacamole-secure.tls: true
+      traefik.http.routers.guacamole-secure.service: guacamole
+      traefik.http.routers.guacamole-secure.middlewares: default-headers@file
+      traefik.http.services.guacamole.loadbalancer.server.port: 8080
+      traefik.docker.network: proxy
+    networks:
+      - proxy
+      - database
+
+networks:
+  proxy:
+    external: true
+  database:
+    external: true
