@@ -3,4 +3,4 @@
 .env
 appdata/*
 appdata/traefik/acme.json
-!appdata/traefik/*
+!appdata/traefik/

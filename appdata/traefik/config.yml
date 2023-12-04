@@ -1,0 +1,233 @@
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: true
+      cipherSuites:
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+
+http:
+  routers:
+    firewall:
+      entryPoints:
+        - "https"
+      rule: "Host(`fw.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: firewall
+    proxmox:
+      entryPoints:
+        - "https"
+      rule: "Host(`pve.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: proxmox
+    ilo:
+      entryPoints:
+        - "https"
+      rule: "Host(`ilo.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: ilo
+    nas:
+      entryPoints:
+        - "https"
+      rule: "Host(`nas.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: nas
+    checkmk:
+      entryPoints:
+        - "https"
+      rule: "Host(`monitoring.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: checkmk
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: jellyfin
+    tdarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`tdarr.zech.co`)"
+      middlewares:
+        - secured
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: tdarr
+    home-assistant:
+      entryPoints:
+        - "https"
+      rule: "Host(`home.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: home-assistant
+    adguard:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard.local.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: adguard
+    pterodactyl:
+      entryPoints:
+        - "https"
+      rule: "Host(`games.zech.co`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: pterodactyl
+
+  services:
+    firewall:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.1:4444"
+        passHostHeader: true
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.10:8006"
+        passHostHeader: true
+    ilo:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.20"
+        passHostHeader: true
+    nas:
+      loadBalancer:
+        servers:
+          - url: "https://10.0.1.30"
+        passHostHeader: true
+    checkmk:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.10.110"
+        passHostHeader: true
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.30:8096"
+        passHostHeader: true
+    tdarr:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.30:8265"
+        passHostHeader: true
+    home-assistant:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.10.120:8123"
+        passHostHeader: true
+    adguard:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.1.1:3000"
+        passHostHeader: true
+    pterodactyl:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.20.100"
+        passHostHeader: true
+
+  middlewares:
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    authentik:
+      forwardauth:
+        address: http://authentik-server:9000/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+          - X-authentik-jwt
+          - X-authentik-meta-jwks
+          - X-authentik-meta-outpost
+          - X-authentik-meta-provider
+          - X-authentik-meta-app
+          - X-authentik-meta-version
+    default-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        contentSecurityPolicy: upgrade-insecure-requests
+        referrerPolicy: no-referrer-when-downgrade
+        permissionsPolicy: interest-cohort=()
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+    secured:
+      chain:
+        middlewares:
+          - default-headers
+          - authentik
+
+tcp:
+  routers:
+    spice:
+      rule: HostSNI(`*`)
+      entrypoints: spice
+      tls: false
+      service: spice
+    spice-tls:
+      rule: HostSNI(`*`)
+      entrypoints: spice-tls
+      tls: 
+        passthrough: true
+      service: spice-tls
+    checkmk:
+      rule: HostSNI(`*`)
+      entrypoints: checkmk
+      tls: true
+      service: checkmk
+  services:
+    spice:
+      loadbalancer:
+        servers:
+          - address: "10.0.1.10:3128"
+    spice-tls:
+      loadbalancer:
+        servers:
+          - address: "10.0.1.10:61005"
+    checkmk:
+      loadbalancer:
+        servers:
+          - address: "10.0.10.110:8000"
+
