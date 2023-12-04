@@ -1,0 +1,28 @@
+services:
+  changedetection:
+    container_name: changedetection
+    image: linuxserver/changedetection.io
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      traefik.enable: true
+      traefik.http.routers.changedetection.entrypoints: http
+      traefik.http.routers.changedetection.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.changedetection-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.changedetection.middlewares: changedetection-https-redirect
+      traefik.http.routers.changedetection-secure.entrypoints: https
+      traefik.http.routers.changedetection-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.changedetection-secure.tls: true
+      traefik.http.routers.changedetection-secure.service: changedetection
+      traefik.http.routers.changedetection-secure.middlewares: secured@file
+      traefik.http.services.changedetection.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/changedetection/config:/config
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

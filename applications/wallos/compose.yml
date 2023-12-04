@@ -1,0 +1,29 @@
+services:
+  wallos:
+    container_name: wallos
+    image: bellamy/wallos
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      traefik.enable: true
+      traefik.http.routers.wallos.entrypoints: http
+      traefik.http.routers.wallos.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.wallos-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.wallos.middlewares: wallos-https-redirect
+      traefik.http.routers.wallos-secure.entrypoints: https
+      traefik.http.routers.wallos-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.wallos-secure.tls: true
+      traefik.http.routers.wallos-secure.service: wallos
+      traefik.http.routers.wallos-secure.middlewares: default-headers@file
+      traefik.http.services.wallos.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/wallos/db:/var/www/html/db
+      - /opt/docker/appdata/wallos/logos:/var/www/html/images/uploads/logos
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

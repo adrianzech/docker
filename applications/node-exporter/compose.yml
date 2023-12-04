@@ -1,0 +1,13 @@
+services:
+  node-exporter:
+    container_name: node-exporter
+    image: quay.io/prometheus/node-exporter
+    restart: unless-stopped
+    volumes:
+      - /:/host:ro,rslave
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    external: true

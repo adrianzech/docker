@@ -1,0 +1,62 @@
+services:
+  database:
+    container_name: unifi-network-application-database
+    image: mongo:7
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - /opt/docker/appdata/unifi-network-application/database:/data/db
+      - /opt/docker/appdata/unifi-network-application/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - unifi
+    
+  unifi-network-application:
+    container_name: unifi-network-application
+    image: linuxserver/unifi-network-application
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MONGO_HOST: database
+      MONGO_PORT: 27017
+      MONGO_DBNAME: ${DATABASE_NAME}
+      MONGO_USER: ${DATABASE_USER}
+      MONGO_PASS: ${DATABASE_PASSWORD}
+    ports:
+      - 8443:8443
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 1900:1900/udp
+      - 8843:8843
+      - 8880:8880
+      - 6789:6789
+      - 5514:5514/udp
+    labels:
+      traefik.enable: true
+      traefik.http.routers.unifi-network-application.entrypoints: http
+      traefik.http.routers.unifi-network-application.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.unifi-network-application-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.unifi-network-application.middlewares: unifi-network-application-https-redirect
+      traefik.http.routers.unifi-network-application-secure.entrypoints: https
+      traefik.http.routers.unifi-network-application-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.unifi-network-application-secure.tls: true
+      traefik.http.routers.unifi-network-application-secure.middlewares: default-headers@file
+      traefik.http.routers.unifi-network-application-secure.service: unifi-network-application
+      traefik.http.services.unifi-network-application.loadbalancer.server.scheme: https
+      traefik.http.services.unifi-network-application.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/unifi-network-application/config:/config
+    networks:
+      - proxy
+      - unifi
+    depends_on:
+      - database
+
+networks:
+  proxy:
+    external: true
+  unifi:
+    external: true

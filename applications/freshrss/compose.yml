@@ -1,0 +1,54 @@
+services:
+  database:
+    container_name: freshrss-database
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/freshrss/database:/var/lib/postgresql/data
+    networks:
+      - freshrss
+      
+  freshrss:
+    container_name: freshrss
+    image: linuxserver/freshrss
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      traefik.enable: true
+      traefik.http.routers.freshrss.entrypoints: http
+      traefik.http.routers.freshrss.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.freshrss-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.freshrss.middlewares: freshrss-https-redirect
+      traefik.http.routers.freshrss-secure.entrypoints: https
+      traefik.http.routers.freshrss-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.freshrss-secure.tls: true
+      traefik.http.routers.freshrss-secure.service: freshrss
+      traefik.http.routers.freshrss-secure.middlewares: default-headers@file
+      traefik.http.services.freshrss.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/freshrss/config:/config
+    networks:
+      - proxy
+      - freshrss
+    depends_on:
+      - database
+      
+networks:
+  proxy:
+    external: true
+  freshrss:
+    external: true

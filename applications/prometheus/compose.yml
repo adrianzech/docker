@@ -1,0 +1,29 @@
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.prometheus.entrypoints: http
+      traefik.http.routers.prometheus.rule: Host(`.${BASE_URL}`)
+      traefik.http.middlewares.prometheus-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.prometheus.middlewares: prometheus-https-redirect
+      traefik.http.routers.prometheus-secure.entrypoints: https
+      traefik.http.routers.prometheus-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.prometheus-secure.tls: true
+      traefik.http.routers.prometheus-secure.service: prometheus
+      traefik.http.routers.prometheus-secure.middlewares: default-headers@file
+      traefik.http.services.prometheus.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/prometheus:/etc/prometheus
+    networks:
+      - proxy
+      - monitoring
+
+networks:
+  proxy:
+    external: true
+  monitoring:
+    external: true

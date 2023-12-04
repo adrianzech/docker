@@ -1,0 +1,104 @@
+services:
+  database:
+    container_name: authentik-database
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/authentik/database:/var/lib/postgresql/data
+    networks:
+      - authentik
+    
+  server:
+    container_name: authentik-server
+    image: beryju/authentik
+    restart: unless-stopped
+    command: server
+    env_file:
+      - .env
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: database
+      AUTHENTIK_POSTGRESQL__NAME: ${DATABASE_NAME}
+      AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.authentik.entrypoints: http
+      traefik.http.routers.authentik.rule: Host(`${BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.authentik.middlewares: authentik-https-redirect
+      traefik.http.routers.authentik-secure.entrypoints: https
+      traefik.http.routers.authentik-secure.rule: Host(`${BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      traefik.http.routers.authentik-secure.tls: true
+      traefik.http.routers.authentik-secure.service: authentik
+      traefik.http.routers.authentik-secure.middlewares: default-headers@file
+      traefik.http.services.authentik.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/authentik/media:/media
+      - /opt/docker/appdata/authentik/templates:/templates
+    networks:
+      - proxy
+      - authentik
+    depends_on:
+      - database
+      - redis
+
+  worker:
+    container_name: authentik-worker
+    image: beryju/authentik
+    restart: unless-stopped
+    command: worker
+    env_file:
+      - .env
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: database
+      AUTHENTIK_POSTGRESQL__NAME: ${DATABASE_NAME}
+      AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/docker/appdata/authentik/media:/media
+      - /opt/docker/appdata/authentik/templates:/templates
+      - /opt/docker/appdata/authentik/certs:/certs
+    networks:
+      - proxy
+      - authentik
+    depends_on:
+      - database
+      - redis
+
+  redis:
+    container_name: authentik-redis
+    image: redis:alpine
+    restart: unless-stopped
+    command: --save 60 1 --loglevel warning
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    networks:
+      - authentik
+    volumes:
+      - /opt/docker/appdata/authentik/redis:/data
+
+networks:
+  proxy:
+    external: true
+  authentik:
+    external: true

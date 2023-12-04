@@ -1,0 +1,69 @@
+services:
+  database:
+    container_name: guacamole-database
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/guacamole/database:/var/lib/postgresql/data
+    networks:
+      - guacamole
+
+  guacd:
+    container_name: guacd
+    image: guacamole/guacd:1.5.3
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - guacamole
+    depends_on:
+      - database
+
+  guacamole:
+    container_name: guacamole
+    image: guacamole/guacamole:1.5.3
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRESQL_HOSTNAME: database
+      POSTGRESQL_DATABASE: ${DATABASE_NAME}
+      POSTGRESQL_USER: ${DATABASE_USER}
+      POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.guacamole.entrypoints: http
+      traefik.http.routers.guacamole.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.guacamole-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.guacamole.middlewares: guacamole-https-redirect
+      traefik.http.routers.guacamole-secure.entrypoints: https
+      traefik.http.routers.guacamole-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.guacamole-secure.tls: true
+      traefik.http.routers.guacamole-secure.service: guacamole
+      traefik.http.routers.guacamole-secure.middlewares: default-headers@file
+      traefik.http.services.guacamole.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    networks:
+      - proxy
+      - guacamole
+    depends_on:
+      - database
+      - guacd
+
+networks:
+  proxy:
+    external: true
+  guacamole:
+    external: true

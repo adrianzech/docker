@@ -1,0 +1,74 @@
+services:
+  database:
+    container_name: paperless-database
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/paperless/database:/var/lib/postgresql/data
+    networks:
+      - paperless
+
+  paperless:
+    container_name: paperless
+    image: ghcr.io/paperless-ngx/paperless-ngx
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PAPERLESS_DBHOST: database
+      PAPERLESS_DBNAME: ${DATABASE_NAME}
+      PAPERLESS_DBUSER: ${DATABASE_USER}
+      PAPERLESS_DBPASS: ${DATABASE_PASSWORD}
+      PAPERLESS_URL: https://${BASE_URL}
+      PAPERLESS_ALLOWED_HOSTS: https://${BASE_URL}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.paperless.entrypoints: http
+      traefik.http.routers.paperless.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.paperless-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.paperless.middlewares: paperless-https-redirect
+      traefik.http.routers.paperless-secure.entrypoints: https
+      traefik.http.routers.paperless-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.paperless-secure.tls: true
+      traefik.http.routers.paperless-secure.service: paperless
+      traefik.http.routers.paperless-secure.middlewares: default-headers@file
+      traefik.http.services.paperless.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/paperless/data:/usr/src/paperless/data
+      - /opt/docker/appdata/paperless/media:/usr/src/paperless/media
+      - /mnt/scan/Export:/usr/src/paperless/export
+      - /mnt/scan/Consume:/usr/src/paperless/consume
+    networks:
+      - proxy
+      - paperless
+    depends_on:
+      - database
+      - redis
+
+  redis:
+    container_name: paperless-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - /opt/docker/appdata/paperless/redis:/data
+    networks:
+      - paperless
+
+networks:
+  proxy:
+    external: true
+  paperless:
+    external: true

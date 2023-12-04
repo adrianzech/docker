@@ -1,0 +1,30 @@
+services:
+  bazarr:
+    container_name: bazarr
+    image: linuxserver/bazarr
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      traefik.enable: true
+      traefik.http.routers.bazarr.entrypoints: http
+      traefik.http.routers.bazarr.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.bazarr-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.bazarr.middlewares: bazarr-https-redirect
+      traefik.http.routers.bazarr-secure.entrypoints: https
+      traefik.http.routers.bazarr-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.bazarr-secure.tls: true
+      traefik.http.routers.bazarr-secure.service: bazarr
+      traefik.http.routers.bazarr-secure.middlewares: secured@file
+      traefik.http.services.bazarr.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/bazarr/config:/config
+      - /mnt/movies:/movies
+      - /mnt/tv:/tv
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
