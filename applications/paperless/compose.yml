@@ -57,6 +57,8 @@ services:
     depends_on:
       - database
       - redis
+      - gotenberg
+      - tika
 
   redis:
     container_name: paperless-redis
@@ -64,6 +66,24 @@ services:
     restart: unless-stopped
     volumes:
       - /opt/docker/appdata/paperless/redis:/data
+    networks:
+      - paperless
+
+  gotenberg:
+    container_name: paperless-gotenberg
+    image: gotenberg/gotenberg
+    restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+    networks:
+      - paperless
+
+  tika:
+    container_name: paperless-tika
+    image: ghcr.io/paperless-ngx/tika
+    restart: unless-stopped
     networks:
       - paperless
 
