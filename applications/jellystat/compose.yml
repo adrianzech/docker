@@ -1,0 +1,60 @@
+services:
+  database:
+    container_name: jellystat-database
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/jellystat/database:/var/lib/postgresql/data
+    networks:
+      - jellystat
+
+  jellystat:
+    container_name: jellystat
+    image: cyfershepard/jellystat
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      ALLOWED_HOSTS: ${BASE_URL}
+      DB: postgres
+      POSTGRES_IP: database
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.jellystat.entrypoints: http
+      traefik.http.routers.jellystat.rule: Host(`${BASE_URL}`)
+      traefik.http.middlewares.jellystat-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.jellystat.middlewares: jellystat-https-redirect
+      traefik.http.routers.jellystat-secure.entrypoints: https
+      traefik.http.routers.jellystat-secure.rule: Host(`${BASE_URL}`)
+      traefik.http.routers.jellystat-secure.tls: true
+      traefik.http.routers.jellystat-secure.service: jellystat
+      traefik.http.routers.jellystat-secure.middlewares: default-headers@file
+      traefik.http.services.jellystat.loadbalancer.server.port: ${PORT}
+      traefik.docker.network: proxy
+    volumes:
+      - /opt/docker/appdata/jellystat/backup-data:/app/backend/backup-data
+    networks:
+      - proxy
+      - jellystat
+    depends_on:
+      - database
+
+networks:
+  proxy:
+    external: true
+  jellystat:
+    external: true
