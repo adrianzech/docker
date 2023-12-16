@@ -13,7 +13,8 @@ docker network create paperless && \
 docker network create guacamole && \
 docker network create kitchenowl && \
 docker network create tandoor && \
-docker network create unifi
+docker network create unifi && \
+docker network create jellystat
 ```
 
 # Applications
