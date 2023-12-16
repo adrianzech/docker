@@ -104,6 +104,16 @@ http:
         - https-redirectscheme
       tls: { }
       service: pterodactyl
+    duplicacy:
+      entryPoints:
+        - "https"
+      rule: "Host(`duplicacy.zech.co`)"
+      middlewares:
+        - secured
+        - default-headers
+        - https-redirectscheme
+      tls: { }
+      service: duplicacy
 
   services:
     firewall:
@@ -155,6 +165,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://10.0.20.100"
+        passHostHeader: true
+    duplicacy:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.10.100:3875"
         passHostHeader: true
 
   middlewares:
