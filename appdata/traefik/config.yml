@@ -89,7 +89,7 @@ http:
     adguard:
       entryPoints:
         - "https"
-      rule: "Host(`adguard.local.zech.co`)"
+      rule: "Host(`adguard.zech.co`)"
       middlewares:
         - default-headers
         - https-redirectscheme
