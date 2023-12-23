@@ -1,6 +1,7 @@
 .DS_Store
 ._.DS_Store
 .env
+.*.env
 appdata/*
 appdata/traefik/acme.json
 !appdata/traefik/

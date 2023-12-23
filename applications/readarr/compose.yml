@@ -20,7 +20,8 @@ services:
       traefik.docker.network: proxy
     volumes:
       - /opt/docker/appdata/readarr/config:/config
-      - /mnt/books:/books
+      - /mnt/library/books:/books
+      - /mnt/library/audiobooks:/audiobooks
       - /mnt/downloads:/downloads
     networks:
       - proxy
