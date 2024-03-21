@@ -22,7 +22,7 @@ services:
 
   speedtest-tracker:
     container_name: speedtest-tracker
-    image: ghcr.io/alexjustesen/speedtest-tracker:v0.13.3
+    image: linuxserver/speedtest-tracker
     restart: unless-stopped
     env_file:
       - .env
@@ -33,19 +33,6 @@ services:
       DB_DATABASE: ${DATABASE_NAME}
       DB_USERNAME: ${DATABASE_USER}
       DB_PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      traefik.enable: true
-      traefik.http.routers.speedtest-tracker.entrypoints: http
-      traefik.http.routers.speedtest-tracker.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.speedtest-tracker-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.speedtest-tracker.middlewares: speedtest-tracker-https-redirect
-      traefik.http.routers.speedtest-tracker-secure.entrypoints: https
-      traefik.http.routers.speedtest-tracker-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.speedtest-tracker-secure.tls: true
-      traefik.http.routers.speedtest-tracker-secure.service: speedtest-tracker
-      traefik.http.routers.speedtest-tracker-secure.middlewares: default-headers@file
-      traefik.http.services.speedtest-tracker.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
     volumes:
       - /opt/docker/appdata/speedtest-tracker/config:/config
     networks:

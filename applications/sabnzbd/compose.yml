@@ -3,21 +3,10 @@ services:
     container_name: sabnzbd
     image: linuxserver/sabnzbd
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.sabnzbd.entrypoints: http
-      traefik.http.routers.sabnzbd.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.sabnzbd-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.sabnzbd.middlewares: sabnzbd-https-redirect
-      traefik.http.routers.sabnzbd-secure.entrypoints: https
-      traefik.http.routers.sabnzbd-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.sabnzbd-secure.tls: true
-      traefik.http.routers.sabnzbd-secure.service: sabnzbd
-      traefik.http.routers.sabnzbd-secure.middlewares: secured@file
-      traefik.http.services.sabnzbd.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/sabnzbd/config:/config
       - /mnt/downloads:/downloads

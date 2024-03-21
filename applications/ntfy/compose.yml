@@ -4,21 +4,8 @@ services:
     image: binwiederhier/ntfy
     restart: unless-stopped
     command: serve
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.ntfy.entrypoints: http
-      traefik.http.routers.ntfy.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.ntfy-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.ntfy.middlewares: ntfy-https-redirect
-      traefik.http.routers.ntfy-secure.entrypoints: https
-      traefik.http.routers.ntfy-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.ntfy-secure.tls: true
-      traefik.http.routers.ntfy-secure.service: ntfy
-      traefik.http.routers.ntfy-secure.middlewares: default-headers@file
-      traefik.http.services.ntfy.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
     volumes:
       - /opt/docker/appdata/ntfy/config:/etc/ntfy
       - /opt/docker/appdata/ntfy/cache:/var/cache/ntfy

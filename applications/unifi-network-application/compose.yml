@@ -23,6 +23,9 @@ services:
       MONGO_DBNAME: ${DATABASE_NAME}
       MONGO_USER: ${DATABASE_USER}
       MONGO_PASS: ${DATABASE_PASSWORD}
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     ports:
       - 8443:8443
       - 3478:3478/udp
@@ -33,20 +36,6 @@ services:
       - 8880:8880
       - 6789:6789
       - 5514:5514/udp
-    labels:
-      traefik.enable: true
-      traefik.http.routers.unifi-network-application.entrypoints: http
-      traefik.http.routers.unifi-network-application.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.unifi-network-application-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.unifi-network-application.middlewares: unifi-network-application-https-redirect
-      traefik.http.routers.unifi-network-application-secure.entrypoints: https
-      traefik.http.routers.unifi-network-application-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.unifi-network-application-secure.tls: true
-      traefik.http.routers.unifi-network-application-secure.middlewares: default-headers@file
-      traefik.http.routers.unifi-network-application-secure.service: unifi-network-application
-      traefik.http.services.unifi-network-application.loadbalancer.server.scheme: https
-      traefik.http.services.unifi-network-application.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
     volumes:
       - /opt/docker/appdata/unifi-network-application/config:/config
     networks:

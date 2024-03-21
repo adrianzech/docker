@@ -1,23 +1,12 @@
 services:
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:develop
+    image: linuxserver/sonarr
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.sonarr.entrypoints: http
-      traefik.http.routers.sonarr.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.sonarr-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.sonarr.middlewares: sonarr-https-redirect
-      traefik.http.routers.sonarr-secure.entrypoints: https
-      traefik.http.routers.sonarr-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.sonarr-secure.tls: true
-      traefik.http.routers.sonarr-secure.service: sonarr
-      traefik.http.routers.sonarr-secure.middlewares: secured@file
-      traefik.http.services.sonarr.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/sonarr/config:/config
       - /mnt/tv:/tv

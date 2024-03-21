@@ -33,19 +33,6 @@ services:
       AUTHENTIK_POSTGRESQL__NAME: ${DATABASE_NAME}
       AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      traefik.enable: true
-      traefik.http.routers.authentik.entrypoints: http
-      traefik.http.routers.authentik.rule: Host(`${BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
-      traefik.http.middlewares.authentik-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.authentik.middlewares: authentik-https-redirect
-      traefik.http.routers.authentik-secure.entrypoints: https
-      traefik.http.routers.authentik-secure.rule: Host(`${BASE_URL}`) || HostRegexp(`{subdomain:[a-z0-9]+}.${DOMAIN_NAME}`) && PathPrefix(`/outpost.goauthentik.io/`)
-      traefik.http.routers.authentik-secure.tls: true
-      traefik.http.routers.authentik-secure.service: authentik
-      traefik.http.routers.authentik-secure.middlewares: default-headers@file
-      traefik.http.services.authentik.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
     volumes:
       - /opt/docker/appdata/authentik/media:/media
       - /opt/docker/appdata/authentik/templates:/templates

@@ -6,20 +6,9 @@ services:
     env_file:
       - .env
     environment:
-      PROXY_DOMAIN: ${BASE_URL}
-    labels:
-      traefik.enable: true
-      traefik.http.routers.code-server.entrypoints: http
-      traefik.http.routers.code-server.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.code-server-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.code-server.middlewares: code-server-https-redirect
-      traefik.http.routers.code-server-secure.entrypoints: https
-      traefik.http.routers.code-server-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.code-server-secure.tls: true
-      traefik.http.routers.code-server-secure.service: code-server
-      traefik.http.routers.code-server-secure.middlewares: secured@file
-      traefik.http.services.code-server.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/code-server/config:/config
       - /opt/docker/:/opt/docker/

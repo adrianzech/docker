@@ -3,22 +3,8 @@ services:
     container_name: linkstack
     image: linkstackorg/linkstack
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.linkstack.entrypoints: http
-      traefik.http.routers.linkstack.rule: Host(`www.${BASE_URL}`, `${BASE_URL}`)
-      traefik.http.middlewares.linkstack-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.linkstack.middlewares: linkstack-https-redirect
-      traefik.http.routers.linkstack-secure.entrypoints: https
-      traefik.http.routers.linkstack-secure.rule: Host(`www.${BASE_URL}`, `${BASE_URL}`)
-      traefik.http.routers.linkstack-secure.tls: true
-      traefik.http.routers.linkstack-secure.service: linkstack
-      traefik.http.routers.linkstack-secure.middlewares: default-headers@file
-      traefik.http.services.linkstack.loadbalancer.server.scheme: https
-      traefik.http.services.linkstack.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
     volumes:
       - /opt/docker/appdata/linkstack/htdocs:/htdocs
     networks:

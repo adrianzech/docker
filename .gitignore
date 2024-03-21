@@ -5,3 +5,4 @@
 appdata/*
 appdata/traefik/acme.json
 !appdata/traefik/
+.idea

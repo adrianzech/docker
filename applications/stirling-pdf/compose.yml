@@ -3,21 +3,10 @@ services:
     container_name: stirling-pdf
     image: frooodle/s-pdf
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.stirling-pdf.entrypoints: http
-      traefik.http.routers.stirling-pdf.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.stirling-pdf-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.stirling-pdf.middlewares: stirling-pdf-https-redirect
-      traefik.http.routers.stirling-pdf-secure.entrypoints: https
-      traefik.http.routers.stirling-pdf-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.stirling-pdf-secure.tls: true
-      traefik.http.routers.stirling-pdf-secure.service: stirling-pdf
-      traefik.http.routers.stirling-pdf-secure.middlewares: secured@file
-      traefik.http.services.stirling-pdf.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/stirling-pdf/tessdata:/usr/share/tesseract-ocr/4.00/tessdata
       - /opt/docker/appdata/stirling-pdf/configs:/configs

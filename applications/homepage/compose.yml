@@ -3,21 +3,6 @@ services:
     container_name: homepage
     image: ghcr.io/gethomepage/homepage
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.homepage.entrypoints: http
-      traefik.http.routers.homepage.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.homepage.middlewares: homepage-https-redirect
-      traefik.http.routers.homepage-secure.entrypoints: https
-      traefik.http.routers.homepage-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.homepage-secure.tls: true
-      traefik.http.routers.homepage-secure.service: homepage
-      traefik.http.routers.homepage-secure.middlewares: secured@file
-      traefik.http.services.homepage.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /opt/docker/appdata/homepage/config:/app/config

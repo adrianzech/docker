@@ -3,21 +3,6 @@ services:
     container_name: doku
     image: amerkurev/doku
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.doku.entrypoints: http
-      traefik.http.routers.doku.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.doku-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.doku.middlewares: doku-https-redirect
-      traefik.http.routers.doku-secure.entrypoints: https
-      traefik.http.routers.doku-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.doku-secure.tls: true
-      traefik.http.routers.doku-secure.service: doku
-      traefik.http.routers.doku-secure.middlewares: secured@file
-      traefik.http.services.doku.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /:/hostroot:ro

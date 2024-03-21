@@ -5,19 +5,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.navidrome.entrypoints: http
-      traefik.http.routers.navidrome.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.navidrome-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.navidrome.middlewares: navidrome-https-redirect
-      traefik.http.routers.navidrome-secure.entrypoints: https
-      traefik.http.routers.navidrome-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.navidrome-secure.tls: true
-      traefik.http.routers.navidrome-secure.service: navidrome
-      traefik.http.routers.navidrome-secure.middlewares: default-headers@file
-      traefik.http.services.navidrome.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 24h
     volumes:
       - /opt/docker/appdata/navidrome/data:/data
       - /mnt/music:/music

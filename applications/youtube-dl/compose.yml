@@ -6,20 +6,9 @@ services:
     env_file:
       - .env
     environment:
-      PROXY_DOMAIN: ${BASE_URL}
-    labels:
-      traefik.enable: true
-      traefik.http.routers.youtube-dl.entrypoints: http
-      traefik.http.routers.youtube-dl.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.youtube-dl-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.youtube-dl.middlewares: youtube-dl-https-redirect
-      traefik.http.routers.youtube-dl-secure.entrypoints: https
-      traefik.http.routers.youtube-dl-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.youtube-dl-secure.tls: true
-      traefik.http.routers.youtube-dl-secure.service: youtube-dl
-      traefik.http.routers.youtube-dl-secure.middlewares: secured@file
-      traefik.http.services.youtube-dl.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/youtube-dl/ytdl:/ytdl
       - /opt/docker/appdata/youtube-dl/config:/config

@@ -5,16 +5,20 @@ Bellow are some notes for some manual steps.
 # Networks
 
 ```bash
-docker network create proxy && \
 docker network create authentik && \
+docker network create firefly && \
 docker network create freshrss && \
-docker network create speedtest-tracker && \
-docker network create paperless && \
 docker network create guacamole && \
+docker network create jellystat && \
 docker network create kitchenowl && \
+docker network create monitoring && \
+docker network create paperless && \
+docker network create proxy && \
+docker network create speedtest-tracker && \
 docker network create tandoor && \
 docker network create unifi && \
-docker network create jellystat
+docker network create wikijs
+
 ```
 
 # Applications

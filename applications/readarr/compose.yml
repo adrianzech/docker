@@ -3,21 +3,10 @@ services:
     container_name: readarr
     image: linuxserver/readarr:develop
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.readarr.entrypoints: http
-      traefik.http.routers.readarr.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.readarr-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.readarr.middlewares: readarr-https-redirect
-      traefik.http.routers.readarr-secure.entrypoints: https
-      traefik.http.routers.readarr-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.readarr-secure.tls: true
-      traefik.http.routers.readarr-secure.service: readarr
-      traefik.http.routers.readarr-secure.middlewares: secured@file
-      traefik.http.services.readarr.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/readarr/config:/config
       - /mnt/library/books:/books

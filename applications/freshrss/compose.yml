@@ -26,19 +26,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.freshrss.entrypoints: http
-      traefik.http.routers.freshrss.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.freshrss-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.freshrss.middlewares: freshrss-https-redirect
-      traefik.http.routers.freshrss-secure.entrypoints: https
-      traefik.http.routers.freshrss-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.freshrss-secure.tls: true
-      traefik.http.routers.freshrss-secure.service: freshrss
-      traefik.http.routers.freshrss-secure.middlewares: default-headers@file
-      traefik.http.services.freshrss.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/freshrss/config:/config
     networks:

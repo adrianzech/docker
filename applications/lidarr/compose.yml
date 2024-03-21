@@ -3,21 +3,10 @@ services:
     container_name: lidarr
     image: linuxserver/lidarr
     restart: unless-stopped
-    env_file:
-      - .env
-    labels:
-      traefik.enable: true
-      traefik.http.routers.lidarr.entrypoints: http
-      traefik.http.routers.lidarr.rule: Host(`${BASE_URL}`)
-      traefik.http.middlewares.lidarr-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.lidarr.middlewares: lidarr-https-redirect
-      traefik.http.routers.lidarr-secure.entrypoints: https
-      traefik.http.routers.lidarr-secure.rule: Host(`${BASE_URL}`)
-      traefik.http.routers.lidarr-secure.tls: true
-      traefik.http.routers.lidarr-secure.service: lidarr
-      traefik.http.routers.lidarr-secure.middlewares: secured@file
-      traefik.http.services.lidarr.loadbalancer.server.port: ${PORT}
-      traefik.docker.network: proxy
+    environment:
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
     volumes:
       - /opt/docker/appdata/lidarr/config:/config
       - /mnt/music:/music
