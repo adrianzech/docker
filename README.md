@@ -9,6 +9,7 @@ docker network create authentik && \
 docker network create firefly && \
 docker network create freshrss && \
 docker network create guacamole && \
+docker network create hoarder && \
 docker network create jellystat && \
 docker network create kitchenowl && \
 docker network create monitoring && \
