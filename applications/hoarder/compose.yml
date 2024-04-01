@@ -1,0 +1,78 @@
+services:
+  hoarder:
+    container_name: hoarder-web
+    image: ghcr.io/mohamedbassem/hoarder-web
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      REDIS_HOST: redis
+      MEILI_ADDR: http://meilisearch:7700
+      DATA_DIR: /data
+    volumes:
+      - /opt/docker/appdata/hoarder/data:/data
+    networks:
+      - proxy
+      - hoarder
+    depends_on:
+      - redis
+      - meilisearch
+
+  worker:
+    container_name: hoarder-worker
+    image: ghcr.io/mohamedbassem/hoarder-workers
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      REDIS_HOST: redis
+      MEILI_ADDR: http://meilisearch:7700
+      BROWSER_WEB_URL: http://chrome:9222
+      DATA_DIR: /data
+    volumes:
+      - /opt/docker/appdata/hoarder/data:/data
+    networks:
+      - hoarder
+    depends_on:
+      - hoarder
+      - redis
+      - meilisearch
+
+  redis:
+    container_name: hoarder-redis
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - /opt/docker/appdata/hoarder/redis:/data
+    networks:
+      - hoarder
+
+  chrome:
+    container_name: hoarder-chrome
+    image: gcr.io/zenika-hub/alpine-chrome
+    restart: unless-stopped
+    command:
+      - --no-sandbox
+      - --disable-gpu
+      - --remote-debugging-address=0.0.0.0
+      - --remote-debugging-port=9222
+    networks:
+      - hoarder
+
+  meilisearch:
+    container_name: hoarder-meilisearch
+    image: getmeili/meilisearch:v1.6
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - /opt/docker/appdata/hoarder/meilisearch:/meili_data
+    networks:
+      - hoarder
+
+networks:
+  proxy:
+    external: true
+  hoarder:
+    external: true
+
