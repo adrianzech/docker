@@ -15,6 +15,9 @@ services:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    labels:
+      - wud.tag.include=^\d+$$
+      - wud.watch.digest=true
     volumes:
       - /opt/docker/appdata/paperless/database:/var/lib/postgresql/data
     networks:

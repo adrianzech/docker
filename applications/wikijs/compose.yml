@@ -15,6 +15,9 @@ services:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    labels:
+      - wud.tag.include=^\d+$$
+      - wud.watch.digest=true
     volumes:
       - /opt/docker/appdata/wikijs/database:/var/lib/postgresql/data
     networks:
@@ -22,11 +25,13 @@ services:
 
   wikijs:
     container_name: wikijs
-    image: ghcr.io/requarks/wiki:3.0.0-alpha
+    image: ghcr.io/requarks/wiki
     restart: unless-stopped
     env_file:
       - .env
     environment:
+      DB_TYPE: postgres
+      DB_PORT: 5432
       DB_HOST: database
       DB_NAME: ${DATABASE_NAME}
       DB_USER: ${DATABASE_USER}

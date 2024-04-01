@@ -8,6 +8,9 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    labels:
+      - wud.tag.include=^\d+$$
+      - wud.watch.digest=true
     volumes:
       - /opt/docker/appdata/jellystat/database:/var/lib/postgresql/data
     networks:
