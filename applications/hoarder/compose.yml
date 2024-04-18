@@ -65,6 +65,9 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    labels:
+      - wud.tag.include=^\d+$$
+      - wud.watch.digest=true
     volumes:
       - /opt/docker/appdata/hoarder/meilisearch:/meili_data
     networks:
