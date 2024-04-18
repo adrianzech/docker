@@ -12,6 +12,7 @@ docker network create guacamole && \
 docker network create hoarder && \
 docker network create jellystat && \
 docker network create kitchenowl && \
+docker network create linkwarden && \
 docker network create monitoring && \
 docker network create paperless && \
 docker network create proxy && \
