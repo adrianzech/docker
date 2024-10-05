@@ -3,6 +3,8 @@ services:
     container_name: prowlarr
     image: linuxserver/prowlarr
     restart: unless-stopped
+    ports:
+      - 9696:9696
     environment:
       TZ: Europe/Vienna
       PGID: 1000

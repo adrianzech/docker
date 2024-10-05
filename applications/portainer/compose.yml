@@ -3,6 +3,8 @@ services:
     container_name: portainer
     image: portainer/portainer-ee
     restart: unless-stopped
+    ports:
+      - 9444:9443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/docker/appdata/portainer/data:/data

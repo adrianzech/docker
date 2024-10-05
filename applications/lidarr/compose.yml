@@ -3,6 +3,8 @@ services:
     container_name: lidarr
     image: linuxserver/lidarr
     restart: unless-stopped
+    ports:
+      - 8686:8686
     environment:
       TZ: Europe/Vienna
       PGID: 1000

@@ -3,6 +3,8 @@ services:
     container_name: youtube-dl
     image: linuxserver/code-server
     restart: unless-stopped
+    ports:
+      - 8444:8443
     env_file:
       - .env
     environment:

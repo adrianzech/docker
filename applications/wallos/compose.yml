@@ -3,6 +3,8 @@ services:
     container_name: wallos
     image: bellamy/wallos
     restart: unless-stopped
+    ports:
+      - 8089:80
     volumes:
       - /opt/docker/appdata/wallos/db:/var/www/html/db
       - /opt/docker/appdata/wallos/logos:/var/www/html/images/uploads/logos

@@ -3,6 +3,8 @@ services:
     container_name: navidrome
     image: deluan/navidrome
     restart: unless-stopped
+    ports:
+      - 4533:4533
     env_file:
       - .env
     environment:

@@ -4,6 +4,8 @@ services:
     image: binwiederhier/ntfy
     restart: unless-stopped
     command: serve
+    ports:
+      - 8085:80
     environment:
       TZ: Europe/Vienna
     volumes:

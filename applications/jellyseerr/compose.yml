@@ -3,6 +3,8 @@ services:
     container_name: jellyseerr
     image: fallenbagel/jellyseerr
     restart: unless-stopped
+    ports:
+      - 5055:5055
     environment:
       TZ: Europe/Vienna
     volumes:

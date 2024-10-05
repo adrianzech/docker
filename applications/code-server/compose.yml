@@ -3,6 +3,8 @@ services:
     container_name: code-server
     image: linuxserver/code-server
     restart: unless-stopped
+    ports:
+      - 8888:8443
     env_file:
       - .env
     environment:

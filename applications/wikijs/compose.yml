@@ -27,6 +27,8 @@ services:
     container_name: wikijs
     image: ghcr.io/requarks/wiki
     restart: unless-stopped
+    ports:
+      - 3006:3000
     env_file:
       - .env
     environment:

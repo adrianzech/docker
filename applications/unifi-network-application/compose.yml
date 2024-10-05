@@ -18,6 +18,16 @@ services:
     container_name: unifi-network-application
     image: linuxserver/unifi-network-application
     restart: unless-stopped
+    ports:
+      - 8443:8443
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 1900:1900/udp
+      - 8843:8843
+      - 8880:8880
+      - 6789:6789
+      - 5514:5514/udp
     env_file:
       - .env
     environment:
@@ -29,16 +39,6 @@ services:
       TZ: Europe/Vienna
       PGID: 1000
       PUID: 1000
-    ports:
-      - 8443:8443
-      - 3478:3478/udp
-      - 10001:10001/udp
-      - 8080:8080
-      - 1900:1900/udp
-      - 8843:8843
-      - 8880:8880
-      - 6789:6789
-      - 5514:5514/udp
     volumes:
       - /opt/docker/appdata/unifi-network-application/config:/config
     networks:

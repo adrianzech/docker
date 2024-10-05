@@ -27,6 +27,8 @@ services:
     container_name: linkwarden
     image: ghcr.io/linkwarden/linkwarden
     restart: unless-stopped
+    ports:
+      - 3004:3000
     env_file:
       - .env
     environment:

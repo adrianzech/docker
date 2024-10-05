@@ -20,6 +20,8 @@ services:
     container_name: jellystat
     image: cyfershepard/jellystat
     restart: unless-stopped
+    ports:
+      - 3003:3000
     env_file:
       - .env
     environment:

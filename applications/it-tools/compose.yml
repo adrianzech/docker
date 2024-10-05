@@ -3,6 +3,8 @@ services:
     container_name: it-tools
     image: corentinth/it-tools
     restart: unless-stopped
+    ports:
+      - 8084:80
     networks:
       - proxy
 

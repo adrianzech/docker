@@ -27,6 +27,8 @@ services:
     container_name: speedtest-tracker
     image: linuxserver/speedtest-tracker
     restart: unless-stopped
+    ports:
+      - 8088:80
     env_file:
       - .env
     environment:

@@ -17,7 +17,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     labels:
       - wud.tag.include=^\d+$$
-      - wud.watch.digest=true
+      - wud.watch.digest=false
     volumes:
       - /opt/docker/appdata/authentik/database:/var/lib/postgresql/data
     networks:
@@ -28,6 +28,9 @@ services:
     image: beryju/authentik
     restart: unless-stopped
     command: server
+    ports:
+      - 9000:9000
+      - 9443:9443
     env_file:
       - .env
     environment:

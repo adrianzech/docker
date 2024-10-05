@@ -27,6 +27,8 @@ services:
     container_name: paperless
     image: ghcr.io/paperless-ngx/paperless-ngx
     restart: unless-stopped
+    ports:
+      - 8001:8000
     env_file:
       - .env
     environment:

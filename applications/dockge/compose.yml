@@ -3,6 +3,8 @@ services:
     container_name: dockge
     image: louislam/dockge
     restart: unless-stopped
+    ports:
+      - 5001:5001
     environment:
       DOCKGE_STACKS_DIR: /opt/stacks
     volumes:

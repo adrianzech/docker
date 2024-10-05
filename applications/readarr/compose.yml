@@ -3,6 +3,8 @@ services:
     container_name: readarr
     image: linuxserver/readarr:develop
     restart: unless-stopped
+    ports:
+      - 8787:8787
     environment:
       TZ: Europe/Vienna
       PGID: 1000
