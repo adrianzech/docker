@@ -1,0 +1,16 @@
+services:
+  pingvin-share:
+    container_name: pingvin-share
+    image: stonith404/pingvin-share
+    restart: unless-stopped
+    ports:
+    - 3008:3000
+    volumes:
+      - /opt/docker/appdata/pingvin-share/data:/opt/app/backend/data
+      - /opt/docker/appdata/pingvin-share/images:/opt/app/frontend/public/img
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
