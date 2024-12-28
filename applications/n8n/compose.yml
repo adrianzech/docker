@@ -1,0 +1,39 @@
+services:
+  database:
+    container_name: n8n-database
+    image: docker.io/library/postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    labels:
+      - wud.watch=false
+    volumes:
+      - /opt/docker/appdata/n8n/database:/var/lib/postgresql/data
+
+  n8n:
+    container_name: n8n
+    image: docker.n8n.io/n8nio/n8n
+    restart: unless-stopped
+    ports:
+      - 5678:5678
+    env_file:
+      - .env
+    environment:
+      DB_POSTGRESDB_HOST: database
+      DB_POSTGRESDB_DATABASE: ${DATABASE_NAME}
+      DB_POSTGRESDB_USER: ${DATABASE_USER}
+      DB_POSTGRESDB_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/n8n/data:/home/node/.n8n
+    depends_on:
+      - database
