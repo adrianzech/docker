@@ -6,8 +6,7 @@ services:
     env_file:
       - .env
     labels:
-      - wud.tag.include=^\d+$$
-      - wud.watch.digest=true
+      - wud.watch=false
     volumes:
       - /opt/docker/appdata/unifi-network-application/database:/data/db
       - /opt/docker/appdata/unifi-network-application/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro

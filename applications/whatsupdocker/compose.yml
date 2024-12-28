@@ -1,7 +1,7 @@
 services:
   whatsupdocker:
     container_name: whatsupdocker
-    image: fmartinou/whats-up-docker
+    image: getwud/wud
     restart: unless-stopped
     ports:
       - 3005:3000

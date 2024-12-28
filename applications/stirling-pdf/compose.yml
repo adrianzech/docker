@@ -1,7 +1,7 @@
 services:
   stirling-pdf:
     container_name: stirling-pdf
-    image: frooodle/s-pdf
+    image: stirlingtools/stirling-pdf
     restart: unless-stopped
     ports:
       - 8090:8080

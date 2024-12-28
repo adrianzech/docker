@@ -3,7 +3,7 @@ services:
     container_name: free-games-claimer
     image: ghcr.io/vogler/free-games-claimer
     restart: unless-stopped
-    command: bash -c "node epic-games node prime-gaming; node gog; node; echo sleeping; sleep 1d; docker restart free-games-claimer"
+    command: bash -c  node prime-gaming; node gog; node epic-games; echo sleeping; sleep 1d; docker restart free-games-claimer"
     ports:
     - 6080:6080
     env_file:
