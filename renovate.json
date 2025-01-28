@@ -1,0 +1,7 @@
+{
+  "matchDatasources": [
+    "docker"
+  ],
+  "matchPackagePatterns": ["postgres"],
+  "enabled": false
+}
