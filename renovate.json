@@ -3,9 +3,11 @@
   "extends": [
     "config:recommended"
   ],
-  "matchDatasources": [
-    "docker"
-  ],
-  "matchPackagePatterns": ["postgres"],
-  "enabled": false
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["postgres"],
+      "enabled": false
+    }
+  ]
 }
