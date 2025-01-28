@@ -1,7 +1,7 @@
 services:
   database:
     container_name: authentik-database
-    image: docker.io/library/postgres:16-alpine
+    image: docker.io/library/postgres:17-alpine
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
