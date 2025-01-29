@@ -1,15 +1,11 @@
 services:
   database:
     container_name: jellystat-database
-    image: docker.io/library/postgres:16-alpine
+    image: postgres:16-alpine
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      - wud.watch=false
     volumes:
       - /opt/docker/appdata/jellystat/database:/var/lib/postgresql/data
     networks:
@@ -30,6 +26,8 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      JWT_SECRET: ${SECRET}
     volumes:
       - /opt/docker/appdata/jellystat/backup-data:/app/backend/backup-data
     networks:
