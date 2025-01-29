@@ -1,7 +1,7 @@
 services:
   database:
     container_name: n8n-database
-    image: docker.io/library/postgres:16-alpine
+    image: postgres:16-alpine
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
@@ -9,31 +9,48 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      - wud.watch=false
     volumes:
       - /opt/docker/appdata/n8n/database:/var/lib/postgresql/data
+    networks:
+      - n8n
 
   n8n:
     container_name: n8n
-    image: docker.n8n.io/n8nio/n8n
+    image: n8nio/n8n:1.77.0
     restart: unless-stopped
     ports:
       - 5678:5678
-    env_file:
-      - .env
     environment:
       DB_POSTGRESDB_HOST: database
       DB_POSTGRESDB_DATABASE: ${DATABASE_NAME}
       DB_POSTGRESDB_USER: ${DATABASE_USER}
       DB_POSTGRESDB_PASSWORD: ${DATABASE_PASSWORD}
+      N8N_BASIC_AUTH_ACTIVE: ${N8N_BASIC_AUTH_ACTIVE}
+      N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD}
+      N8N_HOST: ${N8N_HOST}
+      N8N_PORT: ${N8N_PORT}
+      N8N_PROTOCOL: ${N8N_PROTOCOL}
+      NODE_ENV: ${NODE_ENV}
+      WEBHOOK_URL: ${WEBHOOK_URL}
+      N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL}
+      GENERIC_TIMEZONE: ${GENERIC_TIMEZONE}
+      N8N_DIAGNOSTICS_ENABLED: ${N8N_DIAGNOSTICS_ENABLED}
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: ${N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS}
     volumes:
       - /opt/docker/appdata/n8n/data:/home/node/.n8n
+    networks:
+      - n8n
+      - proxy
     depends_on:
       - database
+
+networks:
+  proxy:
+    external: true
+  n8n:
+    external: true
