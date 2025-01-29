@@ -1,7 +1,7 @@
 services:
   database:
     container_name: freshrss-database
-    image: docker.io/library/postgres:16-alpine
+    image: postgres:16-alpine
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
@@ -9,14 +9,10 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      - wud.watch=false
     volumes:
       - /opt/docker/appdata/freshrss/database:/var/lib/postgresql/data
     networks:
@@ -24,12 +20,10 @@ services:
       
   freshrss:
     container_name: freshrss
-    image: linuxserver/freshrss
+    image: linuxserver/freshrss:1.25.0
     restart: unless-stopped
     ports:
       - 8082:80
-    env_file:
-      - .env
     environment:
       TZ: Europe/Vienna
       PGID: 1000
