@@ -1,7 +1,7 @@
 services:
   homepage:
     container_name: homepage
-    image: ghcr.io/gethomepage/homepage
+    image: gethomepage/homepage:v0.10.9
     restart: unless-stopped
     ports:
       - 3001:3000
