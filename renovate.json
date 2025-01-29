@@ -5,10 +5,18 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["postgres", "meilisearch", "alpine-chrome"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "postgres",
+        "meilisearch",
+        "alpine-chrome"
+      ],
       "enabled": false,
-      "updateTypes": ["version"]
+      "matchUpdateTypes": [
+        "version"
+      ]
     }
   ]
 }
