@@ -17,8 +17,6 @@ services:
     restart: unless-stopped
     ports:
       - 3003:3000
-    env_file:
-      - .env
     environment:
       TZ: Europe/Vienna
       DB: postgres
@@ -27,7 +25,7 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS}
-      JWT_SECRET: ${SECRET}
+      JWT_SECRET: ${JWT_SECRET}
     volumes:
       - /opt/docker/appdata/jellystat/backup-data:/app/backend/backup-data
     networks:
