@@ -1,12 +1,30 @@
 services:
   healthchecks:
     container_name: healthchecks
-    image: linuxserver/healthchecks
+    image: linuxserver/healthchecks:3.9.20250127
     restart: unless-stopped
     ports:
       - 8000:8000
-    env_file:
-      - .env
+    environment:
+      TZ: ${TZ}
+      PGID: ${PGID}
+      PUID: ${PUID}
+      DEBUG: ${DEBUG}
+      REGISTRATION_OPEN: ${REGISTRATION_OPEN}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      SITE_LOGO_URL: ${SITE_LOGO_URL}
+      SITE_ROOT: ${SITE_ROOT}
+      SITE_NAME: ${SITE_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+      EMAIL_HOST: ${EMAIL_HOST}
+      EMAIL_PORT: ${EMAIL_PORT}
+      EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+      EMAIL_USE_SSL: ${EMAIL_USE_SSL}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
+      SUPERUSER_EMAIL: ${SUPERUSER_EMAIL}
+      SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
     volumes:
       - /opt/docker/appdata/healthchecks/config:/config
     networks:
