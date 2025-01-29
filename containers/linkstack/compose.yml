@@ -1,7 +1,7 @@
 services:
   linkstack:
     container_name: linkstack
-    image: linkstackorg/linkstack
+    image: linkstackorg/linkstack:latest
     restart: unless-stopped
     ports:
       - 4443:443
