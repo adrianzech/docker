@@ -9,8 +9,6 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - stack.env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
@@ -28,14 +26,21 @@ services:
     ports:
       - 9000:9000
       - 9443:9443
-    env_file:
-      - stack.env
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: database
       AUTHENTIK_POSTGRESQL__NAME: ${DATABASE_NAME}
       AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
+      AUTHENTIK_EMAIL__HOST: ${AUTHENTIK_EMAIL__HOST}
+      AUTHENTIK_EMAIL__PORT: ${AUTHENTIK_EMAIL__PORT}
+      AUTHENTIK_EMAIL__USERNAME: ${AUTHENTIK_EMAIL__USERNAME}
+      AUTHENTIK_EMAIL__PASSWORD: ${AUTHENTIK_EMAIL__PASSWORD}
+      AUTHENTIK_EMAIL__USE_TLS: ${AUTHENTIK_EMAIL__USE_TLS}
+      AUTHENTIK_EMAIL__USE_SSL: ${AUTHENTIK_EMAIL__USE_SSL}
+      AUTHENTIK_EMAIL__TIMEOUT: ${AUTHENTIK_EMAIL__TIMEOUT}
+      AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL__FROM}
     volumes:
       - /opt/docker/appdata/authentik/media:/media
       - /opt/docker/appdata/authentik/templates:/templates
@@ -51,14 +56,21 @@ services:
     image: beryju/authentik:2024.12.2
     restart: unless-stopped
     command: worker
-    env_file:
-      - stack.env
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: database
       AUTHENTIK_POSTGRESQL__NAME: ${DATABASE_NAME}
       AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
+      AUTHENTIK_EMAIL__HOST: ${AUTHENTIK_EMAIL__HOST}
+      AUTHENTIK_EMAIL__PORT: ${AUTHENTIK_EMAIL__PORT}
+      AUTHENTIK_EMAIL__USERNAME: ${AUTHENTIK_EMAIL__USERNAME}
+      AUTHENTIK_EMAIL__PASSWORD: ${AUTHENTIK_EMAIL__PASSWORD}
+      AUTHENTIK_EMAIL__USE_TLS: ${AUTHENTIK_EMAIL__USE_TLS}
+      AUTHENTIK_EMAIL__USE_SSL: ${AUTHENTIK_EMAIL__USE_SSL}
+      AUTHENTIK_EMAIL__TIMEOUT: ${AUTHENTIK_EMAIL__TIMEOUT}
+      AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL__FROM}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/docker/appdata/authentik/media:/media
