@@ -1,16 +1,24 @@
 services:
   hoarder:
     container_name: hoarder
-    image:  ghcr.io/hoarder-app/hoarder:release
+    image:  ghcr.io/hoarder-app/hoarder:0.21.0
     restart: unless-stopped
     ports:
       - 3002:3000
-    env_file:
-      - .env
     environment:
       MEILI_ADDR: http://meilisearch:7700
       BROWSER_WEB_URL: http://chrome:9222
       DATA_DIR: /data
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      DISABLE_SIGNUPS: ${DISABLE_SIGNUPS}
+      OAUTH_WELLKNOWN_URL: ${OAUTH_WELLKNOWN_URL}
+      OAUTH_CLIENT_SECRET: ${OAUTH_CLIENT_SECRET}
+      OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
+      OAUTH_SCOPE: ${OAUTH_SCOPE}
+      OAUTH_PROVIDER_NAME: ${OAUTH_PROVIDER_NAME}
+      OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: ${OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     volumes:
       - /opt/docker/appdata/hoarder/data:/data
     networks:
@@ -23,8 +31,6 @@ services:
     container_name: hoarder-chrome
     image: gcr.io/zenika-hub/alpine-chrome:123
     restart: unless-stopped
-    labels:
-      - wud.watch=false
     command:
       - --no-sandbox
       - --disable-gpu
@@ -37,10 +43,11 @@ services:
 
   meilisearch:
     container_name: hoarder-meilisearch
-    image: getmeili/meilisearch:v1.6
+    image: getmeili/meilisearch:v1.11.1
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+      MEILI_NO_ANALYTICS: ${MEILI_NO_ANALYTICS}
     labels:
       - wud.watch=false
     volumes:
@@ -53,4 +60,3 @@ networks:
     external: true
   hoarder:
     external: true
-
