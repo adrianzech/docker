@@ -1,7 +1,7 @@
 services:
   database:
     container_name: paperless-database
-    image: docker.io/library/postgres:16-alpine
+    image: postgres:16-alpine
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
@@ -9,14 +9,10 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      - wud.watch=false
     volumes:
       - /opt/docker/appdata/paperless/database:/var/lib/postgresql/data
     networks:
@@ -24,17 +20,31 @@ services:
 
   paperless:
     container_name: paperless
-    image: ghcr.io/paperless-ngx/paperless-ngx
+    image: paperless-ngx/paperless-ngx:2.14.6
     restart: unless-stopped
     ports:
       - 8001:8000
-    env_file:
-      - .env
     environment:
       PAPERLESS_DBHOST: database
       PAPERLESS_DBNAME: ${DATABASE_NAME}
       PAPERLESS_DBUSER: ${DATABASE_USER}
       PAPERLESS_DBPASS: ${DATABASE_PASSWORD}
+      PAPERLESS_URL: ${PAPERLESS_URL}
+      PAPERLESS_ALLOWED_HOSTS: ${PAPERLESS_ALLOWED_HOSTS}
+      USERMAP_UID: ${USERMAP_UID}
+      USERMAP_GID: ${USERMAP_GID}
+      PAPERLESS_ENABLE_HTTP_REMOTE_USER: ${PAPERLESS_ENABLE_HTTP_REMOTE_USER}
+      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: ${PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME}
+      PAPERLESS_OCR_LANGUAGE: ${PAPERLESS_OCR_LANGUAGE}
+      PAPERLESS_REDIS: ${PAPERLESS_REDIS}
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
+      PAPERLESS_TIME_ZONE: ${PAPERLESS_TIME_ZONE}
+      PAPERLESS_CONSUMER_POLLING: ${PAPERLESS_CONSUMER_POLLING}
+      PAPERLESS_EMAIL_TASK_CRON: ${PAPERLESS_EMAIL_TASK_CRON}
+      PAPERLESS_OCR_USER_ARGS: ${PAPERLESS_OCR_USER_ARGS}
+      PAPERLESS_TIKA_ENABLED: ${PAPERLESS_TIKA_ENABLED}
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: ${PAPERLESS_TIKA_GOTENBERG_ENDPOINT}
+      PAPERLESS_TIKA_ENDPOINT: ${PAPERLESS_TIKA_ENDPOINT}
     volumes:
       - /opt/docker/appdata/paperless/data:/usr/src/paperless/data
       - /opt/docker/appdata/paperless/media:/usr/src/paperless/media
@@ -51,7 +61,7 @@ services:
 
   redis:
     container_name: paperless-redis
-    image: redis:alpine
+    image: redis:7.4.2-alpine
     restart: unless-stopped
     volumes:
       - /opt/docker/appdata/paperless/redis:/data
@@ -60,7 +70,7 @@ services:
 
   gotenberg:
     container_name: paperless-gotenberg
-    image: gotenberg/gotenberg
+    image: gotenberg/gotenberg:8.15.3
     restart: unless-stopped
     command:
       - "gotenberg"
@@ -71,7 +81,7 @@ services:
 
   tika:
     container_name: paperless-tika
-    image: ghcr.io/paperless-ngx/tika
+    image: ghcr.io/paperless-ngx/tika:2.9.1-minimal
     restart: unless-stopped
     networks:
       - paperless
