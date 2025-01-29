@@ -9,6 +9,8 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
+    env_file:
+      - stack.env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
@@ -26,6 +28,8 @@ services:
     ports:
       - 9000:9000
       - 9443:9443
+    env_file:
+      - stack.env
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: database
@@ -47,6 +51,8 @@ services:
     image: beryju/authentik:2024.12.2
     restart: unless-stopped
     command: worker
+    env_file:
+      - stack.env
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: database
