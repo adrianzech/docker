@@ -1,12 +1,10 @@
 services:
   grafana:
     container_name: grafana
-    image: grafana/grafana-oss
+    image: grafana/grafana-oss:11.5.0
     restart: unless-stopped
     ports:
       - 3000:3000
-    env_file:
-      - .env
     volumes:
       - /opt/docker/appdata/grafana:/var/lib/grafana
     networks:
