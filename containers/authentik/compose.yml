@@ -1,7 +1,7 @@
 services:
   database:
     container_name: authentik-database
-    image: docker.io/library/postgres:16-alpine
+    image: postgres:16.6-alpine
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
@@ -9,14 +9,10 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      - wud.watch=false
     volumes:
       - /opt/docker/appdata/authentik/database:/var/lib/postgresql/data
     networks:
@@ -24,14 +20,12 @@ services:
     
   server:
     container_name: authentik-server
-    image: beryju/authentik
+    image: beryju/authentik:2024.12.2
     restart: unless-stopped
     command: server
     ports:
       - 9000:9000
       - 9443:9443
-    env_file:
-      - .env
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: database
@@ -50,11 +44,9 @@ services:
 
   worker:
     container_name: authentik-worker
-    image: beryju/authentik
+    image: beryju/authentik:2024.12.2
     restart: unless-stopped
     command: worker
-    env_file:
-      - .env
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: database
@@ -75,7 +67,7 @@ services:
 
   redis:
     container_name: authentik-redis
-    image: redis:alpine
+    image: redis:7.4.2-alpine
     restart: unless-stopped
     command: --save 60 1 --loglevel warning
     healthcheck:
