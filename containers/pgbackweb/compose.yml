@@ -1,23 +1,7 @@
 services:
-  pgbackweb:
-    container_name: pgbackweb
-    image: eduardolat/pgbackweb
-    restart: unless-stopped
-    ports:
-    - 8085:8085
-    env_file:
-      - .env
-    environment:
-      PBW_POSTGRES_CONN_STRING: "postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}?sslmode=disable"
-    networks:
-      - proxy
-      - pgbackweb
-    depends_on:
-      - database
-
   database:
     container_name: pgbackweb-database
-    image: docker.io/library/postgres:16-alpine
+    image: postgres:16-alpine
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
@@ -25,18 +9,30 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    labels:
-      - wud.watch=false
     volumes:
       - /opt/docker/appdata/pgbackweb/database:/var/lib/postgresql/data
     networks:
       - pgbackweb
+
+  pgbackweb:
+    container_name: pgbackweb
+    image: eduardolat/pgbackweb
+    restart: unless-stopped
+    ports:
+    - 8085:8085
+    environment:
+      TZ: Europe/Vienna
+      PBW_POSTGRES_CONN_STRING: "postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}?sslmode=disable"
+      PBW_ENCRYPTION_KEY: ${PBW_ENCRYPTION_KEY}
+    networks:
+      - proxy
+      - pgbackweb
+    depends_on:
+      - database
 
 networks:
   proxy:
