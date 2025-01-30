@@ -4,7 +4,7 @@ services:
     image: stonith404/pingvin-share:v1.8.2
     restart: unless-stopped
     ports:
-    - 3008:3000
+    - "3008:3000"
     volumes:
       - /opt/docker/appdata/pingvin-share/data:/opt/app/backend/data
       - /opt/docker/appdata/pingvin-share/images:/opt/app/frontend/public/img

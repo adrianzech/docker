@@ -4,14 +4,14 @@ services:
     image:  ghcr.io/hoarder-app/hoarder:0.21.0
     restart: unless-stopped
     ports:
-      - 3002:3000
+      - "3002:3000"
     environment:
       MEILI_ADDR: http://meilisearch:7700
       BROWSER_WEB_URL: http://chrome:9222
       DATA_DIR: /data
+      DISABLE_SIGNUPS: true
       NEXTAUTH_URL: ${NEXTAUTH_URL}
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-      DISABLE_SIGNUPS: ${DISABLE_SIGNUPS}
       OAUTH_WELLKNOWN_URL: ${OAUTH_WELLKNOWN_URL}
       OAUTH_CLIENT_SECRET: ${OAUTH_CLIENT_SECRET}
       OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
@@ -47,9 +47,7 @@ services:
     restart: unless-stopped
     environment:
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
-      MEILI_NO_ANALYTICS: ${MEILI_NO_ANALYTICS}
-    labels:
-      - wud.watch=false
+      MEILI_NO_ANALYTICS: true
     volumes:
       - /opt/docker/appdata/hoarder/meilisearch:/meili_data
     networks:

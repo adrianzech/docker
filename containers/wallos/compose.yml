@@ -4,7 +4,7 @@ services:
     image: bellamy/wallos:2.45.1
     restart: unless-stopped
     ports:
-      - 8089:80
+      - "8089:80"
     volumes:
       - /opt/docker/appdata/wallos/db:/var/www/html/db
       - /opt/docker/appdata/wallos/logos:/var/www/html/images/uploads/logos

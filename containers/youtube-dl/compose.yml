@@ -4,7 +4,7 @@ services:
     image: linuxserver/code-server:4.96.4
     restart: unless-stopped
     ports:
-      - 8444:8443
+      - "8444:8443"
     environment:
       TZ: Europe/Vienna
       PGID: 1000

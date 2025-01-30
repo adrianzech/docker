@@ -4,7 +4,7 @@ services:
     image: linuxserver/radarr:5.17.2
     restart: unless-stopped
     ports:
-      - 7878:7878
+      - "7878:7878"
     environment:
       TZ: Europe/Vienna
       PGID: 1000

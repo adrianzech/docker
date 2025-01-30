@@ -4,7 +4,7 @@ services:
     image: linuxserver/bazarr:1.5.1
     restart: unless-stopped
     ports:
-      - 6767:6767
+      - "6767:6767"
     environment:
       TZ: Europe/Vienna
       PGID: 1000

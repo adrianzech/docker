@@ -4,7 +4,7 @@ services:
     image: linkstackorg/linkstack:latest
     restart: unless-stopped
     ports:
-      - 4443:443
+      - "4443:443"
     environment:
       TZ: Europe/Vienna
     volumes:

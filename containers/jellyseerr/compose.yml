@@ -4,7 +4,7 @@ services:
     image: fallenbagel/jellyseerr:2.3.0
     restart: unless-stopped
     ports:
-      - 5055:5055
+      - "5055:5055"
     environment:
       TZ: Europe/Vienna
     volumes:

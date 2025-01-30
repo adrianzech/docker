@@ -4,7 +4,7 @@ services:
     image: grafana/grafana-oss:11.5.0
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment:
       GF_SERVER_ROOT_URL: ${GF_SERVER_ROOT_URL}
       GF_AUTH_GENERIC_OAUTH_ENABLED: ${GF_AUTH_GENERIC_OAUTH_ENABLED}

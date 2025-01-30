@@ -4,7 +4,7 @@ services:
     image: linuxserver/prowlarr:1.30.2
     restart: unless-stopped
     ports:
-      - 9696:9696
+      - "9696:9696"
     environment:
       TZ: Europe/Vienna
       PGID: 1000

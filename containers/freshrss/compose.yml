@@ -23,7 +23,7 @@ services:
     image: linuxserver/freshrss:1.25.0
     restart: unless-stopped
     ports:
-      - 8082:80
+      - "8082:80"
     environment:
       TZ: Europe/Vienna
       PGID: 1000

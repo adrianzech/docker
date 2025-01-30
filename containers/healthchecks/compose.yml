@@ -4,17 +4,17 @@ services:
     image: linuxserver/healthchecks:3.9.20251230
     restart: unless-stopped
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
-      TZ: ${TZ}
-      PGID: ${PGID}
-      PUID: ${PUID}
-      DEBUG: ${DEBUG}
-      REGISTRATION_OPEN: ${REGISTRATION_OPEN}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
-      SITE_LOGO_URL: ${SITE_LOGO_URL}
+      TZ: Europe/Vienna
+      PGID: 1000
+      PUID: 1000
+      DEBUG: False
+      REGISTRATION_OPEN: False
+      SITE_NAME: Healthchecks
+      SITE_LOGO_URL: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/healthchecks.png
       SITE_ROOT: ${SITE_ROOT}
-      SITE_NAME: ${SITE_NAME}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
       SECRET_KEY: ${SECRET_KEY}
       EMAIL_HOST: ${EMAIL_HOST}
       EMAIL_PORT: ${EMAIL_PORT}

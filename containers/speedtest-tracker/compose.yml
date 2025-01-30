@@ -23,7 +23,7 @@ services:
     image: linuxserver/speedtest-tracker:1.2.0
     restart: unless-stopped
     ports:
-      - 8088:80
+      - "8088:80"
     environment:
       PUID: 1000
       PGID: 1000

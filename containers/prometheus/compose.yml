@@ -4,7 +4,7 @@ services:
     image: prom/prometheus:v3.1.0
     restart: unless-stopped
     ports:
-      - 9090:9090
+      - "9090:9090"
     volumes:
       - /opt/docker/appdata/prometheus:/etc/prometheus
     networks:

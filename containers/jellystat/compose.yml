@@ -16,7 +16,7 @@ services:
     image: cyfershepard/jellystat
     restart: unless-stopped
     ports:
-      - 3003:3000
+      - "3003:3000"
     environment:
       TZ: Europe/Vienna
       DB: postgres
