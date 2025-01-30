@@ -1,7 +1,7 @@
 services:
   database:
     container_name: speedtest-tracker-database
-    image: docker.io/library/postgres:16-alpine
+    image: postgres:16-alpine
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
@@ -9,8 +9,6 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
@@ -24,19 +22,29 @@ services:
 
   speedtest-tracker:
     container_name: speedtest-tracker
-    image: linuxserver/speedtest-tracker
+    image: linuxserver/speedtest-tracker:1.2.0
     restart: unless-stopped
     ports:
       - 8088:80
-    env_file:
-      - .env
     environment:
+      PUID: 1000
+      PGID: 1000
+      APP_TIMEZONE: Europe/Vienna
+      DISPLAY_TIMEZONE: Europe/Vienna
       DB_CONNECTION: pgsql
       DB_HOST: database
       DB_PORT: 5432
       DB_DATABASE: ${DATABASE_NAME}
       DB_USERNAME: ${DATABASE_USER}
       DB_PASSWORD: ${DATABASE_PASSWORD}
+      APP_KEY: ${APP_KEY}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_ENCRYPTION: ${MAIL_ENCRYPTION}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+      MAIL_FROM_NAME: ${MAIL_FROM_NAME}
     volumes:
       - /opt/docker/appdata/speedtest-tracker/config:/config
     networks:
