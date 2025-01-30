@@ -1,16 +1,16 @@
 services:
   youtube-dl:
     container_name: youtube-dl
-    image: linuxserver/code-server
+    image: linuxserver/code-server:4.96.4
     restart: unless-stopped
     ports:
       - 8444:8443
-    env_file:
-      - .env
     environment:
       TZ: Europe/Vienna
       PGID: 1000
       PUID: 1000
+      DOCKER_MODS: linuxserver/mods:code-server-python3
+      PROXY_DOMAIN: ${PROXY_DOMAIN}
     volumes:
       - /opt/docker/appdata/youtube-dl/ytdl:/ytdl
       - /opt/docker/appdata/youtube-dl/config:/config
