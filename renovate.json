@@ -10,14 +10,11 @@
       ],
       "matchPackageNames": [
         "postgres",
-        "meilisearch",
-        "alpine-chrome",
+        "getmeili/meilisearch",
+        "zenika-hub/alpine-chrome",
         "mongo"
       ],
-      "enabled": false,
-      "matchUpdateTypes": [
-        "version"
-      ]
+      "enabled": false
     }
   ]
 }
