@@ -8,11 +8,11 @@
       "matchDatasources": [
         "docker"
       ],
-      "matchPackageNames": [
-        "postgres",
-        "getmeili/meilisearch",
-        "zenika-hub/alpine-chrome",
-        "mongo"
+      "matchPackagePatterns": [
+        "^postgres$",
+        "^meilisearch$",
+        "^alpine-chrome$",
+        "^mongo$"
       ],
       "enabled": false
     }
