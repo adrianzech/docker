@@ -11,7 +11,8 @@
       "matchPackageNames": [
         "postgres",
         "meilisearch",
-        "alpine-chrome"
+        "alpine-chrome",
+        "mongo"
       ],
       "enabled": false,
       "matchUpdateTypes": [
