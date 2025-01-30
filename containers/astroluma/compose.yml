@@ -17,7 +17,7 @@ services:
     environment:
       PORT: 8002
       NODE_ENV: production
-      SECRET_KEY: a2c5f9a8b2d7e1a7f2c9c8d9b5f7a3d5
+      SECRET_KEY: ${SECRET_KEY}
       MONGODB_URI: mongodb://database:27017/astroluma
     volumes:
       - /opt/docker/appdata/astroluma/uploads:/app/storage/uploads
