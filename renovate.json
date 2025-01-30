@@ -10,8 +10,8 @@
       ],
       "matchPackageNames": [
         "postgres",
-        "mgetmeili/meilisearch",
-        "zenika-hub/alpine-chrome",
+        "getmeili/meilisearch",
+        "gcr.io/zenika-hub/alpine-chrome",
         "mongo"
       ],
       "enabled": false
