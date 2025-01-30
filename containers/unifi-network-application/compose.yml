@@ -1,7 +1,7 @@
 services:
   database:
     container_name: unifi-network-application-database
-    image: mongo:7
+    image: mongo:8
     restart: unless-stopped
     volumes:
       - /opt/docker/appdata/unifi-network-application/database:/data/db
