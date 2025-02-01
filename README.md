@@ -1,6 +1,6 @@
 # Personal docker compose collection
 
-Bellow are some notes for some manual steps.
+Bellow are notes for some manual steps.
 
 # Networks
 
