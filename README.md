@@ -2,7 +2,7 @@
 
 Bellow are notes for some manual steps.
 
-# Networks
+# Docker Networks
 
 ```bash
 docker network create astroluma && \
