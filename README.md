@@ -5,7 +5,6 @@ Bellow are notes for some manual steps.
 # Docker Networks
 
 ```bash
-docker network create astroluma && \
 docker network create authentik && \
 docker network create freshrss && \
 docker network create hoarder && \
