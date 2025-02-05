@@ -30,7 +30,6 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
           ssh -tt -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST << 'EOF'
-            set -e  # Exit immediately if a command fails
             cd /opt/docker
             git pull origin main
 
