@@ -17,9 +17,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Wait 1 minutes before deployment 
-        run: sleep 60
-
       - name: Setup SSH Key
         run: |
           mkdir -p ~/.ssh
