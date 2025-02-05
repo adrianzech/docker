@@ -5,12 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "8444:8443"
-    environment:
-      TZ: Europe/Vienna
-      PGID: 1000
-      PUID: 1000
-      DOCKER_MODS: linuxserver/mods:code-server-python3
-      PROXY_DOMAIN: ${PROXY_DOMAIN}
+    env_file:
+      - .env
     volumes:
       - /opt/docker/appdata/youtube-dl/ytdl:/ytdl
       - /opt/docker/appdata/youtube-dl/config:/config
