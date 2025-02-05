@@ -30,6 +30,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
           ssh -tt -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST << 'EOF'
+            set -e  # Exit immediately if a command fails
             cd /opt/docker
             git pull origin main
 
@@ -42,10 +43,14 @@ jobs:
 
             for container in $CHANGED_CONTAINERS; do
                 echo "Updating $container..."
-                cd containers/$container
-                docker compose pull
-                docker compose up -d --force-recreate
-                cd ../..
+                if [ -d "containers/$container" ]; then
+                    cd containers/$container
+                    docker compose pull || { echo "Failed to pull $container"; exit 1; }
+                    docker compose up -d --force-recreate || { echo "Failed to restart $container"; exit 1; }
+                    cd ../..
+                else
+                    echo "Skipping $container as it no longer exists."
+                fi
             done
 
             exit 0
