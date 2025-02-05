@@ -28,11 +28,11 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE__CLIENT: mysql
-      DATABASE__CONNECTION__HOST: database
-      DATABASE__CONNECTION__USER: ${DATABASE_USER}
-      DATABASE__CONNECTION__PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE__CONNECTION__DATABASE: ${DATABASE_NAME}
+      database__client: mysql
+      database__connection__host: database
+      database__connection__user: ${DATABASE_USER}
+      database__connection__password: ${DATABASE_PASSWORD}
+      database__connection__database: ${DATABASE_NAME}
     volumes:
       - /opt/docker/appdata/ghost/content:/var/lib/ghost/content
     networks:
