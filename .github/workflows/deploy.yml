@@ -11,9 +11,9 @@ jobs:
 
     steps:
     - name: Delay the execution by 3 minutes
-      uses: actions/timeout@v2
-      with:
-        duration: '3m'
+      run: |
+          echo "Waiting for 3 minutes to batch events..."
+          sleep 180
 
     - name: Check out repository
       uses: actions/checkout@v4
