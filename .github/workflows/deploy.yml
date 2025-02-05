@@ -1,4 +1,4 @@
-name: Auto Deploy on Push
+name: Auto Deploy on Renovate Update
 
 on:
   push:
@@ -11,33 +11,36 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Runner is on a different machine
 
     steps:
-    - name: Delay the execution by 3 minutes
-      run: |
-          echo "Waiting for 3 minutes to batch events..."
-          sleep 180
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-    - name: Check out repository
-      uses: actions/checkout@v4
+      - name: Wait 1 minutes before deployment 
+        run: sleep 60
 
-    - name: Deploy changed containers
-      run: |
-        cd "$GITHUB_WORKSPACE"
-        git pull origin main
+      - name: Deploy changed containers via SSH
+        env:
+          SSH_USER: "adrian"
+          SSH_HOST: "10.0.10.100"
+        run: |
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+            cd /opt/docker
+            git pull origin main
 
-        CHANGED_CONTAINERS=$(git diff --name-only HEAD~1 HEAD | grep "^containers/" | cut -d'/' -f2 | sort -u)
+            CHANGED_CONTAINERS=$(git diff --name-only HEAD~1 HEAD | grep "^containers/" | cut -d'/' -f2 | sort -u)
 
-        if [ -z "$CHANGED_CONTAINERS" ]; then
-            echo "No relevant changes detected."
-            exit 0
-        fi
+            if [ -z "$CHANGED_CONTAINERS" ]; then
+                echo "No relevant changes detected."
+                exit 0
+            fi
 
-        for container in $CHANGED_CONTAINERS; do
-            echo "Updating $container..."
-            cd containers/$container
-            docker compose pull
-            docker compose up -d
-            cd ../..
-        done
+            for container in $CHANGED_CONTAINERS; do
+                echo "Updating $container..."
+                cd containers/$container
+                docker compose pull
+                docker compose up -d
+                cd ../..
+            done
+          EOF
