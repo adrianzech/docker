@@ -39,3 +39,9 @@ services:
       - ghost
     depends_on:
       - database
+
+networks:
+  proxy:
+    external: true
+  ghost:
+    external: true
