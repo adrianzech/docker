@@ -1,7 +1,7 @@
 services:
   grafana:
     container_name: grafana
-    image: grafana/grafana-oss:11.5.0
+    image: grafana/grafana-oss:11.5.1
     restart: unless-stopped
     ports:
       - "3000:3000"
