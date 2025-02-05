@@ -5,11 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "8888:8443"
-    environment:
-      TZ: Europe/Vienna
-      PGID: 1000
-      PUID: 1000
-      PROXY_DOMAIN: ${PROXY_DOMAIN}
+    env_file:
+      - .env
     volumes:
       - /opt/docker/appdata/code-server/config:/config
       - /opt/docker:/opt/docker
