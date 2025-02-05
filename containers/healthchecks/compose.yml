@@ -5,26 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
-    environment:
-      TZ: Europe/Vienna
-      PGID: 1000
-      PUID: 1000
-      DEBUG: False
-      REGISTRATION_OPEN: False
-      SITE_NAME: Healthchecks
-      SITE_LOGO_URL: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/healthchecks.png
-      SITE_ROOT: ${SITE_ROOT}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
-      SECRET_KEY: ${SECRET_KEY}
-      EMAIL_HOST: ${EMAIL_HOST}
-      EMAIL_PORT: ${EMAIL_PORT}
-      EMAIL_USE_TLS: ${EMAIL_USE_TLS}
-      EMAIL_USE_SSL: ${EMAIL_USE_SSL}
-      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
-      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
-      DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
-      SUPERUSER_EMAIL: ${SUPERUSER_EMAIL}
-      SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - /opt/docker/appdata/healthchecks/config:/config
     networks:
