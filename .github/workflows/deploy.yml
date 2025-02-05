@@ -20,12 +20,19 @@ jobs:
       - name: Wait 1 minutes before deployment 
         run: sleep 60
 
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
       - name: Deploy changed containers via SSH
         env:
-          SSH_USER: "adrian"
-          SSH_HOST: "10.0.10.100"
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
-          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -tt StrictHostKeyChecking=no i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST << 'EOF'
             cd /opt/docker
             git pull origin main
 
