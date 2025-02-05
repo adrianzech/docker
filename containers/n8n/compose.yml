@@ -24,23 +24,13 @@ services:
     restart: unless-stopped
     ports:
       - "5678:5678"
+    env_file:
+      - .env
     environment:
       DB_POSTGRESDB_HOST: database
       DB_POSTGRESDB_DATABASE: ${DATABASE_NAME}
       DB_POSTGRESDB_USER: ${DATABASE_USER}
       DB_POSTGRESDB_PASSWORD: ${DATABASE_PASSWORD}
-      N8N_BASIC_AUTH_ACTIVE: ${N8N_BASIC_AUTH_ACTIVE}
-      N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER}
-      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD}
-      N8N_PORT: 5678
-      N8N_HOST: ${N8N_HOST}
-      N8N_PROTOCOL: https
-      NODE_ENV: production
-      WEBHOOK_URL: ${WEBHOOK_URL}
-      N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL}
-      GENERIC_TIMEZONE: Europe/Vienna
-      N8N_DIAGNOSTICS_ENABLED: false
-      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
     volumes:
       - /opt/docker/appdata/n8n/data:/home/node/.n8n
     networks:
