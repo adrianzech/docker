@@ -24,10 +24,10 @@ services:
     restart: unless-stopped
     ports:
     - "8085:8085"
+    env_file:
+      - .env
     environment:
-      TZ: Europe/Vienna
       PBW_POSTGRES_CONN_STRING: "postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}?sslmode=disable"
-      PBW_ENCRYPTION_KEY: ${PBW_ENCRYPTION_KEY}
     networks:
       - proxy
       - pgbackweb
