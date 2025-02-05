@@ -21,12 +21,10 @@ jobs:
 
     - name: Check out repository
       uses: actions/checkout@v4
-      with:
-        path: /opt/docker
 
     - name: Deploy changed containers
       run: |
-        cd /opt/docker
+        cd "$GITHUB_WORKSPACE"
         git pull origin main
 
         CHANGED_CONTAINERS=$(git diff --name-only HEAD~1 HEAD | grep "^containers/" | cut -d'/' -f2 | sort -u)
