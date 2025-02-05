@@ -32,7 +32,7 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
-          ssh -tt StrictHostKeyChecking=no i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -tt -o StrictHostKeyChecking=no i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST << 'EOF'
             cd /opt/docker
             git pull origin main
 
