@@ -24,27 +24,13 @@ services:
     restart: unless-stopped
     ports:
       - "8001:8000"
+    env_file:
+      - .env
     environment:
       PAPERLESS_DBHOST: database
       PAPERLESS_DBNAME: ${DATABASE_NAME}
       PAPERLESS_DBUSER: ${DATABASE_USER}
       PAPERLESS_DBPASS: ${DATABASE_PASSWORD}
-      PAPERLESS_URL: ${PAPERLESS_URL}
-      PAPERLESS_ALLOWED_HOSTS: ${PAPERLESS_ALLOWED_HOSTS}
-      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
-      USERMAP_UID: 1000
-      USERMAP_GID: 1000
-      PAPERLESS_ENABLE_HTTP_REMOTE_USER: True
-      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: HTTP_X_AUTHENTIK_USERNAME
-      PAPERLESS_OCR_LANGUAGE: deu
-      PAPERLESS_REDIS: redis://redis
-      PAPERLESS_TIME_ZONE: Europe/Vienna
-      PAPERLESS_CONSUMER_POLLING: 60
-      PAPERLESS_EMAIL_TASK_CRON: '*/5 * * * *'
-      PAPERLESS_OCR_USER_ARGS: '{"invalidate_digital_signatures": true}'
-      PAPERLESS_TIKA_ENABLED: 1
-      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
-      PAPERLESS_TIKA_ENDPOINT: http://tika:9998
     volumes:
       - /opt/docker/appdata/paperless/data:/usr/src/paperless/data
       - /opt/docker/appdata/paperless/media:/usr/src/paperless/media
