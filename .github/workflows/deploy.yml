@@ -50,4 +50,6 @@ jobs:
                 docker compose up -d
                 cd ../..
             done
+
+            exit 0
           EOF
