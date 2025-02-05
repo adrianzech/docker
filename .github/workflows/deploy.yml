@@ -1,0 +1,41 @@
+name: Auto Deploy on Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Delay the execution by 3 minutes
+      uses: actions/timeout@v2
+      with:
+        duration: '3m'
+
+    - name: Check out repository
+      uses: actions/checkout@v4
+      with:
+        path: /opt/docker
+
+    - name: Deploy changed containers
+      run: |
+        cd /opt/docker
+        git pull origin main
+
+        CHANGED_CONTAINERS=$(git diff --name-only HEAD~1 HEAD | grep "^containers/" | cut -d'/' -f2 | sort -u)
+
+        if [ -z "$CHANGED_CONTAINERS" ]; then
+            echo "No relevant changes detected."
+            exit 0
+        fi
+
+        for container in $CHANGED_CONTAINERS; do
+            echo "Updating $container..."
+            cd containers/$container
+            docker compose pull
+            docker compose up -d
+            cd ../..
+        done
