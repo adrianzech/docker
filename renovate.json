@@ -10,6 +10,7 @@
       ],
       "matchPackageNames": [
         "postgres",
+        "mysql",
         "getmeili/meilisearch",
         "gcr.io/zenika-hub/alpine-chrome",
         "mongo"
