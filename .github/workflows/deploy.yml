@@ -1,4 +1,4 @@
-name: Auto Deploy on Renovate Update
+name: Auto Deploy on Push
 
 on:
   push:
@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # Runner is on a different machine
+    runs-on: self-hosted
 
     steps:
       - name: Check out repository
@@ -44,7 +44,7 @@ jobs:
                 echo "Updating $container..."
                 cd containers/$container
                 docker compose pull
-                docker compose up -d
+                docker compose up -d --force-recreate
                 cd ../..
             done
 
