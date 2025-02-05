@@ -34,3 +34,8 @@ services:
       DATABASE__CONNECTION__DATABASE: ${DATABASE_NAME}
     volumes:
       - /opt/docker/appdata/ghost/content:/var/lib/ghost/content
+    networks:
+      - proxy
+      - ghost
+    depends_on:
+      - database
