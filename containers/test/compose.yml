@@ -1,7 +1,7 @@
 services:
   database:
     container_name: test
-    image: mysql:8.0-alpine
+    image: mysql:8.0
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $${DATABASE_USER} -p$${DATABASE_PASSWORD}"]
