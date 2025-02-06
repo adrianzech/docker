@@ -20,7 +20,7 @@ services:
 
   pgbackweb:
     container_name: pgbackweb
-    image: eduardolat/pgbackweb:0.4.0
+    image: eduardolat/pgbackweb:0.4.2
     restart: unless-stopped
     ports:
     - "8085:8085"
