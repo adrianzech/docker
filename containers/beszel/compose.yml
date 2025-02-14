@@ -1,0 +1,25 @@
+services:
+  beszel:
+    container_name: beszel
+    image: henrygd/beszel:0.9.1
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    volumes:
+      - /opt/docker/appdata/beszel/data:/beszel_data
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  beszel-agent:
+    container_name: beszel-agent
+    image: henrygd/beszel-agent:0.9.1
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  proxy:
+    external: true
