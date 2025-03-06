@@ -1,7 +1,7 @@
 services:
   beszel:
     container_name: beszel
-    image: henrygd/beszel:0.9.1
+    image: henrygd/beszel:0.10.1
     restart: unless-stopped
     ports:
       - "8090:8090"
