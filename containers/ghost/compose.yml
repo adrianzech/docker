@@ -21,7 +21,7 @@ services:
 
   ghost:
     container_name: ghost
-    image: ghost:5.111.0-alpine
+    image: ghost:5.112.0-alpine
     restart: unless-stopped
     ports:
       - "2368:2368"
