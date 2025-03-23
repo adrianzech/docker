@@ -1,0 +1,62 @@
+services:
+  database:
+    container_name: teslamate-database
+    image: postgres:17-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/teslamate/database:/var/lib/postgresql/data
+    networks:
+      - teslamate
+    
+  teslamate:
+    container_name: teslamate
+    image: teslamate/teslamate:1.32
+    restart: unless-stopped
+    cap_drop:
+      - all
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: database
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASSWORD}
+      MQTT_HOST: mosquitto
+    volumes:
+      - /opt/docker/appdata/teslamate/import:/opt/app/import
+    networks:
+      - proxy
+      - teslamate
+    depends_on:
+      - database
+      - mosquitto
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2.0.21
+    restart: unless-stopped
+    command: mosquitto -c /mosquitto-no-auth.conf
+    volumes:
+      - /opt/docker/appdata/teslamate/mosquitto/config:/mosquitto/config
+      - /opt/docker/appdata/teslamate/mosquitto/data:/mosquitto/data
+    networks:
+      - teslamate
+
+networks:
+  proxy:
+    external: true
+  teslamate:
+    external: true
+

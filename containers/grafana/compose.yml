@@ -12,9 +12,12 @@ services:
     networks:
       - proxy
       - monitoring
+      - teslamate
 
 networks:
   proxy:
     external: true
   monitoring:
+    external: true
+  teslamate:
     external: true
