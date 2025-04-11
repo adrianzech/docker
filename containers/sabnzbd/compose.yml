@@ -1,7 +1,7 @@
 services:
   sabnzbd:
     container_name: sabnzbd
-    image: linuxserver/sabnzbd:4.5.0
+    image: linuxserver/sabnzbd:4.5.1
     restart: unless-stopped
     ports:
       - "8087:8080"
