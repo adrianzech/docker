@@ -1,22 +1,22 @@
 services:
-  hoarder:
-    container_name: hoarder
-    image:  ghcr.io/hoarder-app/hoarder:0.23.2
+  karakeep:
+    container_name: karakeep
+    image:  ghcr.io/karakeep-app/karakeep:0.23.2
     restart: unless-stopped
     ports:
       - "3002:3000"
     env_file:
       - .env
     volumes:
-      - /opt/docker/appdata/hoarder/data:/data
+      - /opt/docker/appdata/karakeep/data:/data
     networks:
-      - hoarder
+      - karakeep
     depends_on:
       - chrome
       - meilisearch
 
   chrome:
-    container_name: hoarder-chrome
+    container_name: karakeep-chrome
     image: gcr.io/zenika-hub/alpine-chrome:123
     restart: unless-stopped
     command:
@@ -27,21 +27,21 @@ services:
       - --remote-debugging-port=9222
       - --hide-scrollbars
     networks:
-      - hoarder
+      - karakeep
 
   meilisearch:
-    container_name: hoarder-meilisearch
+    container_name: karakeep-meilisearch
     image: getmeili/meilisearch:v1.11.1
     restart: unless-stopped
     env_file:
       - .env
     volumes:
-      - /opt/docker/appdata/hoarder/meilisearch:/meili_data
+      - /opt/docker/appdata/karakeep/meilisearch:/meili_data
     networks:
-      - hoarder
+      - karakeep
 
 networks:
   proxy:
     external: true
-  hoarder:
+  karakeep:
     external: true
