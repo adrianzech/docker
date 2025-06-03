@@ -20,7 +20,7 @@ services:
       
   freshrss:
     container_name: freshrss
-    image: linuxserver/freshrss:1.26.2
+    image: linuxserver/freshrss:1.26.3
     restart: unless-stopped
     ports:
       - "8082:80"
