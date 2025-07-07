@@ -71,7 +71,7 @@ services:
 
   redis:
     container_name: authentik-redis
-    image: redis:8.0.2-alpine
+    image: redis:8.0.3-alpine
     restart: unless-stopped
     command: --save 60 1 --loglevel warning
     healthcheck:
