@@ -1,7 +1,7 @@
 services:
   code-server:
     container_name: code-server
-    image: linuxserver/code-server:4.102.1
+    image: linuxserver/code-server:4.102.2
     restart: unless-stopped
     ports:
       - "8888:8443"
