@@ -9,6 +9,7 @@ services:
       TZ: Europe/Vienna
       PGID: 1000
       PUID: 1000
+      DISABLE_PIXEL: true
     volumes:
       - /opt/docker/appdata/stirling-pdf/tessdata:/usr/share/tesseract-ocr/4.00/tessdata
       - /opt/docker/appdata/stirling-pdf/configs:/configs
