@@ -1,0 +1,50 @@
+services:
+  database:
+    container_name: tandoor-database
+    image: postgres:16-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/tandoor/database:/var/lib/postgresql/data
+    networks:
+      - tandoor
+
+  tandoor:
+    container_name: tandoor
+    image: vabene1111/recipes:2.0.1
+    restart: unless-stopped
+    ports:
+      - "8083:80"
+    env_file:
+      - .env
+    environment:
+      TZ: Europe/Vienna
+      DB_ENGINE: django.db.backends.postgresql
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/tandoor/staticfiles:/opt/recipes/staticfiles
+      - /opt/docker/appdata/tandoor/mediafiles:/opt/recipes/mediafiles
+    networks:
+      - proxy
+      - tandoor
+    depends_on:
+      - database
+
+networks:
+  proxy:
+    external: true
+  tandoor:
+    external: true
