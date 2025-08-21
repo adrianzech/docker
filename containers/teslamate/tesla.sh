@@ -1,5 +1,5 @@
-CLIENT_ID=1451edcf-045c-4503-bc89-0ed8fbbd6e21
-CLIENT_SECRET=ta-secret.kIPPLi%!oJ2Bo!qz
+CLIENT_ID=
+CLIENT_SECRET=ta-secret.*
 AUDIENCE="https://fleet-api.prd.eu.vn.cloud.tesla.com"
 curl --request POST \
   --header 'Content-Type: application/x-www-form-urlencoded' \

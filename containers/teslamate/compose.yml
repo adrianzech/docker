@@ -20,7 +20,7 @@ services:
     
   teslamate:
     container_name: teslamate
-    image: teslamate/teslamate:2.0
+    image: teslamate/teslamate:2.1.1
     restart: unless-stopped
     cap_drop:
       - all
@@ -43,8 +43,28 @@ services:
       - database
       - mosquitto
 
+  grafana:
+    container_name: teslamate-grafana
+    image: teslamate/grafana:2.1.1
+    restart: unless-stopped
+    ports:
+      - 3005:3000
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: database
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/teslamate/grafana:/var/lib/grafana
+    networks:
+      - teslamate
+    depends_on:
+      - database
+
   mosquitto:
-    container_name: mosquitto
+    container_name: teslamate-mosquitto
     image: eclipse-mosquitto:2.0.22
     restart: unless-stopped
     command: mosquitto -c /mosquitto-no-auth.conf
