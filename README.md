@@ -68,44 +68,6 @@ The workflow will:
 - Pull the latest images for those containers
 - Recreate and restart the affected containers
 
-## 📦 Included Applications
-
-| Category | Application       | Description |
-|----------|-------------------|-------------|
-| **Authentication** | Authentik         | Modern SSO identity provider |
-| **Media** | Bazarr            | Subtitle management |
-|  | Jellyseerr        | Request management for media servers |
-|  | Jellystat         | Statistics for Jellyfin |
-|  | Radarr            | Movie management |
-|  | Sonarr            | TV show management |
-| **Download** | Prowlarr          | Indexer management |
-|  | qBittorrent       | Torrent client |
-|  | SABnzbd           | Usenet downloader |
-|  | YouTube-DL        | YouTube downloader |
-| **Documents** | Paperless-ngx     | Document management system |
-|  | Stirling-PDF      | PDF manipulation tools |
-| **Productivity** | FreshRSS          | RSS feed reader |
-|  | Ghost             | Blogging platform |
-|  | Healthchecks      | Cron job monitoring |
-|  | n8n               | Workflow automation |
-| **Monitoring** | Beszel            | Server monitoring |
-|  | ChangeDetection   | Web page change detection |
-|  | Grafana           | Dashboards and visualization |
-|  | Node-Exporter     | System metrics exporter |
-|  | Prometheus        | Monitoring system |
-|  | Speedtest-Tracker | Internet speed tracking |
-|  | Teslamate         | Tesla vehicle logging and tracking |
-| **Development** | Code-Server       | VS Code in the browser |
-|  | IT-Tools          | Various IT utilities |
-| **Finance** | Wallos            | Subscription management |
-| **Utility** | Doku              | Docker management UI |
-|  | Homepage          | Application dashboard |
-|  | Karakeep          | Web page archiver |
-|  | LinkStack         | Link sharing page |
-|  | Pingvin-Share     | File sharing solution |
-|  | Portainer         | Container management |
-|  | PgBackWeb         | PostgreSQL backup manager |
-
 ## 📝 Special Setup Notes
 
 ### Linkstack
