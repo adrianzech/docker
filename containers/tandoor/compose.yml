@@ -20,7 +20,7 @@ services:
 
   tandoor:
     container_name: tandoor
-    image: vabene1111/recipes:2.2.7
+    image: vabene1111/recipes:2.3.0
     restart: unless-stopped
     ports:
       - "8083:80"
