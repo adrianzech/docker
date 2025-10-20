@@ -1,7 +1,7 @@
 services:
   youtube-dl:
     container_name: youtube-dl
-    image: linuxserver/code-server:4.105.0
+    image: linuxserver/code-server:4.105.1
     restart: unless-stopped
     ports:
       - "8444:8443"
