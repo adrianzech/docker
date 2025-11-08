@@ -1,7 +1,7 @@
 services:
   homepage:
     container_name: homepage
-    image: gethomepage/homepage:v1.5.0
+    image: gethomepage/homepage:v1.6.1
     restart: unless-stopped
     ports:
       - "3001:3000"
