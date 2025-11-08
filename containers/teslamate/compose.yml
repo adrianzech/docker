@@ -20,7 +20,7 @@ services:
     
   teslamate:
     container_name: teslamate
-    image: teslamate/teslamate:2.1.1
+    image: teslamate/teslamate:2.2.0
     restart: unless-stopped
     cap_drop:
       - all
