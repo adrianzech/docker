@@ -1,7 +1,7 @@
 services:
   qbittorrent:
     container_name: qbittorrent
-    image: linuxserver/qbittorrent:5.1.2
+    image: linuxserver/qbittorrent:5.1.4
     restart: unless-stopped
     ports:
       - "8086:8080"
