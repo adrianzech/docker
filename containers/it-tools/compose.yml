@@ -1,10 +1,10 @@
 services:
   it-tools:
     container_name: it-tools
-    image: corentinth/it-tools:2024.10.22-7ca5933
+    image: sharevb/it-tools:2025.10.19
     restart: unless-stopped
     ports:
-      - "8084:80"
+      - "8084:8080"
     networks:
       - proxy
 
