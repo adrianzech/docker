@@ -20,7 +20,7 @@ services:
 
   paperless:
     container_name: paperless
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.19.6
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.0
     restart: unless-stopped
     ports:
       - "8001:8000"
