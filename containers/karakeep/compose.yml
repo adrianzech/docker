@@ -1,7 +1,7 @@
 services:
   karakeep:
     container_name: karakeep
-    image:  ghcr.io/karakeep-app/karakeep:0.28.0
+    image:  ghcr.io/karakeep-app/karakeep:0.29.1
     restart: unless-stopped
     ports:
       - "3002:3000"
