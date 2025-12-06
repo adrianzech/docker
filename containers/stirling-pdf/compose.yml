@@ -1,7 +1,7 @@
 services:
   stirling-pdf:
     container_name: stirling-pdf
-    image: stirlingtools/stirling-pdf:2.1.0
+    image: stirlingtools/stirling-pdf:2.1.1
     restart: unless-stopped
     ports:
       - "8091:8080"
