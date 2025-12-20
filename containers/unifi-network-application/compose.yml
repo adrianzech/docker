@@ -11,7 +11,7 @@ services:
     
   unifi-network-application:
     container_name: unifi-network-application
-    image: linuxserver/unifi-network-application:10.0.160
+    image: linuxserver/unifi-network-application:10.0.162
     restart: unless-stopped
     ports:
       - "8443:8443"
