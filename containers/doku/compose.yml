@@ -1,7 +1,7 @@
 services:
   doku:
     container_name: doku
-    image: amerkurev/doku:v1.2.0
+    image: amerkurev/doku:v1.3.0
     restart: unless-stopped
     ports:
       - "9091:9090"
