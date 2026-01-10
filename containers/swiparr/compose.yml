@@ -1,0 +1,17 @@
+services:
+  swiparr:
+    container_name: swiparr
+    image: ghcr.io/m3sserstudi0s/swiparr:0.1.63
+    restart: unless-stopped
+    ports:
+    - "4321:4321"
+    env_file:
+      - .env
+    volumes:
+      - /opt/docker/appdata/swiparr/data:/app/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
