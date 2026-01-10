@@ -1,0 +1,13 @@
+services:
+  bentopdf:
+    container_name: bentopdf
+    image: bentopdf/bentopdf-simple:1.15.1
+    restart: unless-stopped
+    ports:
+      - "8091:8080"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
