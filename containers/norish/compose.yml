@@ -1,0 +1,85 @@
+services:
+  database:
+    container_name: norish-database
+    image: postgres:17-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/norish/database:/var/lib/postgresql/data
+    networks:
+      - norish
+
+  redis:
+    container_name: norish-redis
+    image: redis:8.4.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      start_period: 10s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - /opt/docker/appdata/norish/redis:/data
+    networks:
+      - norish
+
+  chrome-headless:
+    container_name: norish-chrome-headless
+    image: zenika/alpine-chrome:latest
+    restart: unless-stopped
+    command:
+      - "--no-sandbox"
+      - "--disable-gpu"
+      - "--disable-dev-shm-usage"
+      - "--remote-debugging-address=0.0.0.0"
+      - "--remote-debugging-port=3000"
+      - "--headless"
+    networks:
+      - norish
+
+  norish:
+    container_name: norish
+    image: norishapp/norish:v0.15.2-beta
+    restart: unless-stopped
+    user: "1000:1000"
+    ports:
+      - "3006:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
+      REDIS_URL: redis://redis:6379
+      CHROME_WS_ENDPOINT: ws://chrome-headless:3000
+      AUTH_URL: ${AUTH_URL}
+      MASTER_KEY: ${MASTER_KEY}
+      OIDC_NAME: ${OIDC_NAME}
+      OIDC_ISSUER: ${OIDC_ISSUER}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}
+      TRUSTED_ORIGINS: ${TRUSTED_ORIGINS}
+    volumes:
+      - /opt/docker/appdata/norish/uploads:/app/uploads
+    networks:
+      - proxy
+      - norish
+    depends_on:
+      - database
+      - redis
+      - chrome-headless
+
+networks:
+  proxy:
+    external: true
+  norish:
+    external: true
+
