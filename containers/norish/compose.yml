@@ -49,7 +49,7 @@ services:
 
   norish:
     container_name: norish
-    image: norishapp/norish:v0.15.4-beta
+    image: norishapp/norish:v0.15.6-beta
     restart: unless-stopped
     user: "1000:1000"
     ports:
