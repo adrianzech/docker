@@ -1,7 +1,7 @@
 services:
   bazarr:
     container_name: bazarr
-    image: linuxserver/bazarr:1.5.5
+    image: linuxserver/bazarr:1.5.6
     restart: unless-stopped
     ports:
       - "6767:6767"
