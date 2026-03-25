@@ -20,7 +20,7 @@ services:
 
   redis:
     container_name: norish-redis
-    image: redis:8.6.1
+    image: redis:8.6.2
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
