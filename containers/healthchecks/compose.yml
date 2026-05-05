@@ -1,7 +1,7 @@
 services:
   healthchecks:
     container_name: healthchecks
-    image: linuxserver/healthchecks:4.2.20260428
+    image: linuxserver/healthchecks:4.2.20260504
     restart: unless-stopped
     ports:
       - "8000:8000"
