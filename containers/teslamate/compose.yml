@@ -45,7 +45,7 @@ services:
 
   grafana:
     container_name: teslamate-grafana
-    image: teslamate/grafana:4.0.0
+    image: teslamate/grafana:4.0.1
     restart: unless-stopped
     ports:
       - 3005:3000
