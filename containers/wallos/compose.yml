@@ -1,7 +1,7 @@
 services:
   wallos:
     container_name: wallos
-    image: bellamy/wallos:5.0.0
+    image: bellamy/wallos:v5.0.1
     restart: unless-stopped
     ports:
       - "8089:80"
