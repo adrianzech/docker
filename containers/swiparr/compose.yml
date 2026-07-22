@@ -1,7 +1,7 @@
 services:
   swiparr:
     container_name: swiparr
-    image: ghcr.io/m3sserstudi0s/swiparr:1.5.0
+    image: ghcr.io/m3sserstudi0s/swiparr:1.5.1
     restart: unless-stopped
     ports:
     - "4321:4321"
