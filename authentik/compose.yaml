@@ -32,7 +32,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
-      traefik.http.routers.authentik.rule: "Host(`sso.${DOMAIN}`)"
+      traefik.http.routers.authentik.rule: "Host(`sso.zech.co`)"
       traefik.http.routers.authentik.entrypoints: "websecure"
       traefik.http.routers.authentik.tls: "true"
       traefik.http.routers.authentik.middlewares: "compression@file"

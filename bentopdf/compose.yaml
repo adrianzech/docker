@@ -11,7 +11,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
-      traefik.http.routers.bentopdf.rule: "Host(`pdf.${DOMAIN}`)"
+      traefik.http.routers.bentopdf.rule: "Host(`pdf.zech.co`)"
       traefik.http.routers.bentopdf.entrypoints: "websecure"
       traefik.http.routers.bentopdf.tls: "true"
       traefik.http.routers.bentopdf.middlewares: "authentik@file,security-headers@file,compression@file"
