@@ -35,8 +35,13 @@ services:
       traefik.http.routers.authentik.rule: "Host(`sso.${DOMAIN}`)"
       traefik.http.routers.authentik.entrypoints: "websecure"
       traefik.http.routers.authentik.tls: "true"
-      traefik.http.routers.authentik.service: "authentik"
+      traefik.http.routers.authentik.middlewares: "compression@file"
       traefik.http.services.authentik.loadbalancer.server.port: "9000"
+      traefik.http.routers.authentik-outpost.rule: "PathPrefix(`/outpost.goauthentik.io/`)"
+      traefik.http.routers.authentik-outpost.entrypoints: "websecure"
+      traefik.http.routers.authentik-outpost.tls: "true"
+      traefik.http.routers.authentik-outpost.priority: "100"
+      traefik.http.routers.authentik-outpost.service: "authentik"
     env_file:
       - .env
     environment:
