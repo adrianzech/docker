@@ -1,0 +1,92 @@
+services:
+  database:
+    container_name: authentik-database
+    image: postgres:18.4
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/appdata/authentik/database:/var/lib/postgresql
+    networks:
+      - internal
+
+  server:
+    container_name: authentik-server
+    image: ghcr.io/goauthentik/server:2026.5.6
+    restart: unless-stopped
+    command: server
+    healthcheck:
+      test: ["CMD", "ak", "healthcheck"]
+      start_period: 60s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.authentik.rule: "Host(`sso.${DOMAIN}`)"
+      traefik.http.routers.authentik.entrypoints: "websecure"
+      traefik.http.routers.authentik.tls: "true"
+      traefik.http.routers.authentik.service: "authentik"
+      traefik.http.services.authentik.loadbalancer.server.port: "9000"
+    env_file:
+      - .env
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: database
+      AUTHENTIK_POSTGRESQL__NAME: ${DATABASE_NAME}
+      AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/appdata/authentik/data:/data
+      - /opt/appdata/authentik/templates:/templates
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - proxy
+      - internal
+
+  worker:
+    container_name: authentik-worker
+    image: ghcr.io/goauthentik/server:2026.5.6
+    restart: unless-stopped
+    command: worker
+    healthcheck:
+      test: ["CMD", "ak", "healthcheck"]
+      start_period: 60s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: database
+      AUTHENTIK_POSTGRESQL__NAME: ${DATABASE_NAME}
+      AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/appdata/authentik/data:/data
+      - /opt/appdata/authentik/templates:/templates
+      - /opt/appdata/authentik/certs:/certs
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+
+  internal:
+    name: authentik-internal
+    driver: bridge
