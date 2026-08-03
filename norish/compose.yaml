@@ -14,7 +14,7 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - /opt/appdata/norish/database:/var/lib/postgresql/data
+      - /opt/appdata/norish/database:/var/lib/postgresql
     networks:
       - internal
 
