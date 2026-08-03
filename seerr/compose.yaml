@@ -17,6 +17,8 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - /opt/appdata/seerr/database:/var/lib/postgresql
+    networks:
+      - internal
 
   seerr:
     container_name: seerr
@@ -48,7 +50,12 @@ services:
       - /opt/appdata/seerr/config:/app/config
     networks:
       - proxy
+      - internal
 
 networks:
   proxy:
     external: true
+
+  internal:
+    name: seerr-internal
+    driver: bridge
