@@ -1,0 +1,27 @@
+services:
+  sabnzbd:
+    container_name: sabnzbd
+    image: lscr.io/linuxserver/sabnzbd:5.0.4
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.sabnzbd.rule: "Host(`sabnzbd.zech.co`)"
+      traefik.http.routers.sabnzbd.entrypoints: "websecure"
+      traefik.http.routers.sabnzbd.tls: "true"
+      traefik.http.routers.sabnzbd.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.sabnzbd.loadbalancer.server.port: "8080"
+    environment:
+      TZ: Europe/Vienna
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - /opt/appdata/sabnzbd/config:/config
+      - /mnt/downloads/complete:/complete
+      - /mnt/downloads/incomplete:/incomplete
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
