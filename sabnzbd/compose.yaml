@@ -9,7 +9,13 @@ services:
       traefik.http.routers.sabnzbd.rule: "Host(`sabnzbd.zech.co`)"
       traefik.http.routers.sabnzbd.entrypoints: "websecure"
       traefik.http.routers.sabnzbd.tls: "true"
-      traefik.http.routers.sabnzbd.middlewares: "security-headers@file,compression@file"
+      traefik.http.routers.sabnzbd-api.rule: "Host(`sabnzbd.zech.co`) && (Path(`/api`) || PathPrefix(`/api/`))"
+      traefik.http.routers.sabnzbd-api.entrypoints: "websecure"
+      traefik.http.routers.sabnzbd-api.tls: "true"
+      traefik.http.routers.sabnzbd-api.priority: "100"
+      traefik.http.routers.sabnzbd-api.middlewares: "security-headers@file,compression@file"
+      traefik.http.routers.sabnzbd-api.service: "sabnzbd"
+      traefik.http.routers.sabnzbd.middlewares: "authentik@file,security-headers@file,compression@file"
       traefik.http.services.sabnzbd.loadbalancer.server.port: "8080"
     environment:
       TZ: Europe/Vienna
