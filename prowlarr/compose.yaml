@@ -1,0 +1,31 @@
+services:
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:2.5.2
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.prowlarr.rule: "Host(`prowlarr.zech.co`)"
+      traefik.http.routers.prowlarr.entrypoints: "websecure"
+      traefik.http.routers.prowlarr.tls: "true"
+      traefik.http.routers.prowlarr-api.rule: "Host(`prowlarr.zech.co`) && (Path(`/api`) || PathPrefix(`/api/`))"
+      traefik.http.routers.prowlarr-api.entrypoints: "websecure"
+      traefik.http.routers.prowlarr-api.tls: "true"
+      traefik.http.routers.prowlarr-api.priority: "100"
+      traefik.http.routers.prowlarr-api.middlewares: "security-headers@file,compression@file"
+      traefik.http.routers.prowlarr-api.service: "prowlarr"
+      traefik.http.routers.prowlarr.middlewares: "authentik@file,security-headers@file,compression@file"
+      traefik.http.services.prowlarr.loadbalancer.server.port: "9696"
+    environment:
+      TZ: Europe/Vienna
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - /opt/appdata/prowlarr/config:/config
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
