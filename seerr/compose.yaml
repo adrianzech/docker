@@ -1,4 +1,23 @@
 services:
+  database:
+    container_name: seerr-database
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}" ]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/appdata/seerr/database:/var/lib/postgresql
+
   seerr:
     container_name: seerr
     image: ghcr.io/seerr-team/seerr:v3.4.1
@@ -19,6 +38,12 @@ services:
       traefik.http.services.seerr.loadbalancer.server.port: "5055"
     environment:
       TZ: Europe/Vienna
+      DB_TYPE: postgres
+      DB_HOST: database
+      DB_PORT: 5432" # (optional) The port to connect to. The default is "5432".
+      DB_NAME: ${DATABASE_NAME}
+      DB_USER: ${DATABASE_USER}
+      DB_PASS: ${DATABASE_PASSWORD}
     volumes:
       - /opt/appdata/seerr/config:/app/config
     networks:
