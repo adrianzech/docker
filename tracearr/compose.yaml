@@ -1,0 +1,72 @@
+services:
+  database:
+    container_name: tracearr-database
+    image: timescale/timescaledb-ha:pg18.4-ts2.29.0
+    restart: unless-stopped
+    command: postgres -c timescaledb.license=timescale -c timescaledb.max_tuples_decompressed_per_dml_transaction=0 -c max_locks_per_transaction=4096 -c timescaledb.telemetry_level=off
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/appdata/tracearr/database:/home/postgres/pgdata/data
+    networks:
+      - internal
+
+  redis:
+    container_name: tracearr-redis
+    image: redis:8.10.0-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      start_period: 10s
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - /opt/appdata/tracearr/redis:/data
+    networks:
+      - internal
+
+  tracearr:
+    container_name: tracearr-app
+    image: ghcr.io/connorgallopo/tracearr:1.5.0
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.tracearr.rule: "Host(`tracearr.zech.co`)"
+      traefik.http.routers.tracearr.entrypoints: "websecure"
+      traefik.http.routers.tracearr.tls: "true"
+      traefik.http.routers.tracearr.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.tracearr.loadbalancer.server.port: "3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - /opt/appdata/tracearr/backups:/data/backup
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+networks:
+  proxy:
+    external: true
+
+  internal:
+    name: tracearr-internal
+    driver: bridge
