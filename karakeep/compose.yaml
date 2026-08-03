@@ -43,7 +43,7 @@ services:
 
   karakeep:
     container_name: karakeep
-    image: ghcr.io/karakeep-app/karakeep:v0.32.0
+    image: ghcr.io/karakeep-app/karakeep:0.33.1
     restart: unless-stopped
     healthcheck:
       test:
