@@ -2,6 +2,7 @@ services:
   database:
     container_name: freshrss-database
     image: postgres:18.4
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 20s
@@ -20,6 +21,7 @@ services:
   freshrss:
     container_name: freshrss
     image: linuxserver/freshrss:1.29.1
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:80"]
       start_period: 30s
