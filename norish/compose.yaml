@@ -1,0 +1,100 @@
+services:
+  database:
+    container_name: norish-database
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}" ]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/appdata/norish/database:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  norish:
+    container_name: norish-app
+    image: norishapp/norish:v0.19.1-beta
+    restart: unless-stopped
+    user: "1000:1000"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'node -e "require(''http'').get(''http://localhost:3000/api/v1/health'', r => process.exit(r.statusCode===200?0:1))"',
+        ]
+      interval: 1m
+      timeout: 15s
+      retries: 3
+      start_period: 1m
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.norish.rule: "Host(`norish.zech.co`)"
+      traefik.http.routers.norish.entrypoints: "websecure"
+      traefik.http.routers.norish.tls: "true"
+      traefik.http.routers.norish.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.norish.loadbalancer.server.port: "3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
+      REDIS_URL: redis://redis:6379
+      CHROME_WS_ENDPOINT: ws://chrome:3000
+    volumes:
+      - /opt/appdata/norish/uploads:/app/uploads
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chrome:
+        condition: service_started
+
+  redis:
+    container_name: norish-redis
+    image: redis:8.6.2-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      start_period: 10s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - /opt/appdata/norish/redis:/data
+    networks:
+      - internal
+
+  chrome:
+    container_name: norish-chrome
+    image: zenika/alpine-chrome:124
+    restart: unless-stopped
+    command:
+      - "--no-sandbox"
+      - "--disable-gpu"
+      - "--disable-dev-shm-usage"
+      - "--remote-debugging-address=0.0.0.0"
+      - "--remote-debugging-port=3000"
+      - "--headless"
+    tmpfs:
+      - /tmp:size=256m
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+
+  internal:
+    name: norish-internal
+    driver: bridge
