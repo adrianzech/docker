@@ -1,0 +1,64 @@
+services:
+  unifi-os-server:
+    container_name: unifi-os-server
+    image: ghcr.io/lemker/unifi-os-server:v1.4.0
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -kf https://localhost/ || exit 1" ]
+      start_period: 60s
+      interval: 30s
+      retries: 5
+      timeout: 10s
+    cgroup: host
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    ports:
+      - "8080:8080"
+      - "3478:3478/udp"
+      - "10003:10003/udp"
+      - "11443:443"
+      - "5005:5005"
+      - "5671:5671"
+      - "6789:6789"
+      - "8444:8444"
+      - "8880:8880"
+      - "8881:8881"
+      - "8882:8882"
+      - "9543:9543"
+      - "5514:5514/udp"
+      - "127.0.0.1:11084:11084"
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.unifi.rule: "Host(`unifi.zech.co`)"
+      traefik.http.routers.unifi.entrypoints: "websecure"
+      traefik.http.routers.unifi.tls: "true"
+      traefik.http.services.unifi.loadbalancer.server.port: "443"
+      traefik.http.services.unifi.loadbalancer.server.scheme: "https"
+      traefik.http.services.unifi.loadbalancer.serversTransport: "unifi-transport@file"
+    environment:
+      UOS_SYSTEM_IP: unifi.zech.co
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - /opt/appdata/unifi/persistent:/persistent
+      - /opt/appdata/unifi/var-log:/var/log
+      - /opt/appdata/unifi/data:/data
+      - /opt/appdata/unifi/srv:/srv
+      - /opt/appdata/unifi/var-lib-unifi:/var/lib/unifi
+      - /opt/appdata/unifi/var-lib-mongodb:/var/lib/mongodb
+      - /opt/appdata/unifi/etc-rabbitmq-ssl:/etc/rabbitmq/ssl
+    tmpfs:
+      - /run:exec
+      - /run/lock
+      - /tmp:exec
+      - /var/lib/journal
+      - /var/opt/unifi/tmp:size=64m
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
