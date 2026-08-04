@@ -1,0 +1,19 @@
+services:
+  it-tools:
+    container_name: it-tools
+    image: sharevb/it-tools:2026.7.11
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.it-tools.rule: "Host(`tools.zech.co`)"
+      traefik.http.routers.it-tools.entrypoints: "websecure"
+      traefik.http.routers.it-tools.tls: "true"
+      traefik.http.routers.it-tools.middlewares: "authentik@file,security-headers@file,compression@file"
+      traefik.http.services.it-tools.loadbalancer.server.port: "8080"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
