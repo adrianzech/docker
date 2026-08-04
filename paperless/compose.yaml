@@ -1,0 +1,97 @@
+services:
+  database:
+    container_name: paperless-database
+    image: postgres:18.4
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}" ]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/appdata/paperless/postgres:/var/lib/postgresql
+    networks:
+      - internal
+
+  redis:
+    container_name: paperless-redis
+    image: redis:8.10.0-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      start_period: 10s
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - /opt/appdata/paperless/redis:/data
+    networks:
+      - internal
+
+  webserver:
+    container_name: paperless-webserver
+    image: ghcr.io/paperless-ngx/paperless-ngx:3.0.5
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.paperless.rule: "Host(`paperless.zech.co`)"
+      traefik.http.routers.paperless.entrypoints: "websecure"
+      traefik.http.routers.paperless.tls: "true"
+      traefik.http.routers.paperless.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.paperless.loadbalancer.server.port: "8000"
+    env_file:
+      - .env
+    environment:
+      PAPERLESS_DBHOST: database
+      PAPERLESS_DBNAME: ${DATABASE_NAME}
+      PAPERLESS_DBUSER: ${DATABASE_USER}
+      PAPERLESS_DBPASS: ${DATABASE_PASSWORD}
+      PAPERLESS_REDIS: redis://redis:6379
+    volumes:
+      - /opt/appdata/paperless/data:/usr/src/paperless/data
+      - /opt/appdata/paperless/media:/usr/src/paperless/media
+      - /mnt/scan/Export:/usr/src/paperless/export
+      - /mnt/scan/Consume:/usr/src/paperless/consume
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  gotenberg:
+    container_name: paperless-gotenberg
+    image: gotenberg/gotenberg:8.34.0
+    restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+    networks:
+      - internal
+
+  tika:
+    container_name: paperless-tika
+    image: apache/tika:3.3.1.0
+    restart: unless-stopped
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+
+  internal:
+    name: paperless-internal
+    driver: bridge
