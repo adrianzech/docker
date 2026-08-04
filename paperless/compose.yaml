@@ -9,8 +9,6 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
