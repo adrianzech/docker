@@ -14,7 +14,7 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - /opt/appdata/speedtest-tracker/postgres:/var/lib/postgresql
+      - /opt/appdata/speedtest-tracker/database:/var/lib/postgresql
     networks:
       - internal
 
