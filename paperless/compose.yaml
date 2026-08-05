@@ -18,19 +18,18 @@ services:
     networks:
       - internal
 
-  redis:
-    container_name: paperless-redis
-    image: redis:8.10.0-alpine
+  valkey:
+    container_name: paperless-valkey
+    image: valkey/valkey:9.1.1-alpine
     restart: unless-stopped
-    command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "valkey-cli", "ping" ]
       start_period: 10s
       interval: 10s
       retries: 5
       timeout: 5s
     volumes:
-      - /opt/appdata/paperless/redis:/data
+      - /opt/appdata/paperless/valkey:/data
     networks:
       - internal
 
@@ -53,7 +52,7 @@ services:
       PAPERLESS_DBNAME: ${DATABASE_NAME}
       PAPERLESS_DBUSER: ${DATABASE_USER}
       PAPERLESS_DBPASS: ${DATABASE_PASSWORD}
-      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_REDIS: redis://valkey:6379
     volumes:
       - /opt/appdata/paperless/data:/usr/src/paperless/data
       - /opt/appdata/paperless/media:/usr/src/paperless/media
@@ -65,7 +64,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
 
   gotenberg:
