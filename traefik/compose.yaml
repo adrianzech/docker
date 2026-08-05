@@ -1,0 +1,31 @@
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v3.7.10
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2222:2222"
+    env_file:
+      - .env
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.traefik.rule: Host(`traefik.${DOMAIN}`)
+      traefik.http.routers.traefik.entrypoints: websecure
+      traefik.http.routers.traefik.tls: "true"
+      traefik.http.routers.traefik.service: api@internal
+      traefik.http.routers.traefik.middlewares: internal-only@file
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/appdata/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - /opt/appdata/traefik/dynamic:/etc/traefik/dynamic:ro
+      - /opt/appdata/traefik/acme:/etc/traefik/acme
+      - /opt/appdata/traefik/logs:/var/log/traefik
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
