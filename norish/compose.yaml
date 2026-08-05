@@ -45,7 +45,7 @@ services:
       - .env
     environment:
       DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://valkey:6379
       CHROME_WS_ENDPOINT: ws://chrome:3000
     volumes:
       - /opt/appdata/norish/uploads:/app/uploads
@@ -55,23 +55,23 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
       chrome:
         condition: service_started
 
-  redis:
-    container_name: norish-redis
-    image: redis:8.10.0-alpine
+  valkey:
+    container_name: norish-valkey
+    image: valkey/valkey:9.1.1-alpine
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: [ "CMD", "valkey-cli", "ping" ]
       start_period: 10s
-      interval: 30s
+      interval: 10s
       retries: 5
       timeout: 5s
     volumes:
-      - /opt/appdata/norish/redis:/data
+      - /opt/appdata/norish/valkey:/data
     networks:
       - internal
 
