@@ -19,19 +19,18 @@ services:
     networks:
       - internal
 
-  redis:
-    container_name: tracearr-redis
-    image: redis:8.10.0-alpine
+  valkey:
+    container_name: tracearr-valkey
+    image: valkey/valkey:9.1.1-alpine
     restart: unless-stopped
-    command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "valkey-cli", "ping" ]
       start_period: 10s
       interval: 10s
       retries: 5
       timeout: 5s
     volumes:
-      - /opt/appdata/tracearr/redis:/data
+      - /opt/appdata/tracearr/valkey:/data
     networks:
       - internal
 
@@ -51,7 +50,7 @@ services:
       - .env
     environment:
       DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://valkey:6379
     volumes:
       - /opt/appdata/tracearr/backups:/data/backup
     networks:
