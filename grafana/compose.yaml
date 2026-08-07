@@ -1,0 +1,23 @@
+services:
+   grafana:
+    container_name: grafana
+    image: grafana/grafana-oss:13.0.2
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.grafana.rule: "Host(`grafana.zech.co`)"
+      traefik.http.routers.grafana.entrypoints: "websecure"
+      traefik.http.routers.grafana.tls: "true"
+      traefik.http.routers.grafana.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.grafana.loadbalancer.server.port: "3000"
+    env_file:
+      - .env
+    volumes:
+      - /opt/appdata/grafana:/var/lib/grafana
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
