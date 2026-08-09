@@ -69,7 +69,7 @@ services:
 
   gotenberg:
     container_name: paperless-gotenberg
-    image: gotenberg/gotenberg:8.34.0
+    image: gotenberg/gotenberg:8.35.0
     restart: unless-stopped
     command:
       - "gotenberg"
