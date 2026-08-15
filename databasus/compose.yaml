@@ -18,7 +18,7 @@ services:
       traefik.http.routers.databasus.rule: "Host(`databasus.zech.co`)"
       traefik.http.routers.databasus.entrypoints: "websecure"
       traefik.http.routers.databasus.tls: "true"
-      traefik.http.routers.databasus.middlewares: "security-headers@file,compression@file"
+      traefik.http.routers.databasus.middlewares: "internal-only@file,security-headers@file,compression@file"
       traefik.http.services.databasus.loadbalancer.server.port: "4005"
     volumes:
       - /opt/appdata/databasus:/databasus-data
