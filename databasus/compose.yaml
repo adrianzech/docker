@@ -28,3 +28,6 @@ services:
 networks:
   proxy:
     external: true
+
+  database-backup:
+    external: true

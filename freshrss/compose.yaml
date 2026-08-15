@@ -51,6 +51,9 @@ networks:
   proxy:
     external: true
 
+  database-backup:
+    external: true
+
   internal:
     name: freshrss-internal
     driver: bridge
