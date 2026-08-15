@@ -1,0 +1,30 @@
+services:
+  databasus:
+    container_name: databasus
+    image: databasus/databasus:v3.53.0
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - databasus
+        - healthcheck
+      start_period: 60s
+      interval: 30s
+      retries: 3
+      timeout: 5s
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.databasus.rule: "Host(`databasus.zech.co`)"
+      traefik.http.routers.databasus.entrypoints: "websecure"
+      traefik.http.routers.databasus.tls: "true"
+      traefik.http.routers.databasus.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.databasus.loadbalancer.server.port: "4005"
+    volumes:
+      - /opt/appdata/databasus:/databasus-data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
