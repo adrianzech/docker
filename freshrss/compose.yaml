@@ -17,6 +17,7 @@ services:
       - /opt/appdata/freshrss/database:/var/lib/postgresql
     networks:
       - internal
+      - database-backup
 
   freshrss:
     container_name: freshrss

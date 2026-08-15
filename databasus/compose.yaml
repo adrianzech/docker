@@ -24,6 +24,7 @@ services:
       - /opt/appdata/databasus:/databasus-data
     networks:
       - proxy
+      - database-backup
 
 networks:
   proxy:
