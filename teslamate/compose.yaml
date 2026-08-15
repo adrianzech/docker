@@ -51,7 +51,7 @@ services:
 
   grafana:
     container_name: teslamate-grafana
-    image: teslamate/grafana:4.0.1
+    image: teslamate/grafana:4.1.1
     restart: unless-stopped
     labels:
       traefik.enable: "true"
