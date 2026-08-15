@@ -1,0 +1,34 @@
+services:
+  apprise:
+    container_name: apprise
+    image: caronc/apprise:1.5.1
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.apprise.rule: "Host(`apprise.zech.co`)"
+      traefik.http.routers.apprise.entrypoints: "websecure"
+      traefik.http.routers.apprise.tls: "true"
+      traefik.http.routers.apprise.middlewares: "authentik@file,security-headers@file,compression@file"
+      traefik.http.routers.apprise.service: "apprise"
+      traefik.http.routers.apprise-api.rule: "Host(`apprise-api.zech.co`)"
+      traefik.http.routers.apprise-api.entrypoints: "websecure"
+      traefik.http.routers.apprise-api.tls: "true"
+      traefik.http.routers.apprise-api.middlewares: "internal-only@file,security-headers@file,compression@file"
+      traefik.http.routers.apprise-api.service: "apprise"
+      traefik.http.services.apprise.loadbalancer.server.port: "8000"
+    environment:
+      APPRISE_STATEFUL_MODE: simple
+      APPRISE_WORKER_COUNT: "1"
+      APPRISE_ADMIN: "y"
+    volumes:
+      - /opt/appdata/apprise/config:/config
+      - /opt/appdata/apprise/attach:/attach
+      - /opt/appdata/apprise/plugin:/plugin
+    tmpfs:
+      - /tmp
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
