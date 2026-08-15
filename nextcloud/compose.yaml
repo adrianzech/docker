@@ -20,7 +20,7 @@ services:
 
   nextcloud:
     container_name: nextcloud-server
-    image: nextcloud:34.0.2
+    image: nextcloud:34.0.3
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost/status.php >/dev/null"]
@@ -58,7 +58,7 @@ services:
 
   cron:
     container_name: nextcloud-cron
-    image: nextcloud:34.0.2
+    image: nextcloud:34.0.3
     restart: unless-stopped
     entrypoint: /cron.sh
     env_file:
