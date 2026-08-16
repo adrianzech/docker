@@ -17,6 +17,7 @@ services:
       - /opt/appdata/healthchecks/postgres:/var/lib/postgresql
     networks:
       - internal
+      - database-backup
 
   healthchecks:
     container_name: healthchecks
@@ -48,6 +49,9 @@ services:
 
 networks:
   proxy:
+    external: true
+
+  database-backup:
     external: true
 
   internal:

@@ -17,6 +17,7 @@ services:
       - /opt/appdata/paperless/postgres:/var/lib/postgresql
     networks:
       - internal
+      - database-backup
 
   valkey:
     container_name: paperless-valkey
@@ -87,6 +88,9 @@ services:
 
 networks:
   proxy:
+    external: true
+
+  database-backup:
     external: true
 
   internal:

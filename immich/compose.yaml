@@ -19,6 +19,7 @@ services:
       - /opt/appdata/immich/database:/var/lib/postgresql
     networks:
       - internal
+      - database-backup
 
   server:
     container_name: immich-server
@@ -78,6 +79,9 @@ services:
 
 networks:
   proxy:
+    external: true
+
+  database-backup:
     external: true
 
   internal:

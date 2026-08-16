@@ -17,6 +17,7 @@ services:
       - /opt/appdata/authentik/database:/var/lib/postgresql
     networks:
       - internal
+      - database-backup
 
   server:
     container_name: authentik-server
@@ -90,6 +91,9 @@ services:
 
 networks:
   proxy:
+    external: true
+
+  database-backup:
     external: true
 
   internal:

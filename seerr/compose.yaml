@@ -19,6 +19,7 @@ services:
       - /opt/appdata/seerr/database:/var/lib/postgresql
     networks:
       - internal
+      - database-backup
 
   seerr:
     container_name: seerr
@@ -54,6 +55,9 @@ services:
 
 networks:
   proxy:
+    external: true
+
+  database-backup:
     external: true
 
   internal:

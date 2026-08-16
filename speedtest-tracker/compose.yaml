@@ -17,6 +17,7 @@ services:
       - /opt/appdata/speedtest-tracker/database:/var/lib/postgresql
     networks:
       - internal
+      - database-backup
 
   speedtest-tracker:
     container_name: speedtest-tracker
@@ -56,6 +57,9 @@ services:
 
 networks:
   proxy:
+    external: true
+
+  database-backup:
     external: true
 
   internal:
