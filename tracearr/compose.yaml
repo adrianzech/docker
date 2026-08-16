@@ -18,6 +18,7 @@ services:
       - /opt/appdata/tracearr/database:/home/postgres/pgdata/data
     networks:
       - internal
+      - database-backup
 
   valkey:
     container_name: tracearr-valkey
@@ -64,6 +65,9 @@ services:
 
 networks:
   proxy:
+    external: true
+
+  database-backup:
     external: true
 
   internal:
