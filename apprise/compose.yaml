@@ -17,7 +17,7 @@ services:
       traefik.http.routers.apprise-api.service: "apprise"
       traefik.http.services.apprise.loadbalancer.server.port: "8000"
     environment:
-      APPRISE_STATEFUL_MODE: simple
+      APPRISE_STATEFUL_MODE: hash
       APPRISE_WORKER_COUNT: "1"
       APPRISE_ADMIN: "y"
     volumes:
