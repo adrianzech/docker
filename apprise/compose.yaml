@@ -8,13 +8,8 @@ services:
       traefik.http.routers.apprise.rule: "Host(`apprise.zech.co`)"
       traefik.http.routers.apprise.entrypoints: "websecure"
       traefik.http.routers.apprise.tls: "true"
-      traefik.http.routers.apprise.middlewares: "authentik@file,security-headers@file,compression@file"
+      traefik.http.routers.apprise.middlewares: "internal-only@file,security-headers@file,compression@file"
       traefik.http.routers.apprise.service: "apprise"
-      traefik.http.routers.apprise-api.rule: "Host(`apprise-api.zech.co`)"
-      traefik.http.routers.apprise-api.entrypoints: "websecure"
-      traefik.http.routers.apprise-api.tls: "true"
-      traefik.http.routers.apprise-api.middlewares: "internal-only@file,security-headers@file,compression@file"
-      traefik.http.routers.apprise-api.service: "apprise"
       traefik.http.services.apprise.loadbalancer.server.port: "8000"
     environment:
       APPRISE_STATEFUL_MODE: hash
