@@ -3,6 +3,12 @@ services:
     container_name: beszel
     image: henrygd/beszel:0.18.8
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/beszel", "health", "--url", "http://127.0.0.1:8090"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 5
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
