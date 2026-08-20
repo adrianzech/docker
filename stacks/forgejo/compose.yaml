@@ -1,0 +1,71 @@
+services:
+  database:
+    container_name: forgejo-database
+    image: postgres:18.4-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${DATABASE_NAME} -U $${DATABASE_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - /opt/docker/appdata/forgejo/database:/var/lib/postgresql
+    networks:
+      - internal
+
+  server:
+    container_name: forgejo-server
+    image: data.forgejo.org/forgejo/forgejo:16.0.2
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    env_file:
+      - .env
+    environment:
+      FORGEJO__database__DB_TYPE: postgres
+      FORGEJO__database__HOST: database:5432
+      FORGEJO__database__NAME: ${DATABASE_NAME}
+      FORGEJO__database__USER: ${DATABASE_USER}
+      FORGEJO__database__PASSWD: ${DATABASE_PASSWORD}
+      USER_UID: 1000
+      USER_GID: 1000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../../appdata/forgejo/server/data:/data
+    networks:
+      - internal
+    depends_on:
+      - database
+
+  dind:
+    image: docker:28-dind
+    container_name: forgejo-dind
+    restart: unless-stopped
+    privileged: true
+    command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
+    networks:
+      - internal
+
+  runner:
+    container_name: forgejo-runner
+    image: data.forgejo.org/forgejo/runner:13.0.0
+    restart: unless-stopped
+    user: "1000:1000"
+    command: 'forgejo-runner daemon --config runner-config.yml'
+    environment:
+      DOCKER_HOST: tcp://dind:2375
+    volumes:
+      - ../../appdata/forgejo/runner/data:/data
+    networks:
+      - internal
+
+networks:
+  internal:
+    name: forgejo-internal
+    driver: bridge
