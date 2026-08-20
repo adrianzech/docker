@@ -36,7 +36,7 @@ services:
       traefik.http.routers.unifi.rule: "Host(`unifi.zech.co`)"
       traefik.http.routers.unifi.entrypoints: "websecure"
       traefik.http.routers.unifi.tls: "true"
-      traefik.http.routers.traefik-manager.middlewares: "security-headers@file,compression@file"
+      traefik.http.routers.unifi.middlewares: "security-headers@file,compression@file"
       traefik.http.services.unifi.loadbalancer.server.port: "443"
       traefik.http.services.unifi.loadbalancer.server.scheme: "https"
     environment:
