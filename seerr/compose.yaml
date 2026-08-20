@@ -9,8 +9,6 @@ services:
       interval: 30s
       retries: 5
       timeout: 5s
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
@@ -43,7 +41,7 @@ services:
       TZ: Europe/Vienna
       DB_TYPE: postgres
       DB_HOST: database
-      DB_PORT: 5432" # (optional) The port to connect to. The default is "5432".
+      DB_PORT: 5432
       DB_NAME: ${DATABASE_NAME}
       DB_USER: ${DATABASE_USER}
       DB_PASS: ${DATABASE_PASSWORD}
