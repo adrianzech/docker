@@ -24,6 +24,12 @@ services:
     container_name: sparkyfitness-server
     image: codewithcj/sparkyfitness_server:v1.6.2
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3010/health', response => process.exit(response.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      start_period: 60s
+      interval: 30s
+      timeout: 5s
+      retries: 5
     env_file:
       - .env
     environment:
