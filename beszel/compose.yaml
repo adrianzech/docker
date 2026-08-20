@@ -1,0 +1,23 @@
+services:
+  beszel:
+    container_name: beszel
+    image: henrygd/beszel:0.18.8
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.beszel.rule: "Host(`beszel.zech.co`)"
+      traefik.http.routers.beszel.entrypoints: "websecure"
+      traefik.http.routers.beszel.tls: "true"
+      traefik.http.routers.beszel.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.beszel.loadbalancer.server.port: "8090"
+    environment:
+      DISABLE_PASSWORD_AUTH: true
+    volumes:
+      - /opt/appdata/beszel:/beszel_data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
