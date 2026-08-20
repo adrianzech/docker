@@ -39,6 +39,12 @@ services:
     container_name: tracearr-app
     image: ghcr.io/connorgallopo/tracearr:2.1.0
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://127.0.0.1:3000/health"]
+      start_period: 60s
+      interval: 30s
+      timeout: 5s
+      retries: 5
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
