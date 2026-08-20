@@ -6,8 +6,8 @@
 | --- | --- | --- |
 | `DATABASE_PASSWORD` | Strong PostgreSQL password | `openssl rand -base64 32` |
 | `PAPERLESS_SECRET_KEY` | Generated persistent secret | `openssl rand -base64 64` |
-| `PAPERLESS_SOCIALACCOUNT_PROVIDERS` | Replace `<client_id>` with the Authentik client ID | Authentik |
-| `PAPERLESS_SOCIALACCOUNT_PROVIDERS` | Replace `<secret>` with the Authentik client secret | Authentik |
+| `PAPERLESS_SOCIALACCOUNT_PROVIDERS` | Set the JSON `client_id` value to the Authentik client ID | Authentik |
+| `PAPERLESS_SOCIALACCOUNT_PROVIDERS` | Set the JSON `secret` value to the Authentik client secret | Authentik |
 
 ## Update `.env`
 
