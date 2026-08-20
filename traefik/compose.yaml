@@ -10,11 +10,11 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
-      traefik.http.routers.traefik.rule: Host(`traefik.${DOMAIN}`)
-      traefik.http.routers.traefik.entrypoints: websecure
+      traefik.http.routers.traefik.rule: "Host(`traefik.zech.co`)"
+      traefik.http.routers.traefik.entrypoints: "websecure"
       traefik.http.routers.traefik.tls: "true"
-      traefik.http.routers.traefik.service: api@internal
-      traefik.http.routers.traefik.middlewares: internal-only@file
+      traefik.http.routers.traefik.service: "api@internal"
+      traefik.http.routers.traefik.middlewares: "internal-only@file"
     env_file:
       - .env
     volumes:
