@@ -7,7 +7,11 @@
 | `NEXTAUTH_URL` | `https://karakeep.zech.co` | — |
 | `NEXTAUTH_SECRET` | Generated JWT signing secret | `openssl rand -base64 36` |
 | `MEILI_MASTER_KEY` | Generated Meilisearch master key | `openssl rand -base64 36 \| tr -dc 'A-Za-z0-9'` |
-| `OAUTH_WELLKNOWN_URL` | Authentik provider discovery URL | — |
+| `OPENAI_API_KEY` | OpenAI API key | External |
+| `SMTP_HOST` | SMTP host | External |
+| `SMTP_USER` | SMTP username | External |
+| `SMTP_PASSWORD` | SMTP password | External |
+| `OAUTH_WELLKNOWN_URL` | Authentik provider discovery URL | Authentik |
 | `OAUTH_CLIENT_ID` | Authentik client ID | Authentik |
 | `OAUTH_CLIENT_SECRET` | Authentik client secret | Authentik |
 
