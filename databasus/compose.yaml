@@ -4,14 +4,11 @@ services:
     image: databasus/databasus:v3.53.0
     restart: unless-stopped
     healthcheck:
-      test:
-        - CMD
-        - databasus
-        - healthcheck
+      test: ["CMD", "databasus", "healthcheck"]
       start_period: 60s
       interval: 30s
-      retries: 3
       timeout: 5s
+      retries: 3
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"

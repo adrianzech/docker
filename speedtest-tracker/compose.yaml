@@ -7,8 +7,8 @@ services:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 20s
       interval: 30s
-      retries: 5
       timeout: 5s
+      retries: 5
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
@@ -27,8 +27,8 @@ services:
       test: ["CMD-SHELL", "curl -fSs http://localhost/api/healthcheck | jq -e '.message == \"Speedtest Tracker is running!\"' > /dev/null || exit 1"]
       start_period: 30s
       interval: 30s
-      retries: 3
       timeout: 10s
+      retries: 3
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
