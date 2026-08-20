@@ -20,7 +20,7 @@ services:
     environment:
       DISABLE_PASSWORD_AUTH: true
     volumes:
-      - ../../../appdata/beszel:/beszel_data
+      - ../../appdata/beszel:/beszel_data
     networks:
       - proxy
 
