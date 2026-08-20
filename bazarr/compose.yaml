@@ -3,6 +3,12 @@ services:
     container_name: bazarr
     image: lscr.io/linuxserver/bazarr:1.6.0
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6767/system/ping"]
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 5
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
