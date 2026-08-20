@@ -2,10 +2,10 @@
 
 ## Required values
 
-| Variable | Value |
-| --- | --- |
-| `GF_AUTH_GENERIC_OAUTH_CLIENT_ID` | Authentik client ID |
-| `GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET` | Authentik client secret |
+| Variable | Value | Generate |
+| --- | --- | --- |
+| `GF_AUTH_GENERIC_OAUTH_CLIENT_ID` | Authentik client ID | Authentik |
+| `GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET` | Authentik client secret | Authentik |
 
 ## Authentik OAuth
 
