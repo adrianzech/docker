@@ -9,6 +9,9 @@
 | `SPARKY_FITNESS_FRONTEND_URL` | `https://health.zech.co` | — |
 | `SPARKY_FITNESS_API_ENCRYPTION_KEY` | Generated 64-character hexadecimal key | `openssl rand -hex 32` |
 | `BETTER_AUTH_SECRET` | Generated persistent secret | `openssl rand -hex 32` |
+| `SPARKY_FITNESS_EMAIL_HOST` | SMTP host | External |
+| `SPARKY_FITNESS_EMAIL_USER` | SMTP username | External |
+| `SPARKY_FITNESS_EMAIL_PASS` | SMTP password | External |
 | `SPARKY_FITNESS_OIDC_CLIENT_ID` | Authentik client ID | Authentik |
 | `SPARKY_FITNESS_OIDC_CLIENT_SECRET` | Authentik client secret | Authentik |
 
