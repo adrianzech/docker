@@ -95,6 +95,12 @@ services:
     container_name: authentik-socket-proxy
     image: tecnativa/docker-socket-proxy:v0.5.0
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider http://127.0.0.1:2375/version"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
     environment:
       CONTAINERS: 1
       IMAGES: 1
