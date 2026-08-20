@@ -40,7 +40,7 @@ services:
       DATABASE_PASS: ${DATABASE_PASSWORD}
       MQTT_HOST: mosquitto
     volumes:
-      - ../../appdata/teslamate/import:../app/import
+      - ../../appdata/teslamate/import:/opt/app/import
     networks:
       - proxy
       - internal
