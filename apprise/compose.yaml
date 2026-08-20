@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     labels:
       traefik.enable: "true"
+      traefik.docker.network: "proxy"
       traefik.http.routers.apprise.rule: "Host(`apprise.zech.co`)"
       traefik.http.routers.apprise.entrypoints: "websecure"
       traefik.http.routers.apprise.tls: "true"
