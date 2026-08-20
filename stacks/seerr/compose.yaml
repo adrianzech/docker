@@ -1,0 +1,63 @@
+services:
+  database:
+    container_name: seerr-database
+    image: postgres:18.6-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ../../appdata/seerr/database:/var/lib/postgresql
+    networks:
+      - internal
+      - database-backup
+
+  seerr:
+    container_name: seerr
+    image: ghcr.io/seerr-team/seerr:v3.4.1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/settings/public || exit 1"]
+      start_period: 20s
+      interval: 15s
+      timeout: 3s
+      retries: 3
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.seerr.rule: "Host(`seerr.zech.co`)"
+      traefik.http.routers.seerr.entrypoints: "websecure"
+      traefik.http.routers.seerr.tls: "true"
+      traefik.http.routers.seerr.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.seerr.loadbalancer.server.port: "5055"
+    environment:
+      TZ: Europe/Vienna
+      DB_TYPE: postgres
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: ${DATABASE_NAME}
+      DB_USER: ${DATABASE_USER}
+      DB_PASS: ${DATABASE_PASSWORD}
+    volumes:
+      - ../../appdata/seerr/config:/app/config
+    networks:
+      - proxy
+      - internal
+
+networks:
+  proxy:
+    external: true
+
+  database-backup:
+    external: true
+
+  internal:
+    name: seerr-internal
+    driver: bridge

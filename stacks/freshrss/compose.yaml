@@ -1,0 +1,60 @@
+services:
+  database:
+    container_name: freshrss-database
+    image: postgres:18.6
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ../../appdata/freshrss/database:/var/lib/postgresql
+    networks:
+      - internal
+      - database-backup
+
+  freshrss:
+    container_name: freshrss
+    image: linuxserver/freshrss:1.29.1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:80"]
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.freshrss.rule: "Host(`rss.zech.co`)"
+      traefik.http.routers.freshrss.entrypoints: "websecure"
+      traefik.http.routers.freshrss.tls: "true"
+      traefik.http.routers.freshrss.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.freshrss.loadbalancer.server.port: "80"
+    env_file:
+      - .env
+    volumes:
+      - ../../appdata/freshrss/config:/config
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+
+networks:
+  proxy:
+    external: true
+
+  database-backup:
+    external: true
+
+  internal:
+    name: freshrss-internal
+    driver: bridge

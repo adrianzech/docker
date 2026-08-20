@@ -1,0 +1,137 @@
+services:
+  database:
+    container_name: nextcloud-database
+    image: postgres:18.6-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ../../appdata/nextcloud/database:/var/lib/postgresql
+    networks:
+      - internal
+      - database-backup
+
+  valkey:
+    container_name: nextcloud-valkey
+    image: valkey/valkey:9.1.1-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ../../appdata/nextcloud/valkey:/data
+    networks:
+      - internal
+
+  nextcloud:
+    container_name: nextcloud-server
+    image: nextcloud:34.0.3
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost/status.php >/dev/null"]
+      start_period: 60s
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.nextcloud.rule: "Host(`cloud.zech.co`)"
+      traefik.http.routers.nextcloud.entrypoints: "websecure"
+      traefik.http.routers.nextcloud.tls: "true"
+      traefik.http.routers.nextcloud.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.nextcloud.loadbalancer.server.port: "80"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      REDIS_HOST: valkey
+    volumes:
+      - ../../appdata/nextcloud/data:/var/www/html
+      - /mnt/cloud:/var/www/html/data
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+
+  cron:
+    container_name: nextcloud-cron
+    image: nextcloud:34.0.3
+    restart: unless-stopped
+    entrypoint: /cron.sh
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      REDIS_HOST: valkey
+    volumes:
+      - ../../appdata/nextcloud/data:/var/www/html
+      - /mnt/cloud:/var/www/html/data
+    networks:
+      - internal
+    depends_on:
+      nextcloud:
+        condition: service_healthy
+
+  euro-office:
+    container_name: nextcloud-euro-office
+    image: ghcr.io/euro-office/documentserver:v9.3.3
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost/healthcheck | grep -qx true"]
+      start_period: 60s
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.nextcloud-office.rule: "Host(`office.zech.co`)"
+      traefik.http.routers.nextcloud-office.entrypoints: "websecure"
+      traefik.http.routers.nextcloud-office.tls: "true"
+      traefik.http.routers.nextcloud-office.middlewares: "internal-only@file,security-headers@file,compression@file"
+      traefik.http.services.nextcloud-office.loadbalancer.server.port: "80"
+    env_file:
+      - .env
+    volumes:
+      - ../../appdata/nextcloud/euro-office/data:/var/lib/euro-office/documentserver
+      - ../../appdata/nextcloud/euro-office/logs:/var/log/euro-office/documentserver
+      - ../../appdata/nextcloud/euro-office/config:/etc/euro-office/documentserver
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      nextcloud:
+        condition: service_healthy
+
+networks:
+  proxy:
+    external: true
+
+  database-backup:
+    external: true
+
+  internal:
+    name: nextcloud-internal
+    driver: bridge

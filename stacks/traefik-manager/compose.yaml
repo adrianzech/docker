@@ -1,0 +1,55 @@
+services:
+  traefik-manager:
+    container_name: traefik-manager
+    image: ghcr.io/chr0nzz/traefik-manager:1.10.3
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.traefik-manager.rule: "Host(`traefik-manager.zech.co`)"
+      traefik.http.routers.traefik-manager.entrypoints: "websecure"
+      traefik.http.routers.traefik-manager.tls: "true"
+      traefik.http.routers.traefik-manager.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.traefik-manager.loadbalancer.server.port: "5000"
+    environment:
+      COOKIE_SECURE: true
+      CONFIG_DIR: /app/traefik/dynamic
+      STATIC_CONFIG_PATH: /app/traefik/traefik.yml
+      RESTART_METHOD: proxy
+      TRAEFIK_CONTAINER: traefik
+      DOCKER_HOST: tcp://socket-proxy:2375
+    volumes:
+      - ../../appdata/traefik-manager/config:/app/config
+      - ../../appdata/traefik-manager/backups:/app/backups
+      - ../../appdata/traefik/acme/acme.json:/app/acme.json:ro
+      - ../../appdata/traefik/dynamic:/app/traefik/dynamic
+      - ../../appdata/traefik/traefik.yml:/app/traefik/traefik.yml
+      - ../../appdata/traefik/logs/access.log:/app/logs/access.log:ro
+    networks:
+      - proxy
+      - socket-proxy
+
+  socket-proxy:
+    container_name: traefik-manager-socket-proxy
+    image: tecnativa/docker-socket-proxy:v0.5.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider http://127.0.0.1:2375/version"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      CONTAINERS: 1
+      POST: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - socket-proxy
+
+networks:
+  proxy:
+    external: true
+
+  socket-proxy:
+    internal: true

@@ -1,0 +1,21 @@
+services:
+  changedetection:
+    container_name: changedetection
+    image: dgtlmoon/changedetection.io:0.55.8
+    restart: unless-stopped
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.changedetection.rule: "Host(`change.zech.co`)"
+      traefik.http.routers.changedetection.entrypoints: "websecure"
+      traefik.http.routers.changedetection.tls: "true"
+      traefik.http.routers.changedetection.middlewares: "authentik@file,security-headers@file,compression@file"
+      traefik.http.services.changedetection.loadbalancer.server.port: "5000"
+    volumes:
+      - ../../appdata/changedetection/datastore:/datastore
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
