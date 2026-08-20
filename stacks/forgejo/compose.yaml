@@ -14,7 +14,7 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - /opt/docker/appdata/forgejo/database:/var/lib/postgresql
+      - ../../appdata/forgejo/database:/var/lib/postgresql
     networks:
       - internal
 
