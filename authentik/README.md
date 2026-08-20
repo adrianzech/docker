@@ -19,3 +19,9 @@ To update the local `.env` with the generated values:
 sed -i "s|^DATABASE_PASSWORD=.*|DATABASE_PASSWORD=$(openssl rand -base64 32)|" .env
 sed -i "s|^AUTHENTIK_SECRET_KEY=.*|AUTHENTIK_SECRET_KEY=$(openssl rand -base64 64)|" .env
 ```
+
+## Docker integration
+
+| Authentik setting | Value |
+| --- | --- |
+| Docker URL | `http://socket-proxy:2375` |

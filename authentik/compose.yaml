@@ -79,15 +79,32 @@ services:
       AUTHENTIK_POSTGRESQL__USER: ${DATABASE_USER}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - /opt/appdata/authentik/data:/data
       - /opt/appdata/authentik/templates:/templates
       - /opt/appdata/authentik/certs:/certs
     depends_on:
       database:
         condition: service_healthy
+      socket-proxy:
+        condition: service_started
     networks:
       - internal
+      - socket-proxy
+
+  socket-proxy:
+    container_name: authentik-socket-proxy
+    image: tecnativa/docker-socket-proxy:v0.5.0
+    restart: unless-stopped
+    environment:
+      CONTAINERS: 1
+      IMAGES: 1
+      INFO: 1
+      POST: 1
+      ALLOW_RESTARTS: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - socket-proxy
 
 networks:
   proxy:
@@ -99,3 +116,6 @@ networks:
   internal:
     name: authentik-internal
     driver: bridge
+
+  socket-proxy:
+    internal: true
