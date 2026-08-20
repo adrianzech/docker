@@ -53,12 +53,12 @@ services:
     volumes:
       - /opt/appdata/authentik/data:/data
       - /opt/appdata/authentik/templates:/templates
-    depends_on:
-      database:
-        condition: service_healthy
     networks:
       - proxy
       - internal
+    depends_on:
+      database:
+        condition: service_healthy
 
   worker:
     container_name: authentik-worker
@@ -82,14 +82,14 @@ services:
       - /opt/appdata/authentik/data:/data
       - /opt/appdata/authentik/templates:/templates
       - /opt/appdata/authentik/certs:/certs
+    networks:
+      - internal
+      - socket-proxy
     depends_on:
       database:
         condition: service_healthy
       socket-proxy:
         condition: service_started
-    networks:
-      - internal
-      - socket-proxy
 
   socket-proxy:
     container_name: authentik-socket-proxy

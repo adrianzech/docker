@@ -21,6 +21,21 @@ services:
       - internal
       - database-backup
 
+  valkey:
+    container_name: immich-valkey
+    image: valkey/valkey:9.1.1-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - /opt/appdata/immich/valkey:/data
+    networks:
+      - internal
+
   server:
     container_name: immich-server
     image: ghcr.io/immich-app/immich-server:v3.1.0
@@ -59,21 +74,6 @@ services:
     restart: unless-stopped
     volumes:
       - /mnt/immich/machine-learning:/cache
-    networks:
-      - internal
-
-  valkey:
-    container_name: immich-valkey
-    image: valkey/valkey:9.1.1-alpine
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "valkey-cli", "ping"]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - /opt/appdata/immich/valkey:/data
     networks:
       - internal
 

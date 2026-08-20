@@ -12,24 +12,10 @@ services:
     env_file:
       - .env
     environment:
-          MEILI_ADDR: http://meilisearch:7700
-          BROWSER_WEB_URL: http://chrome:9222
+      MEILI_ADDR: http://meilisearch:7700
+      BROWSER_WEB_URL: http://chrome:9222
     volumes:
       - /opt/appdata/karakeep/meilisearch:/meili_data
-    networks:
-      - internal
-
-  chrome:
-    container_name: karakeep-chrome
-    image: ghcr.io/karakeep-app/karakeep-chrome:151.0.7922.47-r1
-    restart: unless-stopped
-    init: true
-    command:
-          - --disable-gpu
-          - --disable-dev-shm-usage
-          - --hide-scrollbars
-          - --disable-blink-features=AutomationControlled
-          - --window-size=1440,900
     networks:
       - internal
 
@@ -65,6 +51,20 @@ services:
     depends_on:
       meilisearch:
         condition: service_healthy
+
+  chrome:
+    container_name: karakeep-chrome
+    image: ghcr.io/karakeep-app/karakeep-chrome:151.0.7922.47-r1
+    restart: unless-stopped
+    init: true
+    command:
+      - --disable-gpu
+      - --disable-dev-shm-usage
+      - --hide-scrollbars
+      - --disable-blink-features=AutomationControlled
+      - --window-size=1440,900
+    networks:
+      - internal
 
 networks:
   proxy:

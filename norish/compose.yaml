@@ -19,6 +19,21 @@ services:
       - internal
       - database-backup
 
+  valkey:
+    container_name: norish-valkey
+    image: valkey/valkey:9.1.1-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - /opt/appdata/norish/valkey:/data
+    networks:
+      - internal
+
   norish:
     container_name: norish-app
     image: norishapp/norish:v0.20.0-beta
@@ -56,21 +71,6 @@ services:
         condition: service_healthy
       chrome:
         condition: service_started
-
-  valkey:
-    container_name: norish-valkey
-    image: valkey/valkey:9.1.1-alpine
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "valkey-cli", "ping"]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - /opt/appdata/norish/valkey:/data
-    networks:
-      - internal
 
   chrome:
     container_name: norish-chrome

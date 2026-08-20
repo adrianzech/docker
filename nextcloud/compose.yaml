@@ -19,6 +19,21 @@ services:
       - internal
       - database-backup
 
+  valkey:
+    container_name: nextcloud-valkey
+    image: valkey/valkey:9.1.1-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - /opt/appdata/nextcloud/valkey:/data
+    networks:
+      - internal
+
   nextcloud:
     container_name: nextcloud-server
     image: nextcloud:34.0.3
@@ -109,21 +124,6 @@ services:
     depends_on:
       nextcloud:
         condition: service_healthy
-
-  valkey:
-    container_name: nextcloud-valkey
-    image: valkey/valkey:9.1.1-alpine
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "valkey-cli", "ping"]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - /opt/appdata/nextcloud/valkey:/data
-    networks:
-      - internal
 
 networks:
   proxy:
