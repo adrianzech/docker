@@ -38,8 +38,8 @@
         widget:
           type: proxmox
           url: https://pve.local.zech.co:8006
-          username: "{{HOMEPAGE_VAR_PROXMOX_USERNAME}}"
-          password: "{{HOMEPAGE_VAR_PROXMOX_PASSWORD}}"
+          username: "{{HOMEPAGE_VAR_PROXMOX_TOKEN}}"
+          password: "{{HOMEPAGE_VAR_PROXMOX_SECRET}}"
     - OPNsense:
         icon: opnsense.png
         href: https://fw.local.zech.co:4444
