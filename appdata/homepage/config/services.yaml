@@ -153,7 +153,7 @@
           url: https://jellyfin.zech.co
           key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
           version: 2
-    - Calendar:
+    - Sonarr Calendar:
         icon: mdi-calendar
         widget:
           type: calendar
@@ -162,6 +162,11 @@
               service_group: Media
               service_name: Sonarr
               baseUrl: https://sonarr.zech.co
+    - Radarr Calendar:
+        icon: mdi-calendar
+        widget:
+          type: calendar
+          integrations:
             - type: radarr
               service_group: Media
               service_name: Radarr
