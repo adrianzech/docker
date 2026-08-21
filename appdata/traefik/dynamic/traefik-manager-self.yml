@@ -6,7 +6,7 @@ http:
         - websecure
       service: traefik-manager
       tls:
-        certResolver: cloudflare
+        certResolver: letsencrypt
   services:
     traefik-manager:
       loadBalancer:
