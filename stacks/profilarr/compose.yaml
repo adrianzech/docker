@@ -1,0 +1,53 @@
+services:
+  profilarr:
+    container_name: profilarr
+    image: ghcr.io/dictionarry-hub/profilarr:2.2.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:$${PORT}/api/v1/health || exit 1"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.profilarr.rule: "Host(`profilarr.zech.co`)"
+      traefik.http.routers.profilarr.entrypoints: "websecure"
+      traefik.http.routers.profilarr.tls: "true"
+      traefik.http.routers.profilarr.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.profilarr.loadbalancer.server.port: "6868"
+    env_file:
+      - .env
+    environment:
+      PARSER_HOST: parser
+      PARSER_PORT: 5000
+    volumes:
+      - ../../appdata/profilarr/config:/config
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      parser:
+        condition: service_healthy
+
+  parser:
+    container_name: profilarr-parser
+    image: ghcr.io/dictionarry-hub/profilarr-parser:2.2.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5000/health || exit 1"]
+      start_period: 5s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+
+  internal:
+    name: profilarr-internal
+    driver: bridge
