@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 pve:
   url: https://pve.local.zech.co:8006
   token: "{{HOMEPAGE_VAR_PROXMOX_TOKEN}}"
   secret: "{{HOMEPAGE_VAR_PROXMOX_SECRET}}"
+=======
+---
+# pve:
+#   url: https://proxmox.host.or.ip:8006
+#   token: username@pam!Token ID
+#   secret: secret
+>>>>>>> fc25efe (fix: add missing homepage configs)
