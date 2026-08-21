@@ -2,6 +2,7 @@
     - Traefik:
         icon: traefik.png
         href: https://traefik.zech.co
+        description: Reverse proxy and TLS management
         server: local
         container: traefik
         widget:
@@ -10,11 +11,13 @@
     - Traefik Manager:
         icon: traefik-manager.png
         href: https://traefik-manager.zech.co
+        description: Traefik routing management
         server: local
         container: traefik-manager
     - Authentik:
         icon: authentik.png
         href: https://sso.zech.co
+        description: Central authentication and identity management
         server: local
         container: authentik-server
         widget:
@@ -25,16 +28,19 @@
     - Grafana:
         icon: grafana.png
         href: https://grafana.zech.co
+        description: Monitoring dashboards and analytics
         server: local
         container: grafana
     - Beszel:
         icon: beszel.png
         href: https://beszel.zech.co
+        description: Lightweight server monitoring
         server: local
         container: beszel
     - Proxmox:
         icon: proxmox.png
         href: https://pve.local.zech.co:8006
+        description: Virtualization host and container management
         widget:
           type: proxmox
           url: https://pve.local.zech.co:8006
@@ -43,6 +49,7 @@
     - OPNsense:
         icon: opnsense.png
         href: https://fw.local.zech.co:4444
+        description: Firewall and network management
         widget:
           type: opnsense
           url: https://fw.local.zech.co:4444
@@ -51,6 +58,7 @@
     - Unraid:
         icon: unraid.png
         href: https://nas.local.zech.co
+        description: NAS and Docker host
         widget:
           type: unraid
           url: https://nas.local.zech.co
@@ -58,9 +66,11 @@
     - iLO:
         icon: mdi-server
         href: https://nas.local.zech.co
+        description: Remote server management
     - Komodo:
         icon: komodo.png
         href: https://komodo.zech.co
+        description: Deployment and server management
         widget:
           type: komodo
           url: https://komodo.zech.co
@@ -69,6 +79,7 @@
     - Healthchecks:
         icon: healthchecks.png
         href: https://healthchecks.zech.co
+        description: Scheduled task monitoring
         server: local
         container: healthchecks
         widget:
@@ -80,6 +91,7 @@
     - Seerr:
         icon: seerr.png
         href: https://seerr.zech.co
+        description: Media requests and discovery
         server: local
         container: seerr
         widget:
@@ -89,6 +101,7 @@
     - Sonarr:
         icon: sonarr.png
         href: https://sonarr.zech.co
+        description: TV series management and downloads
         server: local
         container: sonarr
         widget:
@@ -98,6 +111,7 @@
     - Radarr:
         icon: radarr.png
         href: https://radarr.zech.co
+        description: Movie management and downloads
         server: local
         container: radarr
         widget:
@@ -107,6 +121,7 @@
     - Prowlarr:
         icon: prowlarr.png
         href: https://prowlarr.zech.co
+        description: Indexer management for media applications
         server: local
         container: prowlarr
         widget:
@@ -116,6 +131,7 @@
     - Bazarr:
         icon: bazarr.png
         href: https://bazarr.zech.co
+        description: Subtitle management for media
         server: local
         container: bazarr
         widget:
@@ -125,6 +141,7 @@
     - SABnzbd:
         icon: sabnzbd.png
         href: https://sabnzbd.zech.co
+        description: Usenet download client
         server: local
         container: sabnzbd
         widget:
@@ -134,11 +151,13 @@
     - Profilarr:
         icon: profilarr.png
         href: https://profilarr.zech.co
+        description: Quality profiles for Arr applications
         server: local
         container: profilarr
     - Tracearr:
         icon: tracearr.png
         href: https://tracearr.zech.co
+        description: Analytics for Arr applications
         server: local
         container: tracearr-app
         widget:
@@ -148,6 +167,7 @@
     - Jellyfin:
         icon: jellyfin.png
         href: https://jellyfin.zech.co
+        description: Media server for movies, TV shows and music
         widget:
           type: jellyfin
           url: https://jellyfin.zech.co
@@ -155,6 +175,7 @@
           version: 2
     - Sonarr Calendar:
         icon: mdi-calendar
+        description: Upcoming TV releases
         widget:
           type: calendar
           integrations:
@@ -164,6 +185,7 @@
               baseUrl: https://sonarr.zech.co
     - Radarr Calendar:
         icon: mdi-calendar
+        description: Upcoming movie releases
         widget:
           type: calendar
           integrations:
@@ -176,6 +198,7 @@
     - Nextcloud:
         icon: nextcloud.png
         href: https://cloud.zech.co
+        description: Files, calendars and collaboration
         server: local
         container: nextcloud-server
         widget:
@@ -185,6 +208,7 @@
     - Paperless-ngx:
         icon: paperless-ngx.png
         href: https://paperless.zech.co
+        description: Document archive and full-text search
         server: local
         container: paperless-webserver
         widget:
@@ -194,6 +218,7 @@
     - FreshRSS:
         icon: freshrss.png
         href: https://rss.zech.co
+        description: Read and manage RSS feeds
         server: local
         container: freshrss
         widget:
@@ -204,6 +229,7 @@
     - Karakeep:
         icon: karakeep.png
         href: https://karakeep.zech.co
+        description: Bookmarks and knowledge collection
         server: local
         container: karakeep
         widget:
@@ -213,21 +239,25 @@
     - BentoPDF:
         icon: bentopdf.png
         href: https://pdf.zech.co
+        description: Tools for editing PDFs
         server: local
         container: bentopdf
     - IT Tools:
         icon: it-tools.png
         href: https://tools.zech.co
+        description: Practical tools for IT tasks
         server: local
         container: it-tools
     - Forgejo:
         icon: forgejo.png
         href: https://git.zech.co
+        description: Git repositories and software development
 
 - Personal:
     - Immich:
         icon: immich.png
         href: https://photos.zech.co
+        description: Photo and video management
         server: local
         container: immich-server
         widget:
@@ -238,21 +268,25 @@
     - Dawarich:
         icon: dawarich.png
         href: https://dawarich.zech.co
+        description: Personal location history
         server: local
         container: dawarich-app
     - TeslaMate:
         icon: teslamate.png
         href: https://teslamate.zech.co
+        description: Tesla vehicle data and drives
         server: local
         container: teslamate-app
     - TeslaMate Grafana:
         icon: grafana.png
         href: https://teslamate-grafana.zech.co
+        description: TeslaMate analytics and dashboards
         server: local
         container: teslamate-grafana
     - SparkyFitness:
         icon: sparkyfitness.png
         href: https://health.zech.co
+        description: Fitness and health tracking
         server: local
         container: sparkyfitness-frontend
         widget:
@@ -262,11 +296,13 @@
     - Norish:
         icon: norish.png
         href: https://norish.zech.co
+        description: Nutrition and meal planning
         server: local
         container: norish-app
     - UniFi:
         icon: unifi.png
         href: https://unifi.zech.co
+        description: Wi-Fi and network management
         server: local
         container: unifi-os-server
         widget:
@@ -276,6 +312,7 @@
     - Home Assistant:
         icon: home-assistant.png
         href: https://home.zech.co
+        description: Home automation and smart home
         widget:
           type: homeassistant
           url: https://home.zech.co
@@ -285,6 +322,7 @@
     - ChangeDetection:
         icon: changedetection.png
         href: https://change.zech.co
+        description: Monitor changes on websites
         server: local
         container: changedetection
         widget:
@@ -294,16 +332,19 @@
     - Apprise:
         icon: apprise.png
         href: https://apprise.zech.co
+        description: Send notifications to many services
         server: local
         container: apprise
     - Databasus:
         icon: databasus.png
         href: https://databasus.zech.co
+        description: Web interface for databases
         server: local
         container: databasus
     - Speedtest Tracker:
         icon: speedtest-tracker.png
         href: https://speedtest.zech.co
+        description: Track internet speed over time
         server: local
         container: speedtest-tracker
         widget:
@@ -314,5 +355,6 @@
     - VersityGW:
         icon: versity.png
         href: https://web.s3.zech.co
+        description: S3-compatible object storage
         server: local
         container: versitygw
