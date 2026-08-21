@@ -6,6 +6,9 @@
 | --- | --- | --- |
 | `DATABASE_PASSWORD` | Strong PostgreSQL password | `openssl rand -base64 32` |
 | `SECRET_KEY_BASE` | Generated Rails secret | `openssl rand -hex 64` |
+| `SMTP_SERVER` | SMTP server hostname | SMTP provider |
+| `SMTP_USERNAME` | SMTP username | SMTP provider |
+| `SMTP_PASSWORD` | SMTP password | SMTP provider |
 | `OIDC_CLIENT_ID` | Authentik client ID | Authentik |
 | `OIDC_CLIENT_SECRET` | Authentik client secret | Authentik |
 
