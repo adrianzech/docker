@@ -1,0 +1,119 @@
+services:
+  database:
+    container_name: dawarich-database
+    image: postgis/postgis:17-3.6-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ../../appdata/dawarich/database:/var/lib/postgresql/data
+    networks:
+      - internal
+      - database-backup
+
+  valkey:
+    container_name: dawarich-valkey
+    image: valkey/valkey:9.1.1-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ../../appdata/dawarich/valkey:/data
+    networks:
+      - internal
+
+  app:
+    container_name: dawarich-app
+    image: freikin/dawarich:1.13.0
+    restart: unless-stopped
+    command: ["bin/rails", "server", "-p", "3000", "-b", "::"]
+    entrypoint: web-entrypoint.sh
+    healthcheck:
+      test: ["CMD-SHELL", "wget --header='X-Forwarded-Proto: https' -qO - http://127.0.0.1:3000/api/v1/health | grep -q '\"status\"\\s*:\\s*\"ok\"'"]
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.dawarich.rule: "Host(`dawarich.zech.co`)"
+      traefik.http.routers.dawarich.entrypoints: "websecure"
+      traefik.http.routers.dawarich.tls: "true"
+      traefik.http.routers.dawarich.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.dawarich.loadbalancer.server.port: "3000"
+    env_file:
+      - .env
+    environment:
+      REDIS_URL: redis://valkey:6379
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: ${DATABASE_USER}
+    volumes:
+      - ../../appdata/dawarich/public:/var/app/public
+      - ../../appdata/dawarich/watched:/var/app/tmp/imports/watched
+      - ../../appdata/dawarich/storage:/var/app/storage
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+
+  worker:
+    container_name: dawarich-worker
+    image: freikin/dawarich:1.13.0
+    restart: unless-stopped
+    command: ["sidekiq"]
+    entrypoint: sidekiq-entrypoint.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f sidekiq"]
+      start_period: 30s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - .env
+    environment:
+      REDIS_URL: redis://valkey:6379
+      DATABASE_HOST: database
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: ${DATABASE_USER}
+    volumes:
+      - ../../appdata/dawarich/public:/var/app/public
+      - ../../appdata/dawarich/watched:/var/app/tmp/imports/watched
+      - ../../appdata/dawarich/storage:/var/app/storage
+    networks:
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+      app:
+        condition: service_healthy
+
+networks:
+  proxy:
+    external: true
+
+  database-backup:
+    external: true
+
+  internal:
+    name: dawarich-internal
+    driver: bridge
