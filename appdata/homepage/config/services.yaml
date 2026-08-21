@@ -1,0 +1,260 @@
+- Infrastructure:
+    - Traefik:
+        icon: traefik.png
+        href: https://traefik.zech.co
+        server: local
+        container: traefik
+        widget:
+          type: traefik
+          url: http://traefik:8080
+    - Traefik Manager:
+        icon: traefik.png
+        href: https://traefik-manager.zech.co
+        server: local
+        container: traefik-manager
+    - Authentik:
+        icon: authentik.png
+        href: https://sso.zech.co
+        server: local
+        container: authentik-server
+        widget:
+          type: authentik
+          url: http://authentik-server:9000
+          key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
+          version: 2
+    - Grafana:
+        icon: grafana.png
+        href: https://grafana.zech.co
+        server: local
+        container: grafana
+    - Beszel:
+        icon: beszel.png
+        href: https://beszel.zech.co
+        server: local
+        container: beszel
+        widget:
+          type: beszel
+          url: http://beszel:8090
+          username: "{{HOMEPAGE_VAR_BESZEL_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_BESZEL_PASSWORD}}"
+          version: 2
+    - Healthchecks:
+        icon: healthchecks.png
+        href: https://healthchecks.zech.co
+        server: local
+        container: healthchecks
+        widget:
+          type: healthchecks
+          url: http://healthchecks:8000
+          key: "{{HOMEPAGE_VAR_HEALTHCHECKS_KEY}}"
+
+- Media:
+    - Seerr:
+        icon: seerr.png
+        href: https://seerr.zech.co
+        server: local
+        container: seerr
+        widget:
+          type: seerr
+          url: http://seerr:5055
+          key: "{{HOMEPAGE_VAR_SEERR_KEY}}"
+    - Sonarr:
+        icon: sonarr.png
+        href: https://sonarr.zech.co
+        server: local
+        container: sonarr
+        widget:
+          type: sonarr
+          url: http://sonarr:8989
+          key: "{{HOMEPAGE_VAR_SONARR_KEY}}"
+    - Radarr:
+        icon: radarr.png
+        href: https://radarr.zech.co
+        server: local
+        container: radarr
+        widget:
+          type: radarr
+          url: http://radarr:7878
+          key: "{{HOMEPAGE_VAR_RADARR_KEY}}"
+    - Prowlarr:
+        icon: prowlarr.png
+        href: https://prowlarr.zech.co
+        server: local
+        container: prowlarr
+        widget:
+          type: prowlarr
+          url: http://prowlarr:9696
+          key: "{{HOMEPAGE_VAR_PROWLARR_KEY}}"
+    - Bazarr:
+        icon: bazarr.png
+        href: https://bazarr.zech.co
+        server: local
+        container: bazarr
+        widget:
+          type: bazarr
+          url: http://bazarr:6767
+          key: "{{HOMEPAGE_VAR_BAZARR_KEY}}"
+    - SABnzbd:
+        icon: sabnzbd.png
+        href: https://sabnzbd.zech.co
+        server: local
+        container: sabnzbd
+        widget:
+          type: sabnzbd
+          url: http://sabnzbd:8080
+          key: "{{HOMEPAGE_VAR_SABNZBD_KEY}}"
+    - Profilarr:
+        icon: profilarr.png
+        href: https://profilarr.zech.co
+        server: local
+        container: profilarr
+    - Tracearr:
+        icon: tracearr.png
+        href: https://tracearr.zech.co
+        server: local
+        container: tracearr-app
+        widget:
+          type: tracearr
+          url: http://tracearr-app:3000
+          key: "{{HOMEPAGE_VAR_TRACEARR_KEY}}"
+
+- Productivity:
+    - Nextcloud:
+        icon: nextcloud.png
+        href: https://cloud.zech.co
+        server: local
+        container: nextcloud-server
+        widget:
+          type: nextcloud
+          url: http://nextcloud-server
+          key: "{{HOMEPAGE_VAR_NEXTCLOUD_TOKEN}}"
+    - Nextcloud Office:
+        icon: collabora.png
+        href: https://office.zech.co
+        server: local
+        container: nextcloud-euro-office
+    - Paperless-ngx:
+        icon: paperless-ngx.png
+        href: https://paperless.zech.co
+        server: local
+        container: paperless-webserver
+        widget:
+          type: paperlessngx
+          url: http://paperless-webserver:8000
+          key: "{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}"
+    - FreshRSS:
+        icon: freshrss.png
+        href: https://rss.zech.co
+        server: local
+        container: freshrss
+        widget:
+          type: freshrss
+          url: http://freshrss
+          username: "{{HOMEPAGE_VAR_FRESHRSS_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_FRESHRSS_PASSWORD}}"
+    - Karakeep:
+        icon: karakeep.png
+        href: https://karakeep.zech.co
+        server: local
+        container: karakeep
+        widget:
+          type: karakeep
+          url: http://karakeep:3000
+          key: "{{HOMEPAGE_VAR_KARAKEEP_KEY}}"
+    - BentoPDF:
+        icon: pdf.png
+        href: https://pdf.zech.co
+        server: local
+        container: bentopdf
+    - IT Tools:
+        icon: it-tools.png
+        href: https://tools.zech.co
+        server: local
+        container: it-tools
+
+- Personal:
+    - Immich:
+        icon: immich.png
+        href: https://photos.zech.co
+        server: local
+        container: immich-server
+        widget:
+          type: immich
+          url: http://immich-server:2283
+          key: "{{HOMEPAGE_VAR_IMMICH_KEY}}"
+          version: 2
+    - Dawarich:
+        icon: dawarich.png
+        href: https://dawarich.zech.co
+        server: local
+        container: dawarich-app
+    - TeslaMate:
+        icon: teslamate.png
+        href: https://teslamate.zech.co
+        server: local
+        container: teslamate-app
+    - TeslaMate Grafana:
+        icon: grafana.png
+        href: https://teslamate-grafana.zech.co
+        server: local
+        container: teslamate-grafana
+    - SparkyFitness:
+        icon: sparkyfitness.png
+        href: https://health.zech.co
+        server: local
+        container: sparkyfitness-frontend
+        widget:
+          type: sparkyfitness
+          url: http://sparkyfitness-frontend
+          key: "{{HOMEPAGE_VAR_SPARKYFITNESS_KEY}}"
+    - Norish:
+        icon: norish.png
+        href: https://norish.zech.co
+        server: local
+        container: norish-app
+    - UniFi:
+        icon: unifi.png
+        href: https://unifi.zech.co
+        server: local
+        container: unifi-os-server
+        widget:
+          type: unifi
+          url: https://unifi.zech.co
+          username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
+
+- Utilities:
+    - ChangeDetection:
+        icon: changedetection.png
+        href: https://change.zech.co
+        server: local
+        container: changedetection
+        widget:
+          type: changedetectionio
+          url: http://changedetection:5000
+          key: "{{HOMEPAGE_VAR_CHANGEDETECTION_KEY}}"
+    - Apprise:
+        icon: apprise.png
+        href: https://apprise.zech.co
+        server: local
+        container: apprise
+    - Databasus:
+        icon: database.png
+        href: https://databasus.zech.co
+        server: local
+        container: databasus
+    - Speedtest Tracker:
+        icon: speedtest-tracker.png
+        href: https://speedtest.zech.co
+        server: local
+        container: speedtest-tracker
+        widget:
+          type: speedtest
+          url: http://speedtest-tracker
+          key: "{{HOMEPAGE_VAR_SPEEDTEST_KEY}}"
+          version: 2
+    - VersityGW:
+        icon: versity.png
+        href: https://web.s3.zech.co
+        server: local
+        container: versitygw

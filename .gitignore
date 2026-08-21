@@ -6,6 +6,7 @@
 
 appdata/*
 !appdata/traefik/
+!appdata/homepage/
 
 appdata/traefik/*
 !appdata/traefik/dynamic/
