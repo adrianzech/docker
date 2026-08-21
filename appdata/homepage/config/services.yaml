@@ -8,7 +8,7 @@
           type: traefik
           url: http://traefik:8080
     - Traefik Manager:
-        icon: traefik.png
+        icon: traefik-manager.png
         href: https://traefik-manager.zech.co
         server: local
         container: traefik-manager
@@ -122,11 +122,6 @@
           type: nextcloud
           url: http://nextcloud-server
           key: "{{HOMEPAGE_VAR_NEXTCLOUD_TOKEN}}"
-    - Nextcloud Office:
-        icon: collabora.png
-        href: https://office.zech.co
-        server: local
-        container: nextcloud-euro-office
     - Paperless-ngx:
         icon: paperless-ngx.png
         href: https://paperless.zech.co
@@ -156,7 +151,7 @@
           url: http://karakeep:3000
           key: "{{HOMEPAGE_VAR_KARAKEEP_KEY}}"
     - BentoPDF:
-        icon: pdf.png
+        icon: bentopdf.png
         href: https://pdf.zech.co
         server: local
         container: bentopdf
@@ -232,7 +227,7 @@
         server: local
         container: apprise
     - Databasus:
-        icon: database.png
+        icon: databasus.png
         href: https://databasus.zech.co
         server: local
         container: databasus
