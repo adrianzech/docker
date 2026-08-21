@@ -1,0 +1,63 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+serversTransport:
+  insecureSkipVerify: true
+
+api:
+  dashboard: true
+  insecure: true
+
+ping:
+  entryPoint: traefik
+
+log:
+  level: INFO
+
+accessLog:
+  filePath: /var/log/traefik/access.log
+
+entryPoints:
+  traefik:
+    address: ":8080"
+
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: ":443"
+    transport:
+      respondingTimeouts:
+        #readTimeout: 600s
+        #idleTimeout: 600s
+        readTimeout: 0
+        idleTimeout: 0 
+    
+  forgejo-ssh:
+    address: ":2222"
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: proxy
+
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: adrian@zech.co
+      storage: /etc/traefik/acme/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"

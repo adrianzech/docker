@@ -1,0 +1,18 @@
+http:
+  routers:
+    jellyfin:
+      rule: Host(`jellyfin.zech.co`)
+      entryPoints:
+        - websecure
+      service: jellyfin
+      middlewares:
+        - security-headers
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    jellyfin:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://jellyfin.local.zech.co:8096

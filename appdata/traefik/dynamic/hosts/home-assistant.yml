@@ -1,0 +1,18 @@
+http:
+  routers:
+    home-assistant:
+      rule: Host(`home.zech.co`)
+      entryPoints:
+        - websecure
+      service: home-assistant
+      middlewares:
+        - security-headers
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    home-assistant:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: https://home.local.zech.co

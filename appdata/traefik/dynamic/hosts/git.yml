@@ -1,0 +1,32 @@
+http:
+  routers:
+    git:
+      rule: Host(`git.zech.co`)
+      entryPoints:
+        - websecure
+      service: git
+      middlewares:
+        - security-headers
+        - compression
+      tls: {}
+
+  services:
+    git:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://git.local.zech.co:3000
+
+tcp:
+  routers:
+    git-ssh:
+      entryPoints:
+        - forgejo-ssh
+      rule: HostSNI(`*`)
+      service: git-ssh
+
+  services:
+    git-ssh:
+      loadBalancer:
+        servers:
+          - address: git.local.zech.co:2222

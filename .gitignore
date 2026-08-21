@@ -3,4 +3,11 @@
 .env
 .*.env
 .idea
-appdata
+
+appdata/*
+!appdata/traefik/
+
+appdata/traefik/*
+!appdata/traefik/dynamic/
+!appdata/traefik/dynamic/**
+!appdata/traefik/traefik.yml
