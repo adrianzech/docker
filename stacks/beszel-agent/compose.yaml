@@ -34,7 +34,7 @@ services:
     environment:
       DOCKER_HOST: tcp://127.0.0.1:2375
     volumes:
-      - ../docker/appdata/beszel-agent:/var/lib/beszel-agent
+      - ../../appdata/beszel-agent:/var/lib/beszel-agent
     depends_on:
       socket-proxy:
         condition: service_healthy
