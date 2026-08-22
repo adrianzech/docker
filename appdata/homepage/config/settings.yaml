@@ -5,3 +5,25 @@
 providers:
   openweathermap: openweathermapapikey
   weatherapi: weatherapiapikey
+
+fullWidth: true
+
+layout:
+  Infrastructure:
+    style: row
+    columns: 4
+  Media:
+    style: row
+    columns: 4
+  Calendars:
+    style: row
+    columns: 2
+  Productivity:
+    style: row
+    columns: 4
+  Personal:
+    style: row
+    columns: 4
+  Utilities:
+    style: row
+    columns: 4

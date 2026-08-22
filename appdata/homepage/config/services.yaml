@@ -9,7 +9,7 @@
           type: traefik
           url: http://traefik:8080
     - Traefik Manager:
-        icon: traefik-manager.png
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/traefik-manager.png
         href: https://traefik-manager.zech.co
         description: Traefik routing management
         server: local
@@ -173,6 +173,8 @@
           url: https://jellyfin.zech.co
           key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
           version: 2
+
+- Calendars:
     - Sonarr Calendar:
         icon: mdi-calendar
         description: Upcoming TV releases
@@ -223,7 +225,7 @@
         container: freshrss
         widget:
           type: freshrss
-          url: https://rss.zech.co
+          url: http://freshrss
           username: "{{HOMEPAGE_VAR_FRESHRSS_USERNAME}}"
           password: "{{HOMEPAGE_VAR_FRESHRSS_PASSWORD}}"
     - Karakeep:
@@ -284,7 +286,7 @@
         server: local
         container: teslamate-grafana
     - SparkyFitness:
-        icon: sparkyfitness.png
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/sparkyfitness.png
         href: https://health.zech.co
         description: Fitness and health tracking
         server: local
@@ -294,7 +296,7 @@
           url: http://sparkyfitness-frontend
           key: "{{HOMEPAGE_VAR_SPARKYFITNESS_KEY}}"
     - Norish:
-        icon: norish.png
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/norish.png
         href: https://norish.zech.co
         description: Nutrition and meal planning
         server: local
@@ -353,7 +355,7 @@
           key: "{{HOMEPAGE_VAR_SPEEDTEST_KEY}}"
           version: 2
     - VersityGW:
-        icon: versity.png
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/versity.png
         href: https://web.s3.zech.co
         description: S3-compatible object storage
         server: local
