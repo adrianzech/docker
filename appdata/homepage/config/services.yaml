@@ -393,7 +393,7 @@
         server: local
         container: twitch-drops-miner
     - Free Games Claimer:
-        icon: free-games-claimer.png
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/free-games-claimer.png
         href: https://fcg.zech.co
         description: Automated free games claiming
         server: local
