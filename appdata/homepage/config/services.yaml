@@ -168,7 +168,7 @@
           key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
           version: 2
     - Profilarr:
-        icon: profilarr.png
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/profilarr.png
         href: https://profilarr.zech.co
         description: Quality profiles for Arr applications
         server: local
@@ -320,7 +320,7 @@
           url: https://home.zech.co
           key: "{{HOMEPAGE_VAR_HOMEASSISTANT_KEY}}"
     - Dawarich:
-        icon: dawarich.png
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/dawarich.png
         href: https://dawarich.zech.co
         description: Personal location history
         server: local
