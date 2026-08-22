@@ -223,7 +223,7 @@
         container: freshrss
         widget:
           type: freshrss
-          url: http://freshrss
+          url: https://rss.zech.co
           username: "{{HOMEPAGE_VAR_FRESHRSS_USERNAME}}"
           password: "{{HOMEPAGE_VAR_FRESHRSS_PASSWORD}}"
     - Karakeep:
