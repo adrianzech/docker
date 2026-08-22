@@ -1,0 +1,29 @@
+services:
+  free-games-claimer:
+    container_name: free-games-claimer
+    image: ghcr.io/p-adamiec/free-games-claimer-remaster:v1.6
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep python3 && curl --fail http://127.0.0.1:7080 || exit 1"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.free-games-claimer.rule: "Host(`fcg.zech.co`)"
+      traefik.http.routers.free-games-claimer.entrypoints: "websecure"
+      traefik.http.routers.free-games-claimer.tls: "true"
+      traefik.http.routers.free-games-claimer.middlewares: "authentik@file,security-headers@file,compression@file"
+      traefik.http.services.free-games-claimer.loadbalancer.server.port: "7080"
+    env_file:
+      - .env
+    volumes:
+      - ../../appdata/free-games-claimer-remaster/data:/fgc/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
