@@ -24,6 +24,9 @@ layout:
   Utilities:
     style: row
     columns: 4
+  Gaming:
+    style: row
+    columns: 4
   Calendars:
     style: row
     columns: 4
