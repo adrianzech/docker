@@ -176,7 +176,16 @@
 
 - Calendars:
     - Sonarr Calendar:
-        id: sonarr-calendar
+        icon: sonarr.png
+        description: Monthly TV releases
+        widget:
+          type: calendar
+          integrations:
+            - type: sonarr
+              service_group: Media
+              service_name: Sonarr
+              baseUrl: https://sonarr.zech.co
+    - Upcoming Series:
         icon: sonarr.png
         description: Upcoming TV releases
         widget:
@@ -189,7 +198,16 @@
               service_name: Sonarr
               baseUrl: https://sonarr.zech.co
     - Radarr Calendar:
-        id: radarr-calendar
+        icon: radarr.png
+        description: Monthly movie releases
+        widget:
+          type: calendar
+          integrations:
+            - type: radarr
+              service_group: Media
+              service_name: Radarr
+              baseUrl: https://radarr.zech.co
+    - Upcoming Movies:
         icon: radarr.png
         description: Upcoming movie releases
         widget:
