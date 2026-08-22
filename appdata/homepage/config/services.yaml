@@ -22,6 +22,7 @@
     - Proxmox:
         icon: proxmox.png
         href: https://pve.local.zech.co:8006
+        ping: pve.local.zech.co
         description: Virtualization host and container management
         widget:
           type: proxmox
@@ -31,6 +32,7 @@
     - OPNsense:
         icon: opnsense.png
         href: https://fw.local.zech.co:4444
+        ping: fw.local.zech.co
         description: Firewall and network management
         widget:
           type: opnsense
@@ -40,6 +42,7 @@
     - Unraid:
         icon: unraid.png
         href: https://nas.local.zech.co
+        ping: nas.local.zech.co
         description: NAS and Docker host
         widget:
           type: unraid
@@ -49,6 +52,8 @@
         icon: komodo.png
         href: https://komodo.zech.co
         description: Deployment and server management
+        server: local
+        container: komodo-core
         widget:
           type: komodo
           url: https://komodo.zech.co
@@ -85,6 +90,7 @@
     - iLO:
         icon: mdi-server
         href: https://nas.local.zech.co
+        ping: nas.local.zech.co
         description: Remote server management
 
 - Media:
@@ -161,6 +167,7 @@
     - Jellyfin:
         icon: jellyfin.png
         href: https://jellyfin.zech.co
+        ping: jellyfin.zech.co
         description: Media server for movies, TV shows and music
         widget:
           type: jellyfin
@@ -277,6 +284,7 @@
     - Forgejo:
         icon: forgejo.png
         href: https://git.zech.co
+        ping: git.zech.co
         description: Git repositories and software development
 
 - Personal:
@@ -314,6 +322,7 @@
     - Home Assistant:
         icon: home-assistant.png
         href: https://home.zech.co
+        ping: home.zech.co
         description: Home automation and smart home
         widget:
           type: homeassistant
