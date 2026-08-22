@@ -8,12 +8,6 @@
         widget:
           type: traefik
           url: http://traefik:8080
-    - Traefik Manager:
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/traefik-manager.png
-        href: https://traefik-manager.zech.co
-        description: Traefik routing management
-        server: local
-        container: traefik-manager
     - Authentik:
         icon: authentik.png
         href: https://sso.zech.co
@@ -25,18 +19,6 @@
           url: http://authentik-server:9000
           key: "{{HOMEPAGE_VAR_AUTHENTIK_TOKEN}}"
           version: 2
-    - Grafana:
-        icon: grafana.png
-        href: https://grafana.zech.co
-        description: Monitoring dashboards and analytics
-        server: local
-        container: grafana
-    - Beszel:
-        icon: beszel.png
-        href: https://beszel.zech.co
-        description: Lightweight server monitoring
-        server: local
-        container: beszel
     - Proxmox:
         icon: proxmox.png
         href: https://pve.local.zech.co:8006
@@ -63,10 +45,6 @@
           type: unraid
           url: https://nas.local.zech.co
           key: "{{HOMEPAGE_VAR_UNRAID_KEY}}"
-    - iLO:
-        icon: mdi-server
-        href: https://nas.local.zech.co
-        description: Remote server management
     - Komodo:
         icon: komodo.png
         href: https://komodo.zech.co
@@ -86,6 +64,28 @@
           type: healthchecks
           url: http://healthchecks:8000
           key: "{{HOMEPAGE_VAR_HEALTHCHECKS_KEY}}"
+    - Traefik Manager:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/traefik-manager.png
+        href: https://traefik-manager.zech.co
+        description: Traefik routing management
+        server: local
+        container: traefik-manager
+    - Grafana:
+        icon: grafana.png
+        href: https://grafana.zech.co
+        description: Monitoring dashboards and analytics
+        server: local
+        container: grafana
+    - Beszel:
+        icon: beszel.png
+        href: https://beszel.zech.co
+        description: Lightweight server monitoring
+        server: local
+        container: beszel
+    - iLO:
+        icon: mdi-server
+        href: https://nas.local.zech.co
+        description: Remote server management
 
 - Media:
     - Seerr:
@@ -148,12 +148,6 @@
           type: sabnzbd
           url: http://sabnzbd:8080
           key: "{{HOMEPAGE_VAR_SABNZBD_KEY}}"
-    - Profilarr:
-        icon: profilarr.png
-        href: https://profilarr.zech.co
-        description: Quality profiles for Arr applications
-        server: local
-        container: profilarr
     - Tracearr:
         icon: tracearr.png
         href: https://tracearr.zech.co
@@ -173,6 +167,12 @@
           url: https://jellyfin.zech.co
           key: "{{HOMEPAGE_VAR_JELLYFIN_KEY}}"
           version: 2
+    - Profilarr:
+        icon: profilarr.png
+        href: https://profilarr.zech.co
+        description: Quality profiles for Arr applications
+        server: local
+        container: profilarr
 
 - Calendars:
     - Sonarr Calendar:
@@ -267,24 +267,6 @@
           url: http://immich-server:2283
           key: "{{HOMEPAGE_VAR_IMMICH_KEY}}"
           version: 2
-    - Dawarich:
-        icon: dawarich.png
-        href: https://dawarich.zech.co
-        description: Personal location history
-        server: local
-        container: dawarich-app
-    - TeslaMate:
-        icon: teslamate.png
-        href: https://teslamate.zech.co
-        description: Tesla vehicle data and drives
-        server: local
-        container: teslamate-app
-    - TeslaMate Grafana:
-        icon: grafana.png
-        href: https://teslamate-grafana.zech.co
-        description: TeslaMate analytics and dashboards
-        server: local
-        container: teslamate-grafana
     - SparkyFitness:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/sparkyfitness.png
         href: https://health.zech.co
@@ -295,12 +277,6 @@
           type: sparkyfitness
           url: http://sparkyfitness-frontend
           key: "{{HOMEPAGE_VAR_SPARKYFITNESS_KEY}}"
-    - Norish:
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/norish.png
-        href: https://norish.zech.co
-        description: Nutrition and meal planning
-        server: local
-        container: norish-app
     - UniFi:
         icon: unifi.png
         href: https://unifi.zech.co
@@ -319,6 +295,30 @@
           type: homeassistant
           url: https://home.zech.co
           key: "{{HOMEPAGE_VAR_HOMEASSISTANT_KEY}}"
+    - Dawarich:
+        icon: dawarich.png
+        href: https://dawarich.zech.co
+        description: Personal location history
+        server: local
+        container: dawarich-app
+    - TeslaMate:
+        icon: teslamate.png
+        href: https://teslamate.zech.co
+        description: Tesla vehicle data and drives
+        server: local
+        container: teslamate-app
+    - TeslaMate Grafana:
+        icon: grafana.png
+        href: https://teslamate-grafana.zech.co
+        description: TeslaMate analytics and dashboards
+        server: local
+        container: teslamate-grafana
+    - Norish:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/norish.png
+        href: https://norish.zech.co
+        description: Nutrition and meal planning
+        server: local
+        container: norish-app
 
 - Utilities:
     - ChangeDetection:
@@ -331,6 +331,17 @@
           type: changedetectionio
           url: http://changedetection:5000
           key: "{{HOMEPAGE_VAR_CHANGEDETECTION_KEY}}"
+    - Speedtest Tracker:
+        icon: speedtest-tracker.png
+        href: https://speedtest.zech.co
+        description: Track internet speed over time
+        server: local
+        container: speedtest-tracker
+        widget:
+          type: speedtest
+          url: http://speedtest-tracker
+          key: "{{HOMEPAGE_VAR_SPEEDTEST_KEY}}"
+          version: 2
     - Apprise:
         icon: apprise.png
         href: https://apprise.zech.co
@@ -343,17 +354,6 @@
         description: Web interface for databases
         server: local
         container: databasus
-    - Speedtest Tracker:
-        icon: speedtest-tracker.png
-        href: https://speedtest.zech.co
-        description: Track internet speed over time
-        server: local
-        container: speedtest-tracker
-        widget:
-          type: speedtest
-          url: http://speedtest-tracker
-          key: "{{HOMEPAGE_VAR_SPEEDTEST_KEY}}"
-          version: 2
     - VersityGW:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/versity.png
         href: https://web.s3.zech.co

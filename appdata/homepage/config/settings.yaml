@@ -6,7 +6,7 @@ providers:
   openweathermap: openweathermapapikey
   weatherapi: weatherapiapikey
 
-fullWidth: true
+useEqualHeights: true
 
 layout:
   Infrastructure:
@@ -15,9 +15,6 @@ layout:
   Media:
     style: row
     columns: 4
-  Calendars:
-    style: row
-    columns: 2
   Productivity:
     style: row
     columns: 4
@@ -25,5 +22,8 @@ layout:
     style: row
     columns: 4
   Utilities:
+    style: row
+    columns: 4
+  Calendars:
     style: row
     columns: 4
