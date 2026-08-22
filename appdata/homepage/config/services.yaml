@@ -176,20 +176,26 @@
 
 - Calendars:
     - Sonarr Calendar:
-        icon: mdi-calendar
+        id: sonarr-calendar
+        icon: sonarr.png
         description: Upcoming TV releases
         widget:
           type: calendar
+          view: agenda
+          maxEvents: 10
           integrations:
             - type: sonarr
               service_group: Media
               service_name: Sonarr
               baseUrl: https://sonarr.zech.co
     - Radarr Calendar:
-        icon: mdi-calendar
+        id: radarr-calendar
+        icon: radarr.png
         description: Upcoming movie releases
         widget:
           type: calendar
+          view: agenda
+          maxEvents: 10
           integrations:
             - type: radarr
               service_group: Media

@@ -1,0 +1,9 @@
+@media (min-width: 1280px) {
+  #sonarr-calendar {
+    grid-column-start: 2;
+  }
+
+  #radarr-calendar {
+    grid-column-start: 3;
+  }
+}
