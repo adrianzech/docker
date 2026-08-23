@@ -21,7 +21,7 @@ services:
 
   teslamate:
     container_name: teslamate-app
-    image: teslamate/teslamate:4.1.1
+    image: teslamate/teslamate:4.2.0
     restart: unless-stopped
     labels:
       traefik.enable: "true"
