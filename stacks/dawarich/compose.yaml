@@ -36,7 +36,7 @@ services:
 
   app:
     container_name: dawarich-app
-    image: freikin/dawarich:1.13.0
+    image: freikin/dawarich:1.13.1
     restart: unless-stopped
     command: ["bin/rails", "server", "-p", "3000", "-b", "::"]
     entrypoint: web-entrypoint.sh
@@ -76,7 +76,7 @@ services:
 
   worker:
     container_name: dawarich-worker
-    image: freikin/dawarich:1.13.0
+    image: freikin/dawarich:1.13.1
     restart: unless-stopped
     command: ["sidekiq"]
     entrypoint: sidekiq-entrypoint.sh
