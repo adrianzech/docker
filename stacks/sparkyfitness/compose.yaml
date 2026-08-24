@@ -22,7 +22,7 @@ services:
 
   server:
     container_name: sparkyfitness-server
-    image: codewithcj/sparkyfitness_server:v1.6.2
+    image: codewithcj/sparkyfitness_server:v1.6.3
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3010/health', response => process.exit(response.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
