@@ -12,7 +12,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: "proxy"
-      traefik.http.routers.free-games-claimer.rule: "Host(`fcg.zech.co`)"
+      traefik.http.routers.free-games-claimer.rule: "Host(`fgc.zech.co`)"
       traefik.http.routers.free-games-claimer.entrypoints: "websecure"
       traefik.http.routers.free-games-claimer.tls: "true"
       traefik.http.routers.free-games-claimer.middlewares: "authentik@file,security-headers@file,compression@file"
