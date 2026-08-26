@@ -69,11 +69,11 @@ services:
         condition: service_healthy
       valkey:
         condition: service_healthy
-      chrome:
+      obscura:
         condition: service_started
 
   obscura:
-    container_name: norish-chrome
+    container_name: norish-obscura
     image: norishapp/obscura:0.2.0-norish.1
     restart: unless-stopped
     networks:
