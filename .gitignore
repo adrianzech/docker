@@ -3,6 +3,7 @@
 .env
 .*.env
 .idea
+settings.json
 
 appdata/*
 !appdata/traefik/
