@@ -37,7 +37,7 @@ services:
 
   tracearr:
     container_name: tracearr-app
-    image: ghcr.io/connorgallopo/tracearr:2.1.0
+    image: ghcr.io/connorgallopo/tracearr:2.2.2
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
