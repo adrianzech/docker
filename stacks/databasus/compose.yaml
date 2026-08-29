@@ -1,7 +1,7 @@
 services:
   databasus:
     container_name: databasus
-    image: databasus/databasus:v3.55.2
+    image: databasus/databasus:v3.55.3
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "databasus", "healthcheck"]
