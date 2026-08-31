@@ -21,7 +21,7 @@ services:
 
   healthchecks:
     container_name: healthchecks
-    image: healthchecks/healthchecks:v4.3
+    image: healthchecks/healthchecks:v4.4
     restart: unless-stopped
     labels:
       traefik.enable: "true"
