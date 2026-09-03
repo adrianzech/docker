@@ -36,7 +36,7 @@ services:
 
   norish:
     container_name: norish-app
-    image: norishapp/norish:v0.21.0-beta
+    image: norishapp/norish:v0.22.0-beta
     restart: unless-stopped
     user: "1000:1000"
     healthcheck:
