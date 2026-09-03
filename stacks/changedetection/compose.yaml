@@ -1,7 +1,7 @@
 services:
   changedetection:
     container_name: changedetection
-    image: dgtlmoon/changedetection.io:0.55.8
+    image: dgtlmoon/changedetection.io:0.60.2
     restart: unless-stopped
     labels:
       traefik.enable: "true"
