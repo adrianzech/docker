@@ -29,8 +29,7 @@ services:
       PGID: 1000
     volumes:
       - ../../appdata/sabnzbd/config:/config
-      - /mnt/downloads/complete:/downloads
-      - /mnt/downloads/incomplete:/incomplete-downloads
+      - /mnt/downloads:/downloads
     networks:
       - proxy
 

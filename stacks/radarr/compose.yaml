@@ -30,7 +30,7 @@ services:
     volumes:
       - ../../appdata/radarr/config:/config
       - /mnt/movies:/movies
-      - /mnt/downloads/complete:/downloads
+      - /mnt/downloads:/downloads
     networks:
       - proxy
 
