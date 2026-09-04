@@ -1,7 +1,7 @@
 services:
   apprise:
     container_name: apprise
-    image: caronc/apprise:v1.5.3
+    image: caronc/apprise:v1.5.4
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python3", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/status')"]
