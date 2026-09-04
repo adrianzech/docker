@@ -1,7 +1,7 @@
 services:
   versitygw:
     container_name: versitygw
-    image: versity/versitygw:v1.7.0
+    image: versity/versitygw:v1.8.0
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:7070/health"]
