@@ -5,7 +5,6 @@
 providers:
   openweathermap: openweathermapapikey
   weatherapi: weatherapiapikey
-<<<<<<< HEAD
 
 useEqualHeights: true
 statusStyle: "dot"
@@ -32,5 +31,3 @@ layout:
   Calendars:
     style: row
     columns: 4
-=======
->>>>>>> fc25efe (fix: add missing homepage configs)
