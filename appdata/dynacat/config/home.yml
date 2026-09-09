@@ -84,6 +84,39 @@
             {{ else }}
             <p class="dashboard-empty-state">Keine offenen Pull Requests.</p>
             {{ end }}
+        - type: custom-api
+          title: Paperless Inbox
+          title-url: https://paperless.zech.co/documents?is_in_inbox=true
+          cache: 5m
+          update-interval: 5m
+          url: https://paperless.zech.co/api/documents/?is_in_inbox=true&ordering=-added&page_size=6
+          headers:
+            Authorization: Token ${PAPERLESS_API_TOKEN}
+            Accept: application/json; version=10
+          template: |
+            {{ if or (eq .Response.StatusCode 401) (eq .Response.StatusCode 403) }}
+            <p class="size-h4 color-negative">Paperless-Zugriff verweigert. API-Token prüfen.</p>
+            {{ else if ne .Response.StatusCode 200 }}
+            <p class="size-h4 color-negative">Paperless API nicht verfügbar (HTTP {{ .Response.StatusCode }}).</p>
+            {{ else }}
+            <p class="size-h4 color-paragraph" style="margin-bottom: 10px;">
+              <span class="color-primary">{{ .JSON.Int "count" }}</span>
+              {{ if eq (.JSON.Int "count") 1 }}Dokument{{ else }}Dokumente{{ end }} in der Inbox
+            </p>
+            {{ if .JSON.Array "results" }}
+            <ul class="list list-gap-10">
+            {{ range .JSON.Array "results" }}
+              {{ $added := .String "added" | parseTime "rfc3339" }}
+              <li>
+                <a class="size-h4 color-highlight block text-truncate" href="https://paperless.zech.co/documents/{{ .Int "id" }}/details" target="_blank" rel="noreferrer">{{ .String "title" }}</a>
+                <div class="size-h6 color-paragraph">Hinzugefügt am {{ $added.Local | formatTime "02.01.2006 · 15:04" }}</div>
+              </li>
+            {{ end }}
+            </ul>
+            {{ else }}
+            <p class="dashboard-empty-state">Die Paperless-Inbox ist leer.</p>
+            {{ end }}
+            {{ end }}
     - size: small
       widgets:
         - type: weather
