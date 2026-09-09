@@ -21,7 +21,7 @@ services:
 
   freshrss:
     container_name: freshrss
-    image: linuxserver/freshrss:1.29.1
+    image: linuxserver/freshrss:1.30.0
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:80"]
