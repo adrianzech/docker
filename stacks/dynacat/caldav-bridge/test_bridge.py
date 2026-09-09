@@ -97,9 +97,12 @@ END:VCALENDAR"""
             with patch.object(bridge, "CALDAV_URL", valid_url):
                 bridge.validate_configuration()
             for url, message in cases:
-                with self.subTest(url=url), patch.object(bridge, "CALDAV_URL", url):
-                    with self.assertRaisesRegex(RuntimeError, message):
-                        bridge.validate_configuration()
+                with (
+                    self.subTest(url=url),
+                    patch.object(bridge, "CALDAV_URL", url),
+                    self.assertRaisesRegex(RuntimeError, message),
+                ):
+                    bridge.validate_configuration()
 
     def test_query_values_are_bounded_and_invalid_values_fail(self):
         self.assertEqual(bridge.bounded_query_integer({}, "days", 30, 1, 90), 30)

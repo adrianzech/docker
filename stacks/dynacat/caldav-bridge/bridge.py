@@ -78,16 +78,16 @@ def timezone_for(name):
 
 def parse_ical_datetime(value, parameters):
     if parameters.get("VALUE") == "DATE" or (len(value) == 8 and "T" not in value):
-        parsed_date = datetime.strptime(value[:8], "%Y%m%d").date()
+        parsed_date = date(int(value[0:4]), int(value[4:6]), int(value[6:8]))
         return datetime.combine(parsed_date, time.min, LOCAL_TIMEZONE), True
 
     match = ICAL_DATETIME.match(value)
     if not match:
         raise ValueError("unsupported iCalendar datetime")
 
-    parsed = datetime.strptime(match.group(1) + match.group(2), "%Y%m%d%H%M%S")
     source_timezone = timezone.utc if match.group(3) == "Z" else timezone_for(parameters.get("TZID"))
-    return parsed.replace(tzinfo=source_timezone).astimezone(LOCAL_TIMEZONE), False
+    parsed = datetime.strptime(match.group(1) + match.group(2), "%Y%m%d%H%M%S").replace(tzinfo=source_timezone)
+    return parsed.astimezone(LOCAL_TIMEZONE), False
 
 
 def parse_events(calendar_data, window_start, window_end):
@@ -228,7 +228,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(400, {"error": str(error)})
         except urllib.error.HTTPError as error:
             self.send_json(502, {"error": f"Fastmail returned HTTP {error.code}"})
-        except Exception as error:
+        except (ET.ParseError, OSError, RuntimeError) as error:
             print(f"CalDAV request failed: {type(error).__name__}: {error}", flush=True)
             self.send_json(502, {"error": "CalDAV request failed"})
 
