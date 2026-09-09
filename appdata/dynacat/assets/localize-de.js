@@ -70,6 +70,20 @@
 
   const boundRefreshButtons = new WeakSet();
 
+  function createWidgetRefreshButton() {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "dashboard-widget-refresh";
+    button.title = "Jetzt aktualisieren";
+    button.setAttribute("aria-label", "Jetzt aktualisieren");
+    button.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M6.1 9a7 7 0 0 1 11.2-2.1L20 9"></path><path d="M17.9 15a7 7 0 0 1-11.2 2.1L4 15"></path>
+      </svg>
+    `;
+    return button;
+  }
+
   function replaceTextNodes(root, replacements) {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     let node;
@@ -126,13 +140,21 @@
   }
 
   function setupWidgetRefreshButtons(root) {
-    root.querySelectorAll(".dashboard-refreshable .dashboard-widget-refresh").forEach((button) => {
+    root.querySelectorAll(".dashboard-refreshable").forEach((widget) => {
+      let button = widget.querySelector(".dashboard-widget-refresh");
+      if (!button) {
+        const header = widget.querySelector(".widget-header");
+        if (!header) return;
+        button = createWidgetRefreshButton();
+        header.append(button);
+      }
+
       if (boundRefreshButtons.has(button)) return;
       boundRefreshButtons.add(button);
 
       button.addEventListener("click", async () => {
-        const widget = button.closest(".dashboard-refreshable");
-        const widgetId = widget.dataset.widgetId;
+        const currentWidget = button.closest(".dashboard-refreshable");
+        const widgetId = currentWidget?.dataset.widgetId;
         if (!widgetId || typeof window.dynacatRefreshWidget !== "function") return;
 
         button.disabled = true;

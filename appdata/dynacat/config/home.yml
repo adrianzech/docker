@@ -53,6 +53,7 @@
         - type: rss
           title: RSS
           title-url: https://rss.zech.co
+          css-class: dashboard-refreshable
           limit: 20
           collapse-after: 6
           cache: 30s
@@ -63,6 +64,7 @@
         - type: custom-api
           title: Offene Pull Requests
           title-url: https://git.zech.co/adrianzech/docker/pulls
+          css-class: dashboard-refreshable
           cache: 5m
           update-interval: 5m
           url: https://git.zech.co/api/v1/repos/adrianzech/docker/pulls?state=open
@@ -70,6 +72,11 @@
             Authorization: token ${FORGEJO_TOKEN}
             Accept: application/json
           template: |
+            <button type="button" class="dashboard-widget-refresh" title="Jetzt aktualisieren" aria-label="Jetzt aktualisieren">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M6.1 9a7 7 0 0 1 11.2-2.1L20 9"></path><path d="M17.9 15a7 7 0 0 1-11.2 2.1L4 15"></path>
+              </svg>
+            </button>
             {{ if ne .Response.StatusCode 200 }}
             <p class="size-h4 color-negative">Forgejo API nicht verfügbar (HTTP {{ .Response.StatusCode }}).</p>
             {{ else if .JSON.Array "" }}
