@@ -117,6 +117,68 @@
             <p class="dashboard-empty-state">Die Paperless-Inbox ist leer.</p>
             {{ end }}
             {{ end }}
+        - type: custom-api
+          title: Karakeep Unsortiert
+          title-url: https://karakeep.zech.co/dashboard/lists/bwph8z8zgyz9g13cw00chhvj
+          cache: 5m
+          update-interval: 5m
+          url: https://karakeep.zech.co/api/v1/lists/bwph8z8zgyz9g13cw00chhvj/bookmarks?limit=6&sortOrder=desc&includeContent=false
+          headers:
+            Authorization: Bearer ${KARAKEEP_API_KEY}
+            Accept: application/json
+          template: |
+            {{ if eq .Response.StatusCode 401 }}
+            <p class="size-h4 color-negative">Karakeep-Zugriff verweigert. API-Key prüfen.</p>
+            {{ else if eq .Response.StatusCode 404 }}
+            <p class="size-h4 color-negative">Die Karakeep-Liste „Unsortiert“ wurde nicht gefunden.</p>
+            {{ else if ne .Response.StatusCode 200 }}
+            <p class="size-h4 color-negative">Karakeep API nicht verfügbar (HTTP {{ .Response.StatusCode }}).</p>
+            {{ else if .JSON.Array "bookmarks" }}
+            <ul class="list list-gap-10">
+            {{ range .JSON.Array "bookmarks" }}
+              {{ $type := .String "content.type" }}
+              {{ $title := .String "title" }}
+              {{ if not $title }}
+                {{ if eq $type "link" }}
+                  {{ $title = .String "content.title" }}
+                  {{ if not $title }}{{ $title = .String "content.url" }}{{ end }}
+                {{ else if eq $type "text" }}
+                  {{ $title = .String "content.text" }}
+                {{ else if eq $type "asset" }}
+                  {{ $title = .String "content.fileName" }}
+                {{ end }}
+              {{ end }}
+              {{ if not $title }}{{ $title = "Unbenannter Eintrag" }}{{ end }}
+              {{ $href := "https://karakeep.zech.co/dashboard/lists/bwph8z8zgyz9g13cw00chhvj" }}
+              {{ if and (eq $type "link") (.String "content.url") }}
+                {{ $href = .String "content.url" }}
+              {{ else if .String "content.sourceUrl" }}
+                {{ $href = .String "content.sourceUrl" }}
+              {{ end }}
+              {{ $source := "Karakeep" }}
+              {{ if eq $type "link" }}
+                {{ if .String "content.publisher" }}{{ $source = .String "content.publisher" }}{{ else }}{{ $source = .String "content.url" }}{{ end }}
+              {{ else if eq $type "text" }}
+                {{ $source = "Notiz" }}
+              {{ else if eq $type "asset" }}
+                {{ $source = "Datei" }}
+              {{ end }}
+              {{ $created := .String "createdAt" | parseTime "rfc3339" }}
+              <li>
+                <a class="size-h4 color-highlight block text-truncate" href="{{ $href }}" target="_blank" rel="noreferrer">{{ $title }}</a>
+                <div class="flex justify-between gap-10 size-h6 color-paragraph">
+                  <span class="text-truncate">{{ $source }}</span>
+                  <span style="white-space: nowrap;">{{ $created.Local | formatTime "02.01. · 15:04" }}</span>
+                </div>
+              </li>
+            {{ end }}
+            </ul>
+            {{ if .JSON.String "nextCursor" }}
+            <a class="size-h6 color-primary block" style="margin-top: 10px;" href="https://karakeep.zech.co/dashboard/lists/bwph8z8zgyz9g13cw00chhvj" target="_blank" rel="noreferrer">Weitere unsortierte Einträge vorhanden.</a>
+            {{ end }}
+            {{ else }}
+            <p class="dashboard-empty-state">Keine unsortierten Einträge.</p>
+            {{ end }}
     - size: small
       widgets:
         - type: weather

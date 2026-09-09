@@ -14,6 +14,7 @@
 | `FORGEJO_TOKEN` | Forgejo token with repository read access | Forgejo |
 | `GRIDTIME_API_KEY` | Gridtime API key | Gridtime |
 | `PAPERLESS_API_TOKEN` | Paperless API token with document read access | Paperless |
+| `KARAKEEP_API_KEY` | Karakeep API key for the private smart list | Karakeep |
 
 ## Update `.env`
 
