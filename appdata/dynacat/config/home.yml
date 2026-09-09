@@ -105,10 +105,6 @@
             {{ else if ne .Response.StatusCode 200 }}
             <p class="size-h4 color-negative">Paperless API nicht verfügbar (HTTP {{ .Response.StatusCode }}).</p>
             {{ else }}
-            <p class="size-h4 color-paragraph" style="margin-bottom: 10px;">
-              <span class="color-primary">{{ .JSON.Int "count" }}</span>
-              {{ if eq (.JSON.Int "count") 1 }}Dokument{{ else }}Dokumente{{ end }} in der Inbox
-            </p>
             {{ if .JSON.Array "results" }}
             <ul class="list list-gap-10">
             {{ range .JSON.Array "results" }}
