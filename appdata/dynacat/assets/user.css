@@ -34,6 +34,67 @@
   line-height: 1.5;
 }
 
+.dashboard-refreshable {
+  position: relative;
+}
+
+.dashboard-widget-refresh {
+  position: absolute;
+  top: 0;
+  right: calc(var(--widget-content-horizontal-padding) + 1px);
+  z-index: 1;
+  display: inline-flex;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0.3rem;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text-base);
+  background: transparent;
+  border: 0;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease, opacity 150ms ease;
+}
+
+.dashboard-widget-refresh:hover {
+  color: var(--color-primary);
+  background: var(--color-widget-background-highlight);
+}
+
+.dashboard-widget-refresh:focus-visible {
+  color: var(--color-primary);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.dashboard-widget-refresh:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.dashboard-widget-refresh svg {
+  width: 100%;
+  height: 100%;
+}
+
+.dashboard-widget-refresh.is-refreshing svg {
+  animation: dashboard-refresh-spin 800ms linear infinite;
+}
+
+@keyframes dashboard-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-widget-refresh.is-refreshing svg {
+    animation: none;
+  }
+}
+
 .widget-type-monitor .color-negative {
   font-weight: 600;
 }

@@ -19,7 +19,7 @@ auth:
 
 document:
   head: |
-    <script defer src="/assets/localize-de.js?v=20260909-1"></script>
+    <script defer src="/assets/localize-de.js?v=20260909-2"></script>
 
 branding:
   hide-footer: true

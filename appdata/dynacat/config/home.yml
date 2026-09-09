@@ -87,13 +87,19 @@
         - type: custom-api
           title: Paperless Inbox
           title-url: https://paperless.zech.co/documents?is_in_inbox=true
-          cache: 5m
-          update-interval: 5m
+          css-class: dashboard-refreshable
+          cache: 30s
+          update-interval: 30s
           url: https://paperless.zech.co/api/documents/?is_in_inbox=true&ordering=-added&page_size=6
           headers:
             Authorization: Token ${PAPERLESS_API_TOKEN}
             Accept: application/json; version=10
           template: |
+            <button type="button" class="dashboard-widget-refresh" title="Jetzt aktualisieren" aria-label="Jetzt aktualisieren">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M6.1 9a7 7 0 0 1 11.2-2.1L20 9"></path><path d="M17.9 15a7 7 0 0 1-11.2 2.1L4 15"></path>
+              </svg>
+            </button>
             {{ if or (eq .Response.StatusCode 401) (eq .Response.StatusCode 403) }}
             <p class="size-h4 color-negative">Paperless-Zugriff verweigert. API-Token prüfen.</p>
             {{ else if ne .Response.StatusCode 200 }}
@@ -120,13 +126,19 @@
         - type: custom-api
           title: Karakeep Unsortiert
           title-url: https://karakeep.zech.co/dashboard/lists/bwph8z8zgyz9g13cw00chhvj
-          cache: 5m
-          update-interval: 5m
+          css-class: dashboard-refreshable
+          cache: 30s
+          update-interval: 30s
           url: https://karakeep.zech.co/api/v1/lists/bwph8z8zgyz9g13cw00chhvj/bookmarks?limit=6&sortOrder=desc&includeContent=false
           headers:
             Authorization: Bearer ${KARAKEEP_API_KEY}
             Accept: application/json
           template: |
+            <button type="button" class="dashboard-widget-refresh" title="Jetzt aktualisieren" aria-label="Jetzt aktualisieren">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M6.1 9a7 7 0 0 1 11.2-2.1L20 9"></path><path d="M17.9 15a7 7 0 0 1-11.2 2.1L4 15"></path>
+              </svg>
+            </button>
             {{ if eq .Response.StatusCode 401 }}
             <p class="size-h4 color-negative">Karakeep-Zugriff verweigert. API-Key prüfen.</p>
             {{ else if eq .Response.StatusCode 404 }}

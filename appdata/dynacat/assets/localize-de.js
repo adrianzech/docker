@@ -68,6 +68,8 @@
     ["Edit task", "Aufgabe bearbeiten"],
   ]);
 
+  const boundRefreshButtons = new WeakSet();
+
   function replaceTextNodes(root, replacements) {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     let node;
@@ -123,12 +125,40 @@
     });
   }
 
+  function setupWidgetRefreshButtons(root) {
+    root.querySelectorAll(".dashboard-refreshable .dashboard-widget-refresh").forEach((button) => {
+      if (boundRefreshButtons.has(button)) return;
+      boundRefreshButtons.add(button);
+
+      button.addEventListener("click", async () => {
+        const widget = button.closest(".dashboard-refreshable");
+        const widgetId = widget.dataset.widgetId;
+        if (!widgetId || typeof window.dynacatRefreshWidget !== "function") return;
+
+        button.disabled = true;
+        button.classList.add("is-refreshing");
+        button.setAttribute("aria-busy", "true");
+
+        try {
+          await window.dynacatRefreshWidget(widgetId);
+        } catch (error) {
+          console.error("Widget konnte nicht aktualisiert werden:", error);
+        } finally {
+          button.disabled = false;
+          button.classList.remove("is-refreshing");
+          button.removeAttribute("aria-busy");
+        }
+      });
+    });
+  }
+
   function localize(root = document) {
     document.documentElement.lang = "de";
     localizeCalendar(root);
     localizeWeather(root);
     localizeRssEmptyState(root);
     localizeInteractiveWidgets(root);
+    setupWidgetRefreshButtons(root);
     replaceTextNodes(root, exactText);
 
     root.querySelectorAll(".widget-error-header .color-negative").forEach((element) => {
