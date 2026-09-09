@@ -4,12 +4,20 @@
 .*.env
 .idea
 settings.json
+__pycache__/
+*.py[cod]
 
 appdata/*
 !appdata/traefik/
-!appdata/homepage/
+!appdata/dynacat/
 
 appdata/traefik/*
 !appdata/traefik/dynamic/
 !appdata/traefik/dynamic/**
 !appdata/traefik/traefik.yml
+
+appdata/dynacat/*
+!appdata/dynacat/assets/
+!appdata/dynacat/assets/**
+!appdata/dynacat/config/
+!appdata/dynacat/config/**

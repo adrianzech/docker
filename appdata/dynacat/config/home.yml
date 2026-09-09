@@ -1,0 +1,192 @@
+- name: Start
+  slug: home
+  name-icon: mdi:home
+  width: wide
+  columns:
+    - size: small
+      widgets:
+        - type: calendar
+          title: Kalender
+          first-day-of-week: monday
+          update-interval: 15m
+          hosts:
+            - url: sonarr:https://sonarr.zech.co
+              token: ${SONARR_API_KEY}
+            - url: radarr:https://radarr.zech.co
+              token: ${RADARR_API_KEY}
+        - type: custom-api
+          title: Termine
+          title-url: https://app.fastmail.com/calendar/
+          cache: 5m
+          update-interval: 5m
+          url: http://caldav-bridge:8090/events?days=30&limit=8
+          template: |
+            {{ if .JSON.Array "events" }}
+            <ul class="list list-gap-10">
+            {{ range .JSON.Array "events" }}
+              <li>
+                <div class="flex justify-between gap-10">
+                  {{ if .String "url" }}
+                  <a class="size-h4 color-highlight text-truncate" href="{{ .String "url" }}" target="_blank" rel="noreferrer">{{ .String "title" }}</a>
+                  {{ else }}
+                  <span class="size-h4 color-highlight text-truncate">{{ .String "title" }}</span>
+                  {{ end }}
+                  <span class="size-h6 color-primary" style="white-space: nowrap;">{{ .String "dateLabel" }}</span>
+                </div>
+                <div class="flex justify-between gap-10 size-h6 color-paragraph">
+                  <span class="text-truncate">{{ if .String "location" }}{{ .String "location" }}{{ else }}Fastmail{{ end }}</span>
+                  <span style="white-space: nowrap;">{{ .String "timeLabel" }}</span>
+                </div>
+              </li>
+            {{ end }}
+            </ul>
+            {{ else }}
+            <p class="dashboard-empty-state">Keine Termine in den nächsten 30 Tagen.</p>
+            {{ end }}
+        - type: to-do
+          title: Aufgaben
+          id: personal
+          storage: server
+          collapse-after: 5
+    - size: full
+      widgets:
+        - type: rss
+          title: RSS
+          title-url: https://rss.zech.co
+          limit: 20
+          collapse-after: 6
+          cache: 30s
+          update-interval: 30s
+          feeds:
+            - url: ${FRESHRSS_UNREAD_FEED_URL}
+              title: Alle ungelesenen Artikel
+        - type: custom-api
+          title: Offene Pull Requests
+          title-url: https://git.zech.co/adrianzech/docker/pulls
+          cache: 5m
+          update-interval: 5m
+          url: https://git.zech.co/api/v1/repos/adrianzech/docker/pulls?state=open
+          headers:
+            Authorization: token ${FORGEJO_TOKEN}
+            Accept: application/json
+          template: |
+            {{ if .JSON.Array "" }}
+            <ul class="list list-gap-10">
+            {{ range .JSON.Array "" }}
+              <li>
+                <a class="size-h4 color-highlight block text-truncate" href="{{ .String "html_url" }}" target="_blank" rel="noreferrer">#{{ .Int "number" }} · {{ .String "title" }}</a>
+                <div class="size-h6 color-paragraph">{{ .String "user.login" }}</div>
+              </li>
+            {{ end }}
+            </ul>
+            {{ else }}
+            <p class="dashboard-empty-state">Keine offenen Pull Requests.</p>
+            {{ end }}
+    - size: small
+      widgets:
+        - type: weather
+          title: Wetter
+          location: Sonntag, Vorarlberg, Austria
+          units: metric
+          hour-format: 24h
+          show-area-name: true
+        - type: custom-api
+          title: Motorsport
+          title-url: https://gridtime.zech.co
+          frameless: true
+          cache: 1h
+          update-interval: 1h
+          template: |
+            {{- define "gridtime-weekday" -}}
+              {{- $day := . | formatTime "Mon" -}}
+              {{- if eq $day "Mon" -}}Mo
+              {{- else if eq $day "Tue" -}}Di
+              {{- else if eq $day "Wed" -}}Mi
+              {{- else if eq $day "Thu" -}}Do
+              {{- else if eq $day "Fri" -}}Fr
+              {{- else if eq $day "Sat" -}}Sa
+              {{- else -}}So
+              {{- end -}}
+            {{- end -}}
+            {{- define "gridtime-session-name" -}}
+              {{- if or (eq . "Practice 1") (eq . "FP1") -}}Training 1
+              {{- else if or (eq . "Practice 2") (eq . "FP2") -}}Training 2
+              {{- else if eq . "Practice 3" -}}Training 3
+              {{- else if or (eq . "Free Practice") (eq . "Free Practice Nr. 1") -}}Freies Training 1
+              {{- else if eq . "Free Practice Nr. 2" -}}Freies Training 2
+              {{- else if eq . "Practice" -}}Training
+              {{- else if or (eq . "Qualifying Nr. 1") (eq . "Q1") -}}Qualifying 1
+              {{- else if or (eq . "Qualifying Nr. 2") (eq . "Q2") -}}Qualifying 2
+              {{- else if eq . "Tissot Sprint" -}}Sprint
+              {{- else if eq . "Warm Up" -}}Warm-up
+              {{- else if or (eq . "Race") (eq . "Grand Prix") -}}Rennen
+              {{- else -}}{{ . }}
+              {{- end -}}
+            {{- end -}}
+            {{
+              $overview := newRequest "https://gridtime.zech.co/api/weekend-overview"
+                | withParameter "year" (now | formatTime "2006")
+                | withParameter "windowStart" (now | formatTime "dateonly")
+                | withParameter "windowEnd" (offsetNow "720h" | formatTime "dateonly")
+                | withHeader "X-API-Key" "${GRIDTIME_API_KEY}"
+                | getResponse
+            }}
+            {{ if eq $overview.Response.StatusCode 200 }}
+              {{ $shownF1 := false }}
+              {{ $shownMotoGP := false }}
+              <ul class="list list-gap-10">
+              {{ range $overview.JSON.Array "member" }}
+                {{ if and (not $shownF1) (eq (.String "series.code") "F1") }}
+                  {{ $shownF1 = true }}
+                  <li style="padding: 12px; border: 1px solid var(--color-widget-content-border); border-radius: var(--border-radius); background: var(--color-widget-background);">
+                    <div class="flex justify-between items-center gap-10">
+                      <span class="size-h6" style="color: #ff3b30; font-weight: 700; letter-spacing: 0.08em;">FORMULA 1</span>
+                      <span class="size-h6 color-paragraph">Runde {{ .Int "event.roundNumber" }}</span>
+                    </div>
+                    <a class="size-h3 color-highlight block text-truncate margin-top-3" href="{{ .String "event.sourceUrl" }}" target="_blank" rel="noreferrer">
+                      {{ .String "event.name" }}
+                    </a>
+                    <div class="size-h6 color-paragraph text-truncate">{{ .String "event.location" }}</div>
+                    <ul class="list list-gap-2" style="margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--color-widget-content-border);">
+                    {{ range .Array "sessions" }}
+                      {{ $start := .String "startsAt" | parseTime "rfc3339" }}
+                      <li class="flex justify-between gap-10 size-h6">
+                        <span>{{ template "gridtime-session-name" (.String "name") }}</span>
+                        <span class="color-paragraph" style="white-space: nowrap;">{{ template "gridtime-weekday" $start.Local }}, {{ $start.Local | formatTime "02.01. · 15:04" }}</span>
+                      </li>
+                    {{ end }}
+                    </ul>
+                  </li>
+                {{ end }}
+              {{ end }}
+              {{ range $overview.JSON.Array "member" }}
+                {{ if and (not $shownMotoGP) (eq (.String "series.code") "MGP") }}
+                  {{ $shownMotoGP = true }}
+                  <li style="padding: 12px; border: 1px solid var(--color-widget-content-border); border-radius: var(--border-radius); background: var(--color-widget-background);">
+                    <div class="flex justify-between items-center gap-10">
+                      <span class="size-h6" style="color: #ff7a3d; font-weight: 700; letter-spacing: 0.08em;">MOTOGP</span>
+                      <span class="size-h6 color-paragraph">Runde {{ .Int "event.roundNumber" }}</span>
+                    </div>
+                    <a class="size-h3 color-highlight block text-truncate margin-top-3" href="{{ .String "event.sourceUrl" }}" target="_blank" rel="noreferrer">
+                      {{ .String "event.name" }}
+                    </a>
+                    <div class="size-h6 color-paragraph text-truncate">{{ .String "event.location" }}</div>
+                    <ul class="list list-gap-2" style="margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--color-widget-content-border);">
+                    {{ range .Array "sessions" }}
+                      {{ $start := .String "startsAt" | parseTime "rfc3339" }}
+                      <li class="flex justify-between gap-10 size-h6">
+                        <span style="white-space: nowrap;">{{ template "gridtime-session-name" (.String "name") }}</span>
+                        <span class="color-paragraph" style="white-space: nowrap;">{{ template "gridtime-weekday" $start.Local }}, {{ $start.Local | formatTime "02.01. · 15:04" }}</span>
+                      </li>
+                    {{ end }}
+                    </ul>
+                  </li>
+                {{ end }}
+              {{ end }}
+              </ul>
+              {{ if and (not $shownF1) (not $shownMotoGP) }}
+                <p class="dashboard-empty-state">Keine F1- oder MotoGP-Termine in den nächsten 30 Tagen.</p>
+              {{ end }}
+            {{ else }}
+              <p class="size-h4 color-negative">Gridtime konnte nicht geladen werden.</p>
+            {{ end }}

@@ -1,0 +1,37 @@
+server:
+  assets-path: /app/assets
+  cache-dir: /app/data/cache
+  db-path: /app/data/dynacat.db
+  proxied: true
+
+auth:
+  secret-key: ${DYNACAT_AUTH_SECRET}
+  disable-password: true
+  oidc:
+    issuer-url: ${DYNACAT_OIDC_ISSUER_URL}
+    client-id: ${DYNACAT_OIDC_CLIENT_ID}
+    client-secret: ${DYNACAT_OIDC_CLIENT_SECRET}
+    redirect-url: ${DYNACAT_OIDC_REDIRECT_URL}
+    scopes:
+      - openid
+      - profile
+      - email
+
+document:
+  head: |
+    <script defer src="/assets/localize-de.js?v=20260909-1"></script>
+
+branding:
+  hide-footer: true
+
+theme:
+  # Note: assets are cached by the browser, changes to the CSS file
+  # will not be reflected until the browser cache is cleared (Ctrl+F5)
+  custom-css-file: /assets/user.css
+
+pages:
+  # It's not necessary to create a new file for each page and include it, you can simply
+  # put its contents here, though multiple pages are easier to manage when separated
+  - $include: home.yml
+  - $include: status.yml
+  - $include: services.yml

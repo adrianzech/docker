@@ -1,0 +1,61 @@
+services:
+  caldav-bridge:
+    build:
+      context: ./caldav-bridge
+    container_name: dynacat-caldav-bridge
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/health', timeout=3)"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - .env
+    environment:
+      PORT: 8090
+    networks:
+      - internal
+
+  dynacat:
+    container_name: dynacat
+    image: panonim/dynacat:2.4.0
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:8080/api/healthz || exit 1"]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.dynacat.rule: "Host(`dashboard.zech.co`)"
+      traefik.http.routers.dynacat.entrypoints: "websecure"
+      traefik.http.routers.dynacat.tls: "true"
+      traefik.http.routers.dynacat.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.dynacat.loadbalancer.server.port: "8080"
+    env_file:
+      - .env
+    volumes:
+      - ../../appdata/dynacat/config:/app/config:ro
+      - ../../appdata/dynacat/assets:/app/assets:ro
+      - ../../appdata/dynacat/data:/app/data
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      caldav-bridge:
+        condition: service_healthy
+
+networks:
+  proxy:
+    external: true
+
+  internal:
+    name: dynacat-internal
+    driver: bridge

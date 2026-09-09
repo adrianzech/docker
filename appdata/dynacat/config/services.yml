@@ -1,0 +1,60 @@
+- name: Dienste
+  slug: services
+  name-icon: mdi:server
+  width: wide
+  columns:
+    - size: full
+      widgets:
+        - type: bookmarks
+          title: Homelab-Dienste
+          groups:
+            - title: Infrastruktur
+              links:
+                - { title: Traefik, url: https://traefik.zech.co, description: Reverse-Proxy- und TLS-Verwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/traefik.svg }
+                - { title: Authentik, url: https://sso.zech.co, description: Zentrale Anmeldung und Identitätsverwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/authentik.svg }
+                - { title: Komodo, url: https://komodo.zech.co, description: Deployment- und Serververwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/komodo.svg }
+                - { title: Traefik Manager, url: https://traefik-manager.zech.co, description: Verwaltung der Traefik-Routen, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/traefik-manager.svg }
+            - title: Hardware & Netzwerk
+              links:
+                - { title: Proxmox, url: https://pve.local.zech.co:8006, description: Virtualisierung und Containerverwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/proxmox.svg }
+                - { title: OPNsense, url: https://fw.local.zech.co:4444, description: Firewall- und Netzwerkverwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/opnsense.svg }
+                - { title: Unraid, url: https://nas.local.zech.co, description: NAS und Docker-Host, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/unraid.svg }
+                - { title: iLO, url: https://nas.local.zech.co, description: Server-Fernverwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/hewlett-packard-enterprise.svg }
+            - title: Monitoring
+              links:
+                - { title: Healthchecks, url: https://healthchecks.zech.co, description: Überwachung geplanter Aufgaben, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/healthchecks.svg }
+                - { title: Grafana, url: https://grafana.zech.co, description: Monitoring-Dashboards und Analysen, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/grafana.svg }
+                - { title: Beszel, url: https://beszel.zech.co, description: Schlanke Serverüberwachung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/beszel.svg }
+            - title: Medien
+              links:
+                - { title: Seerr, url: https://seerr.zech.co, description: Medienwünsche und Entdeckung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/seerr.svg }
+                - { title: Sonarr, url: https://sonarr.zech.co, description: Serienverwaltung und Downloads, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/sonarr.svg }
+                - { title: Radarr, url: https://radarr.zech.co, description: Filmverwaltung und Downloads, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/radarr.svg }
+                - { title: Prowlarr, url: https://prowlarr.zech.co, description: Indexer-Verwaltung für Medienanwendungen, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/prowlarr.svg }
+                - { title: Bazarr, url: https://bazarr.zech.co, description: Untertitelverwaltung für Medien, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/bazarr.svg }
+                - { title: SABnzbd, url: https://sabnzbd.zech.co, description: Usenet-Downloadclient, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/sabnzbd.svg }
+                - { title: Tracearr, url: https://tracearr.zech.co, description: Analysen für Arr-Anwendungen, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/tracearr.svg }
+                - { title: Jellyfin, url: https://jellyfin.zech.co, description: Medienserver für Filme, Serien und Musik, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/jellyfin.svg }
+                - { title: Profilarr, url: https://profilarr.zech.co, description: Qualitätsprofile für Arr-Anwendungen, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/profilarr.svg }
+            - title: Produktivität
+              links:
+                - { title: Nextcloud, url: https://cloud.zech.co, description: Dateien, Kalender und Zusammenarbeit, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/nextcloud.svg }
+                - { title: Paperless-ngx, url: https://paperless.zech.co, description: Dokumentenarchiv und Volltextsuche, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/paperless-ngx.svg }
+                - { title: FreshRSS, url: https://rss.zech.co, description: RSS-Feeds lesen und verwalten, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/freshrss.svg }
+                - { title: Karakeep, url: https://karakeep.zech.co, description: Lesezeichen und Wissenssammlung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/karakeep.svg }
+                - { title: BentoPDF, url: https://pdf.zech.co, description: Werkzeuge zur PDF-Bearbeitung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/bentopdf.svg }
+                - { title: IT Tools, url: https://tools.zech.co, description: Praktische Werkzeuge für IT-Aufgaben, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/it-tools.svg }
+                - { title: Forgejo, url: https://git.zech.co, description: Git-Repositorys und Softwareentwicklung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/forgejo.svg }
+            - title: Persönlich
+              links:
+                - { title: Immich, url: https://photos.zech.co, description: Foto- und Videoverwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/immich.svg }
+                - { title: SparkyFitness, url: https://health.zech.co, description: Fitness- und Gesundheitstracking, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/sparkyfitness.png }
+                - { title: UniFi, url: https://unifi.zech.co, description: WLAN- und Netzwerkverwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/ubiquiti-unifi.svg }
+                - { title: Home Assistant, url: https://home.zech.co, description: Hausautomatisierung und Smart Home, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/home-assistant.svg }
+                - { title: Dawarich, url: https://dawarich.zech.co, description: Persönlicher Standortverlauf, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/dawarich.svg }
+                - { title: TeslaMate, url: https://teslamate.zech.co, description: Tesla-Fahrzeugdaten und Fahrten, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/teslamate.svg }
+                - { title: TeslaMate Grafana, url: https://teslamate-grafana.zech.co, description: TeslaMate-Analysen und Dashboards, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/grafana.svg }
+                - { title: Norish, url: https://norish.zech.co, description: Ernährung und Essensplanung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/norish.svg }
+            - title: Werkzeuge
+              links:
+                - { title: ChangeDetection, url: https://change.zech.co, description: Änderungen auf Webseiten überwachen, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/changedetection.svg }
