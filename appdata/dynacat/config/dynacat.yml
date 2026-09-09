@@ -23,10 +23,18 @@ document:
 
 branding:
   hide-footer: true
+  app-background-color: "#0b0e14"
 
 theme:
   # Note: assets are cached by the browser, changes to the CSS file
   # will not be reflected until the browser cache is cleared (Ctrl+F5)
+  background-color: 220 29 6
+  primary-color: 40 75 61
+  positive-color: 80 65 57
+  negative-color: 357 81 69
+  contrast-multiplier: 1.1
+  text-saturation-multiplier: 0.35
+  disable-picker: true
   custom-css-file: /assets/user.css
 
 pages:

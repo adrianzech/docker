@@ -2,7 +2,7 @@
 
 | Variable | Value | Generate |
 | --- | --- | --- |
-| `DYNACAT_AUTH_SECRET` | Session encryption and signing secret | `openssl rand -base64 64` |
+| `DYNACAT_AUTH_SECRET` | Session encryption and signing secret | `openssl rand 64 \| openssl base64 -A` |
 | `DYNACAT_OIDC_CLIENT_ID` | Authentik client ID | Authentik |
 | `DYNACAT_OIDC_CLIENT_SECRET` | Authentik client secret | Authentik |
 | `FASTMAIL_CALDAV_URL` | Fastmail calendar CalDAV URL | Fastmail |
@@ -17,7 +17,7 @@
 ## Update `.env`
 
 ```bash
-sed -i "s|^DYNACAT_AUTH_SECRET=.*|DYNACAT_AUTH_SECRET=$(openssl rand -base64 64)|" .env
+sed -i "s|^DYNACAT_AUTH_SECRET=.*|DYNACAT_AUTH_SECRET=$(openssl rand 64 | openssl base64 -A)|" .env
 ```
 
 ## Authentik OIDC

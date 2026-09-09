@@ -1,3 +1,32 @@
+:root {
+  --border-radius: 7px;
+  --color-background: #0b0e14;
+  --color-widget-background-hsl-values: 220, 17%, 14%;
+  --color-widget-background: #1e222a;
+  --color-widget-content-border: #363a40;
+  --color-widget-background-highlight: #272c36;
+  --color-separator: #363a40;
+  --color-popover-background: #14181f;
+  --color-popover-border: #595f6a;
+  --color-progress-border: #595f6a;
+  --color-progress-value: #e6b450;
+  --color-vertical-progress-value: #e6b450;
+  --color-graph-gridlines: #363a40;
+  --color-primary: #e6b450;
+  --color-positive: #aad94c;
+  --color-negative: #f07178;
+  --color-text-highlight: #d1d1c7;
+  --color-text-paragraph: #bfbdb6;
+  --color-text-base: #8e959e;
+  --color-text-base-muted: #8e959e;
+  --color-text-subdue: #595f6a;
+}
+
+::selection {
+  color: #0b0e14;
+  background: #e6b450;
+}
+
 .dashboard-empty-state {
   margin: 0;
   color: var(--color-text-paragraph);

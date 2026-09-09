@@ -70,7 +70,9 @@
             Authorization: token ${FORGEJO_TOKEN}
             Accept: application/json
           template: |
-            {{ if .JSON.Array "" }}
+            {{ if ne .Response.StatusCode 200 }}
+            <p class="size-h4 color-negative">Forgejo API nicht verfügbar (HTTP {{ .Response.StatusCode }}).</p>
+            {{ else if .JSON.Array "" }}
             <ul class="list list-gap-10">
             {{ range .JSON.Array "" }}
               <li>
