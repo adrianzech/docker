@@ -1,7 +1,7 @@
 services:
   caldav-bridge:
     container_name: dynacat-caldav-bridge
-    image: python:3.13.14-alpine3.23
+    image: python:3.14.7-alpine3.23
     restart: unless-stopped
     command: ["python", "-u", "/app/bridge.py"]
     user: 65532:65532
