@@ -1,7 +1,7 @@
 services:
   free-games-claimer:
     container_name: free-games-claimer
-    image: ghcr.io/p-adamiec/free-games-claimer-remaster:v1.8
+    image: ghcr.io/p-adamiec/free-games-claimer-remaster:v1.9
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pgrep python3 && curl --fail http://127.0.0.1:7080 || exit 1"]
