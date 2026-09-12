@@ -1,0 +1,19 @@
+http:
+  routers:
+    keycloak:
+      rule: Host(`sso.zech.dev`)
+      entryPoints:
+        - websecure
+      service: keycloak
+      middlewares:
+        - security-headers
+        - compression
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    keycloak:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://10.0.30.100:8080
