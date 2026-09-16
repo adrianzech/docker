@@ -1,7 +1,7 @@
 services:
   radarr:
     container_name: radarr
-    image: lscr.io/linuxserver/radarr:6.3.0
+    image: lscr.io/linuxserver/radarr:6.4.4
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7878/ping"]
