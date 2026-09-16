@@ -46,7 +46,7 @@ services:
       - database
 
   dind:
-    image: docker:29.8.0-dind
+    image: docker:29.8.1-dind
     container_name: forgejo-dind
     restart: unless-stopped
     privileged: true
