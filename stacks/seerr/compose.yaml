@@ -21,7 +21,7 @@ services:
 
   seerr:
     container_name: seerr
-    image: ghcr.io/seerr-team/seerr:develop@sha256:11073d42c8d2c76291de91725cab40bc5eb433110183009df2e3642686fabbce
+    image: ghcr.io/seerr-team/seerr:preview-new-oidc
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/settings/public || exit 1"]
