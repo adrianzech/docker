@@ -17,6 +17,8 @@ services:
       traefik.http.routers.twitch-drops-miner.tls: "true"
       traefik.http.routers.twitch-drops-miner.middlewares: "authentik@file,security-headers@file,compression@file"
       traefik.http.services.twitch-drops-miner.loadbalancer.server.port: "8080"
+    environment:
+      PUBLIC_BASE_URL: "https://twitchdrops.zech.co"
     volumes:
       - ../../appdata/twitch-drops-miner/data:/app/data
     networks:
