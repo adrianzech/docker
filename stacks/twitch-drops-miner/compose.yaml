@@ -3,6 +3,9 @@ services:
     container_name: twitch-drops-miner
     image: rangermix/twitch-drops-miner:2.1.0
     restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+    shm_size: 256m
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/status')"]
       start_period: 10s
