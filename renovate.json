@@ -19,12 +19,20 @@
       "allowedVersions": "/^17-/"
     }
   ],
-  "docker-compose": {
-    "hostRules": [
-      {
-        "matchHost": "docker.io",
-        "concurrentRequestLimit": 2
-      }
-    ]
-  }
+  "hostRules": [
+    {
+      "matchHost": "docker.io",
+      "concurrentRequestLimit": 2
+    },
+    {
+      "matchHost": "ghcr.io",
+      "concurrentRequestLimit": 1,
+      "maxRequestsPerSecond": 1
+    },
+    {
+      "matchHost": "lscr.io",
+      "concurrentRequestLimit": 1,
+      "maxRequestsPerSecond": 1
+    }
+  ]
 }
