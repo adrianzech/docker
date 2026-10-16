@@ -9,6 +9,10 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["postgis/postgis"],
       "allowedVersions": "/^17-/"
