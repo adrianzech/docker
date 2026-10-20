@@ -70,7 +70,7 @@ services:
 
   machine-learning:
     container_name: immich-machine-learning
-    image: ghcr.io/immich-app/immich-machine-learning:v3.3.3
+    image: ghcr.io/immich-app/immich-machine-learning:v3.3.4
     restart: unless-stopped
     volumes:
       - /mnt/immich/machine-learning:/cache
