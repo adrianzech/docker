@@ -96,7 +96,7 @@ services:
 
   euro-office:
     container_name: nextcloud-euro-office
-    image: ghcr.io/euro-office/documentserver:v9.3.5
+    image: ghcr.io/euro-office/documentserver:v9.3.6
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost/healthcheck | grep -qx true"]
