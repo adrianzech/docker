@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | `DATABASE_PASSWORD` | Strong PostgreSQL password | `openssl rand -base64 32` |
 | `MASTER_KEY` | Generated 32-byte Base64 key | `openssl rand -base64 32` |
+| `OBSCURA_CDP_TOKEN` | Shared token for Norish and Obscura | `openssl rand -hex 32` |
 | `AUTH_URL` | `https://norish.zech.co` | — |
 | `OIDC_CLIENT_ID` | Authentik client ID | Authentik |
 | `OIDC_CLIENT_SECRET` | Authentik client secret | Authentik |
@@ -17,6 +18,7 @@ To update the local `.env` with the generated values:
 ```bash
 sed -i "s|^DATABASE_PASSWORD=.*|DATABASE_PASSWORD=$(openssl rand -base64 32)|" .env
 sed -i "s|^MASTER_KEY=.*|MASTER_KEY=$(openssl rand -base64 32)|" .env
+sed -i '/^OBSCURA_CDP_TOKEN=/d' .env && printf 'OBSCURA_CDP_TOKEN=%s\n' "$(openssl rand -hex 32)" >> .env
 ```
 
 ## Authentik OIDC
