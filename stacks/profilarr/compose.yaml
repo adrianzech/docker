@@ -1,7 +1,7 @@
 services:
   profilarr:
     container_name: profilarr
-    image: ghcr.io/dictionarry-hub/profilarr:2.2.0
+    image: ghcr.io/dictionarry-hub/profilarr:2.3.1
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:$${PORT}/api/v1/health || exit 1"]
