@@ -33,7 +33,7 @@ services:
 
   parser:
     container_name: profilarr-parser
-    image: ghcr.io/dictionarry-hub/profilarr-parser:2.2.0
+    image: ghcr.io/dictionarry-hub/profilarr-parser:2.3.1
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:5000/health || exit 1"]
