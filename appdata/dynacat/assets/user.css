@@ -1,30 +1,30 @@
 :root {
   --border-radius: 7px;
-  --color-background: #0b0e14;
-  --color-widget-background-hsl-values: 220, 17%, 14%;
-  --color-widget-background: #1e222a;
-  --color-widget-content-border: #363a40;
-  --color-widget-background-highlight: #272c36;
-  --color-separator: #363a40;
-  --color-popover-background: #14181f;
-  --color-popover-border: #595f6a;
-  --color-progress-border: #595f6a;
-  --color-progress-value: #e6b450;
-  --color-vertical-progress-value: #e6b450;
-  --color-graph-gridlines: #363a40;
-  --color-primary: #e6b450;
-  --color-positive: #aad94c;
-  --color-negative: #f07178;
-  --color-text-highlight: #d1d1c7;
-  --color-text-paragraph: #bfbdb6;
-  --color-text-base: #8e959e;
-  --color-text-base-muted: #8e959e;
-  --color-text-subdue: #595f6a;
+  --color-background: #282a36;
+  --color-widget-background-hsl-values: 232, 14%, 21%;
+  --color-widget-background: #2f3140;
+  --color-widget-content-border: #44475a;
+  --color-widget-background-highlight: #383a4d;
+  --color-separator: #44475a;
+  --color-popover-background: #282a36;
+  --color-popover-border: #6272a4;
+  --color-progress-border: #6272a4;
+  --color-progress-value: #bd93f9;
+  --color-vertical-progress-value: #bd93f9;
+  --color-graph-gridlines: #44475a;
+  --color-primary: #bd93f9;
+  --color-positive: #50fa7b;
+  --color-negative: #ff5555;
+  --color-text-highlight: #f8f8f2;
+  --color-text-paragraph: #e2e2e9;
+  --color-text-base: #b4b5c6;
+  --color-text-base-muted: #b4b5c6;
+  --color-text-subdue: #6272a4;
 }
 
 ::selection {
-  color: #0b0e14;
-  background: #e6b450;
+  color: #282a36;
+  background: #bd93f9;
 }
 
 .dashboard-empty-state {
