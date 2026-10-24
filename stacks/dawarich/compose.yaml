@@ -36,10 +36,11 @@ services:
 
   app:
     container_name: dawarich-app
-    image: freikin/dawarich:1.16.0
+    image: freikin/dawarich:1.17.0
     restart: unless-stopped
     command: ["bin/rails", "server", "-p", "3000", "-b", "::"]
     entrypoint: web-entrypoint.sh
+    stop_grace_period: 60s
     healthcheck:
       test: ["CMD-SHELL", "wget --header='X-Forwarded-Proto: https' -qO - http://127.0.0.1:3000/api/v1/health | grep -q '\"status\"\\s*:\\s*\"ok\"'"]
       start_period: 30s
@@ -57,6 +58,8 @@ services:
     env_file:
       - .env
     environment:
+      SIDEKIQ_EMBEDDED: "true"
+      WEB_CONCURRENCY: "0"
       REDIS_URL: redis://valkey:6379
       DATABASE_HOST: database
       DATABASE_PORT: 5432
@@ -72,39 +75,6 @@ services:
       database:
         condition: service_healthy
       valkey:
-        condition: service_healthy
-
-  worker:
-    container_name: dawarich-worker
-    image: freikin/dawarich:1.16.0
-    restart: unless-stopped
-    command: ["sidekiq"]
-    entrypoint: sidekiq-entrypoint.sh
-    healthcheck:
-      test: ["CMD-SHELL", "pgrep -f sidekiq"]
-      start_period: 30s
-      interval: 30s
-      timeout: 5s
-      retries: 5
-    env_file:
-      - .env
-    environment:
-      REDIS_URL: redis://valkey:6379
-      DATABASE_HOST: database
-      DATABASE_PORT: 5432
-      DATABASE_USERNAME: ${DATABASE_USER}
-    volumes:
-      - ../../appdata/dawarich/public:/var/app/public
-      - ../../appdata/dawarich/watched:/var/app/tmp/imports/watched
-      - ../../appdata/dawarich/storage:/var/app/storage
-    networks:
-      - internal
-    depends_on:
-      database:
-        condition: service_healthy
-      valkey:
-        condition: service_healthy
-      app:
         condition: service_healthy
 
 networks:
