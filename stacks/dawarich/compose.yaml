@@ -36,7 +36,7 @@ services:
 
   app:
     container_name: dawarich-app
-    image: freikin/dawarich:1.18.0
+    image: freikin/dawarich:1.18.1
     restart: unless-stopped
     command: ["bin/rails", "server", "-p", "3000", "-b", "::"]
     entrypoint: web-entrypoint.sh
