@@ -1,7 +1,7 @@
 services:
   sonarr:
     container_name: sonarr
-    image: lscr.io/linuxserver/sonarr:develop@sha256:029c8de8508cc6bc5e148ddb516ce0d167746e557d343bfda3fc073f0fdf9624
+    image: lscr.io/linuxserver/sonarr:develop@sha256:7c365bc209ee4c0975665fc8ad3ba8f7acd93ef3508a4b7104ee917a5ad7ee51
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8989/ping"]
