@@ -26,4 +26,4 @@ sed -i '/^OBSCURA_CDP_TOKEN=/d' .env && printf 'OBSCURA_CDP_TOKEN=%s\n' "$(opens
 | Authentik setting | Value |
 | --- | --- |
 | Provider/application | Norish |
-| Redirect URI (Strict Authorization) | `https://norish.zech.co/api/auth/oauth2/callback/oidc` |
+| Redirect URI (Strict Authorization) | `https://norish.zech.co/api/auth/callback/oidc` |
