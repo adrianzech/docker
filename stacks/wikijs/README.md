@@ -36,3 +36,4 @@ Configure the Wiki.js OpenID Connect login with the following settings.
 | --- | --- |
 | Application/provider | Wiki.js |
 | Redirect URI (Strict Authorization) | Exact **Authorization Callback URL** from the Wiki.js strategy after **Apply**. It must start with `https://wiki.zech.co/`. |
+| Logout URI | `https://wiki.zech.co/` |
