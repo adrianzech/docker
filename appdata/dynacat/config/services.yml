@@ -45,6 +45,7 @@
                 - { title: BentoPDF, url: https://pdf.zech.co, description: Werkzeuge zur PDF-Bearbeitung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/bentopdf.svg }
                 - { title: IT Tools, url: https://tools.zech.co, description: Praktische Werkzeuge für IT-Aufgaben, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/it-tools.svg }
                 - { title: Forgejo, url: https://git.zech.co, description: Git-Repositorys und Softwareentwicklung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/forgejo.svg }
+                - { title: Wiki.js, url: https://wiki.zech.co, description: Wiki und Wissensdatenbank, icon: https://api.iconify.design/mdi/book-open-page-variant.svg }
             - title: Persönlich
               links:
                 - { title: Immich, url: https://photos.zech.co, description: Foto- und Videoverwaltung, icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/immich.svg }

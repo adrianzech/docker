@@ -1,0 +1,65 @@
+services:
+  database:
+    container_name: wikijs-database
+    image: postgres:18.6-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -d \"$${POSTGRES_DB}\" -U \"$${POSTGRES_USER}\""]
+      start_period: 20s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - ../../appdata/wikijs/database:/var/lib/postgresql
+    networks:
+      - internal
+      - database-backup
+
+  wiki:
+    container_name: wikijs-wiki
+    image: ghcr.io/requarks/wiki:3.1.1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/_ready', { redirect: 'error' }).then(response => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      start_period: 60s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "proxy"
+      traefik.http.routers.wikijs.rule: "Host(`wiki.zech.co`)"
+      traefik.http.routers.wikijs.entrypoints: "websecure"
+      traefik.http.routers.wikijs.tls: "true"
+      traefik.http.routers.wikijs.middlewares: "security-headers@file,compression@file"
+      traefik.http.services.wikijs.loadbalancer.server.port: "3000"
+    environment:
+      DB_HOST: wikijs-database
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASS: ${ADMIN_PASS}
+    volumes:
+      - ../../appdata/wikijs/data:/wiki/data
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      database:
+        condition: service_healthy
+
+networks:
+  proxy:
+    external: true
+
+  database-backup:
+    external: true
+
+  internal:
+    name: wikijs-internal
+    driver: bridge
