@@ -21,7 +21,7 @@ services:
 
   wiki:
     container_name: wikijs-wiki
-    image: ghcr.io/requarks/wiki:3.2.0
+    image: ghcr.io/requarks/wiki:3.3.1
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/_ready', { redirect: 'error' }).then(response => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"]
