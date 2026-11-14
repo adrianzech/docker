@@ -17,6 +17,11 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["postgis/postgis"],
       "allowedVersions": "/^17-/"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["gotenberg/gotenberg"],
+      "allowedVersions": "/^8\\.\\d+\\.\\d+$/"
     }
   ],
   "hostRules": [
