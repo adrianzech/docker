@@ -80,7 +80,7 @@ services:
 
   mosquitto:
     container_name: teslamate-mosquitto
-    image: eclipse-mosquitto:2.0.22
+    image: eclipse-mosquitto:2.0.23
     restart: unless-stopped
     command: mosquitto -c /mosquitto-no-auth.conf
     healthcheck:
