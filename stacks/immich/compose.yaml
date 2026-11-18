@@ -38,7 +38,7 @@ services:
 
   server:
     container_name: immich-server
-    image: ghcr.io/immich-app/immich-server:v3.4.1
+    image: ghcr.io/immich-app/immich-server:v3.4.2
     restart: unless-stopped
     labels:
       traefik.enable: "true"
