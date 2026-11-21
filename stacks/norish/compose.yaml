@@ -57,7 +57,7 @@ services:
       - .env
     environment:
       DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
-      REDIS_URL: redis://valkey:6379
+      VALKEY_URL: valkey://valkey:6379
       OBSCURA_ENDPOINT: ws://obscura:9222
     volumes:
       - ../../appdata/norish/uploads:/app/uploads
