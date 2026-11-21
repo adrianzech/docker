@@ -15,6 +15,21 @@
     },
     {
       "matchDatasources": ["docker"],
+      "matchPackageNames": ["postgres", "docker.io/library/postgres"],
+      "allowedVersions": "/^18\\.\\d+(?:-|$)/"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/immich-app/postgres"],
+      "allowedVersions": "/^18-/"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["timescale/timescaledb-ha"],
+      "allowedVersions": "/^pg18\\./"
+    },
+    {
+      "matchDatasources": ["docker"],
       "matchPackageNames": ["postgis/postgis"],
       "allowedVersions": "/^17-/"
     },
