@@ -54,7 +54,7 @@ services:
 
   chrome:
     container_name: karakeep-chrome
-    image: ghcr.io/karakeep-app/karakeep-chrome:157.0.8103.78-r1
+    image: ghcr.io/karakeep-app/karakeep-chrome:158.0.8127.88-r1
     restart: unless-stopped
     init: true
     command:
